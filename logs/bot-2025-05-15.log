@@ -1152,3 +1152,91 @@ AxiosError: Request failed with status code 404
 [2025-05-15T07:51:03.793Z] [INFO] ==== WHATSAPP QR CODE (SCAN WITH PHONE) ====
 [2025-05-15T07:51:03.794Z] [INFO] ============================================
 [2025-05-15T07:51:03.794Z] [INFO] Scan this QR code with WhatsApp to connect your bot
+[2025-05-15T08:20:40.364Z] [INFO] Initializing WhatsApp connection...
+[2025-05-15T08:20:40.459Z] [INFO] Automatic message scheduling disabled in development mode
+[2025-05-15T08:20:40.461Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-15T08:20:40.461Z] [INFO] Web server running on port 3000
+[2025-05-15T08:20:41.305Z] [INFO] Connection update: {"qr":"2@OqVu9rarl/3J38IuyD9ccG/QUxMx/lBU+Ry7H2UG4QE4tJKkGlzVySW9QvvGUvpr/1ru6CvKrPRWu6iqbd9Qbmu8xVhPsdLNWhI=,M9vjN3IsSu71WsRDJa9UUm6AE54W4YAb9y0tck0zjnA=,XIz8DLBBt9U9Nz2hq4i780a+eCLCInVnD347P2+R4x4=,tX8KaJeLGg9AGTD6Z+SeOtIBZXsgRWKd/Gl1EtPen4I="}
+[2025-05-15T08:20:41.325Z] [INFO] 
+
+==== WHATSAPP QR CODE (SCAN WITH PHONE) ====
+[2025-05-15T08:20:41.326Z] [INFO] ============================================
+[2025-05-15T08:20:41.326Z] [INFO] Scan this QR code with WhatsApp to connect your bot
+[2025-05-15T08:20:41.326Z] [INFO] If you cannot see the QR code clearly, check your terminal settings or try a different terminal
+[2025-05-15T08:21:16.130Z] [INFO] Connection update: {"isNewLogin":true}
+[2025-05-15T08:21:16.520Z] [INFO] Connection update: {"connection":"close","lastDisconnect":{"error":{"data":{"tag":"stream:error","attrs":{"code":"515"}},"isBoom":true,"isServer":true,"output":{"statusCode":515,"payload":{"statusCode":515,"error":"Unknown","message":"Stream Errored (restart required)"},"headers":{}}},"date":"2025-05-15T08:21:16.520Z"}}
+[2025-05-15T08:21:16.521Z] [INFO] Connection closed. Attempting to reconnect...
+[2025-05-15T08:21:16.521Z] [WARN] Disconnected with status code: 515
+[2025-05-15T08:21:16.522Z] [INFO] Reconnecting...
+[2025-05-15T08:21:16.522Z] [INFO] Initializing WhatsApp connection...
+[2025-05-15T08:21:16.526Z] [INFO] Automatic message scheduling disabled in development mode
+[2025-05-15T08:21:16.526Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-15T08:21:17.813Z] [INFO] Connection update: {"receivedPendingNotifications":true}
+[2025-05-15T08:21:18.257Z] [INFO] Connection update: {"connection":"open"}
+[2025-05-15T08:21:18.257Z] [INFO] Bot successfully connected! Bot JID: 972507412770:30@s.whatsapp.net
+[2025-05-15T08:21:18.258Z] [INFO] Available admin commands:
+[2025-05-15T08:21:18.258Z] [INFO] !sendrsvp - Send RSVP messages to pending guests
+[2025-05-15T08:21:18.258Z] [INFO] !status - Show current bot status and event details
+[2025-05-15T08:21:18.258Z] [INFO] !reload - Reload guest list from Google Sheets
+[2025-05-15T08:21:18.258Z] [INFO] !test - Send a test RSVP message (development only)
+[2025-05-15T08:21:21.669Z] [INFO] Message from 972507412770: 
+[2025-05-15T08:21:22.043Z] [INFO] Message from 972507412770: 
+[2025-05-15T08:21:23.117Z] [INFO] Message from 972507412770: 
+[2025-05-15T08:24:24.460Z] [INFO] Message from 972526901876: !test
+[2025-05-15T08:25:08.681Z] [INFO] Message from 972526901876: !sendrsvp
+[2025-05-15T08:25:08.891Z] [INFO] Message from 972507412770: I'm not sure I understand your response. Please reply with 'Yes' if you're attending, or 'No' if you can't attend. If you're attending, please also let me know how many people total will be coming.
+[2025-05-15T08:25:08.891Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:09.087Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:09.087Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:09.278Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:09.279Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:09.469Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:09.469Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:09.663Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:09.663Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:09.850Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:09.850Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:10.046Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:10.047Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:10.243Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:10.243Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:10.440Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:10.440Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:10.631Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:10.631Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:10.824Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:10.825Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:11.019Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:11.019Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:11.212Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:11.212Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:11.397Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:11.397Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:11.596Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:11.596Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:11.787Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:11.787Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:11.979Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:11.980Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:12.171Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:12.172Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:12.366Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:12.367Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:12.556Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:12.557Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:12.749Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:12.750Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:12.944Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:12.945Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:13.136Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:13.136Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:13.331Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:13.331Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:13.518Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:13.519Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:13.708Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:13.708Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:13.898Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:13.899Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:25:14.093Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-15T08:25:14.094Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests

@@ -15,6 +15,8 @@ import cron from 'node-cron';
 import express from 'express';
 import qrcode from 'qrcode';
 
+const args = process.argv.slice(2);
+const shouldSendTestMessage = args.includes('--test-message');
 // ES Module compatibility
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -167,6 +169,7 @@ class AppsScriptManager {
           }
         ];
         
+        const adminPhone = process.env.ADMIN_NUMBERS?.split(',')[0] || "+972526901876";
         this.log.info(`Added admin phone ${adminPhone} to mock data for testing`);
         this.cachedGuests = mockGuests;
         this.lastFetchTime = now;
@@ -872,14 +875,16 @@ async function clientstart() {
           log.info('!test - Send a test RSVP message (development only)');
         }
       }
+      // Enhanced QR code logging
       else if (update.qr) {
         // Log QR to console
         qrcode.toString(update.qr, { type: 'terminal', small: true }, (err, text) => {
           if (!err) {
-            log.info('==== WHATSAPP QR CODE (SCAN WITH PHONE) ====');
-            console.log(text);
+            log.info('\n\n==== WHATSAPP QR CODE (SCAN WITH PHONE) ====');
+            console.log('\x1b[36m%s\x1b[0m', text); // Cyan color for visibility
             log.info('============================================');
             log.info('Scan this QR code with WhatsApp to connect your bot');
+            log.info('If you cannot see the QR code clearly, check your terminal settings or try a different terminal');
           } else {
             log.error('Failed to generate QR code:', err);
           }
@@ -1111,10 +1116,47 @@ function watchForChanges() {
 
 // Start the bot and server
 clientstart()
-  .then(() => {
+  .then(async (waClient) => {
     app.listen(serverPort, () => {
       log.info(`Web server running on port ${serverPort}`);
     });
+    
+    // Send test message if requested via command line
+    if (shouldSendTestMessage && waClient.user) {
+      log.info('Command line flag detected: Sending test RSVP message...');
+      setTimeout(async () => {
+        try {
+          // Get admin number
+          const adminPhone = process.env.ADMIN_NUMBERS?.split(',')[0];
+          if (!adminPhone) {
+            log.warn('No admin phone number found in .env file to send test message');
+            return;
+          }
+          
+          // Get event details
+          const eventDetails = await appScriptManager.getEventDetails();
+          
+          // Send a test RSVP message to admin
+          const buttons = [
+            {buttonId: 'yes', buttonText: {displayText: 'Yes, I\'ll attend'}, type: 1},
+            {buttonId: 'no', buttonText: {displayText: 'No, I can\'t attend'}, type: 1}
+          ];
+          
+          const buttonMessage = {
+            text: `*${eventDetails.name} - RSVP Invitation (TEST)*\n\nDear Admin,\n\nThis is a test message:\n\n📅 Date: ${eventDetails.date}\n⏰ Time: ${eventDetails.time}\n📍 Location: ${eventDetails.location}\n\n${eventDetails.description}\n\nWill you be able to attend?`,
+            footer: 'Please respond using the buttons below',
+            buttons: buttons,
+            headerType: 1,
+            viewOnce: true
+          };
+          
+          await waClient.sendMessage(adminPhone + '@s.whatsapp.net', buttonMessage);
+          log.info(`Sent test RSVP message to admin (${adminPhone})`);
+        } catch (error) {
+          log.error('Error sending test message:', error);
+        }
+      }, 5000); // Wait 5 seconds for connection to establish
+    }
     
     // Watch for file changes in development
     watchForChanges();
