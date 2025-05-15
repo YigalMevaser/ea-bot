@@ -1418,3 +1418,444 @@ ReferenceError: Cannot access 'text' before initialization
 [2025-05-15T09:13:20.095Z] [INFO] Button response received: "guest_2"
 [2025-05-15T09:13:20.096Z] [INFO] [MOCK DATA] Would update guest status: +972526901876 to Confirmed with 2 guests
 [2025-05-15T09:13:20.286Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T09:17:10.279Z] [INFO] Initializing WhatsApp connection...
+[2025-05-15T09:17:10.358Z] [INFO] Setting up RSVP message schedule: 0 9-20 * * *
+[2025-05-15T09:17:10.361Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-15T09:17:10.362Z] [INFO] Web server running on port 3000
+[2025-05-15T09:17:11.023Z] [INFO] Connection update: {"qr":"2@naTGzU58i24VR/J8b3dllhrccC/Sftm81hcmtDUlNQynrO0bS8mb1hmB8Z7j6cF0AFgIxYQ5YpGDOT9ouHxb9GRcy9p76zX95J8=,JmdsyW1Q3wuTCTIaEw6Lx1C5mtB63dpBdbWcXlO/rGk=,6ReaeYUTr1ilHyOEKJhx62ujAtbvhnYHCCJqhPG2yC8=,MurzLzcziDwDpDsPUn29N1JyTDVnwBPEMeNJp9se1Gc="}
+[2025-05-15T09:17:11.039Z] [INFO] 
+
+==== WHATSAPP QR CODE (SCAN WITH PHONE) ====
+[2025-05-15T09:17:11.040Z] [INFO] ============================================
+[2025-05-15T09:17:11.040Z] [INFO] Scan this QR code with WhatsApp to connect your bot
+[2025-05-15T09:17:11.040Z] [INFO] If you cannot see the QR code clearly, check your terminal settings or try a different terminal
+[2025-05-15T09:17:24.043Z] [INFO] Connection update: {"isNewLogin":true}
+[2025-05-15T09:17:24.336Z] [INFO] Connection update: {"connection":"close","lastDisconnect":{"error":{"data":{"tag":"stream:error","attrs":{"code":"515"}},"isBoom":true,"isServer":true,"output":{"statusCode":515,"payload":{"statusCode":515,"error":"Unknown","message":"Stream Errored (restart required)"},"headers":{}}},"date":"2025-05-15T09:17:24.336Z"}}
+[2025-05-15T09:17:24.336Z] [INFO] Connection closed. Attempting to reconnect...
+[2025-05-15T09:17:24.345Z] [WARN] Disconnected with status code: 515
+[2025-05-15T09:17:24.345Z] [INFO] Reconnecting...
+[2025-05-15T09:17:24.346Z] [INFO] Initializing WhatsApp connection...
+[2025-05-15T09:17:24.355Z] [INFO] Setting up RSVP message schedule: 0 9-20 * * *
+[2025-05-15T09:17:24.357Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-15T09:17:25.677Z] [INFO] Connection update: {"receivedPendingNotifications":true}
+[2025-05-15T09:17:26.326Z] [INFO] Connection update: {"connection":"open"}
+[2025-05-15T09:17:26.326Z] [INFO] Bot successfully connected! Bot JID: 972507412770:32@s.whatsapp.net
+[2025-05-15T09:17:26.326Z] [INFO] Available admin commands:
+[2025-05-15T09:17:26.326Z] [INFO] !sendrsvp - Send RSVP messages to pending guests
+[2025-05-15T09:17:26.326Z] [INFO] !status - Show current bot status and event details
+[2025-05-15T09:17:26.326Z] [INFO] !reload - Reload guest list from Google Sheets
+[2025-05-15T09:17:29.488Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T09:17:29.799Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T09:17:30.849Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T09:22:24.357Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T09:27:24.356Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T09:32:24.331Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T09:35:18.517Z] [INFO] Message from 972526901876: !reload
+[2025-05-15T09:35:18.517Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T09:35:18.518Z] [INFO] Fetching guest list from Google Sheets: https://script.google.com/macros/s/AKfycbwn-iy7ubfc_QZkQK0ctZNzzxAYU0fifInAMwPmVbfIW6fZiNe8jING5ARP7txL0p5kJg/exec
+[2025-05-15T09:35:21.625Z] [INFO] Fetched 1 guests from Apps Script
+[2025-05-15T09:35:21.964Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T09:37:24.326Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T09:42:24.324Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T09:47:24.321Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T09:49:23.126Z] [INFO] Initializing WhatsApp connection...
+[2025-05-15T09:49:23.187Z] [INFO] Setting up RSVP message schedule: 0 9-20 * * *
+[2025-05-15T09:49:23.191Z] [INFO] Command line flag detected: Sending test RSVP message...
+[2025-05-15T09:49:23.195Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-15T09:49:23.195Z] [INFO] Web server running on port 3000
+[2025-05-15T09:49:24.104Z] [INFO] Connection update: {"receivedPendingNotifications":true}
+[2025-05-15T09:49:24.377Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T09:49:24.377Z] [INFO] Connection update: {"connection":"open"}
+[2025-05-15T09:49:24.377Z] [INFO] Bot successfully connected! Bot JID: 972507412770:32@s.whatsapp.net
+[2025-05-15T09:49:24.377Z] [INFO] Available admin commands:
+[2025-05-15T09:49:24.377Z] [INFO] !sendrsvp - Send RSVP messages to pending guests
+[2025-05-15T09:49:24.377Z] [INFO] !status - Show current bot status and event details
+[2025-05-15T09:49:24.378Z] [INFO] !reload - Reload guest list from Google Sheets
+[2025-05-15T09:49:24.378Z] [INFO] !debugapi - Test API connection to Google Apps Script
+[2025-05-15T09:49:28.192Z] [INFO] Attempting to fetch event details from: https://script.google.com/macros/s/AKfycbwn-iy7ubfc_QZkQK0ctZNzzxAYU0fifInAMwPmVbfIW6fZiNe8jING5ARP7txL0p5kJg/exec
+[2025-05-15T09:49:28.193Z] [INFO] Fetching event details from Google Sheets: https://script.google.com/macros/s/AKfycbwn-iy7ubfc_QZkQK0ctZNzzxAYU0fifInAMwPmVbfIW6fZiNe8jING5ARP7txL0p5kJg/exec
+[2025-05-15T09:49:30.122Z] [INFO] Event details response: "Unauthorized"
+[2025-05-15T09:49:30.123Z] [ERROR] Failed to get event details: Failed to fetch event details
+Error: Failed to fetch event details
+    at AppsScriptManager.getEventDetails (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:368:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Timeout._onTimeout (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:1346:32)
+[2025-05-15T09:53:15.466Z] [INFO] Initializing WhatsApp connection...
+[2025-05-15T09:53:15.529Z] [INFO] Setting up RSVP message schedule: 0 9-20 * * *
+[2025-05-15T09:53:15.531Z] [INFO] Command line flag detected: Sending test RSVP message...
+[2025-05-15T09:53:15.532Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-15T09:53:15.532Z] [INFO] Web server running on port 3000
+[2025-05-15T09:53:16.659Z] [INFO] Connection update: {"receivedPendingNotifications":true}
+[2025-05-15T09:53:16.841Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T09:53:16.841Z] [INFO] Connection update: {"connection":"open"}
+[2025-05-15T09:53:16.841Z] [INFO] Bot successfully connected! Bot JID: 972507412770:32@s.whatsapp.net
+[2025-05-15T09:53:16.841Z] [INFO] Available admin commands:
+[2025-05-15T09:53:16.841Z] [INFO] !sendrsvp - Send RSVP messages to pending guests
+[2025-05-15T09:53:16.841Z] [INFO] !status - Show current bot status and event details
+[2025-05-15T09:53:16.841Z] [INFO] !reload - Reload guest list from Google Sheets
+[2025-05-15T09:53:16.841Z] [INFO] !debugapi - Test API connection to Google Apps Script
+[2025-05-15T09:53:20.534Z] [INFO] Attempting to fetch event details from: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T09:53:20.534Z] [INFO] Fetching event details from Google Sheets: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T09:53:23.241Z] [INFO] Event details response: {"success":true,"details":{"Key":"Value","Name":"Family Reunion","Date":"June 15, 2025","Time":"1899-12-30T15:39:20.000Z","Location":"Grand Hotel, 123 Main St","Description":"Join us for our family reunion! Food and drinks will be provided."}}
+[2025-05-15T09:58:15.530Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T10:00:00.020Z] [INFO] Starting RSVP message batch with URL: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:00:00.022Z] [INFO] Attempting to fetch event details from: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:00:00.022Z] [INFO] Fetching event details from Google Sheets: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:00:03.513Z] [INFO] Event details response: {"success":true,"details":{"Key":"Value","Name":"Family Reunion","Date":"June 15, 2025","Time":"1899-12-30T15:39:20.000Z","Location":"Grand Hotel, 123 Main St","Description":"Join us for our family reunion! Food and drinks will be provided."}}
+[2025-05-15T10:00:03.513Z] [INFO] Preparing messages for event: Family Reunion
+[2025-05-15T10:00:03.513Z] [INFO] About to fetch guests with key: you...
+[2025-05-15T10:00:03.514Z] [INFO] Attempting API call to fetch guests from: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:00:03.514Z] [INFO] Using secret key starting with: you...
+[2025-05-15T10:00:03.514Z] [INFO] Fetching guest list from Google Sheets: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:00:06.458Z] [INFO] API response status: 200
+[2025-05-15T10:00:06.458Z] [INFO] API response data: {"success":true,"guests":[{"Name":"yigal","Phone":"+972526901876","Status":"Pending","GuestCount":"","Notes":"","LastContacted":""}]}
+[2025-05-15T10:00:06.459Z] [INFO] Fetched 1 guests from Apps Script
+[2025-05-15T10:00:06.459Z] [INFO] Guest list response received with 1 guests
+[2025-05-15T10:00:06.459Z] [INFO] First guest data: {"name":"yigal","phone":"+972526901876","email":"","status":"Pending","count":"0","notes":"","lastContacted":""}
+[2025-05-15T10:00:06.459Z] [INFO] Found 1 potential guests to contact
+[2025-05-15T10:00:06.459Z] [INFO] Sending messages to 1 guests in this batch
+[2025-05-15T10:00:06.459Z] [INFO] Sending RSVP message to: +972526901876@s.whatsapp.net
+[2025-05-15T10:03:01.244Z] [INFO] Message from 972526901876: !debuhapi
+[2025-05-15T10:03:01.244Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T10:03:13.504Z] [INFO] Message from 972526901876: !debugapi
+[2025-05-15T10:03:13.504Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T10:03:13.504Z] [INFO] Testing API connection...
+[2025-05-15T10:03:13.742Z] [INFO] ENV: APPS_SCRIPT_URL=https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:03:13.742Z] [INFO] ENV: SECRET_KEY=you...
+[2025-05-15T10:03:13.742Z] [INFO] Using cached guest list data
+[2025-05-15T10:03:13.744Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T10:03:13.970Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T10:03:14.194Z] [INFO] Using cached event details
+[2025-05-15T10:03:14.196Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T10:03:14.418Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T10:03:15.568Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T10:03:44.506Z] [INFO] Message from 972526901876: !debug
+[2025-05-15T10:03:44.506Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T10:03:44.729Z] [INFO] Using cached guest list data
+[2025-05-15T10:03:44.731Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T10:03:44.955Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T10:06:03.372Z] [INFO] Message from 972526901876: !sendrsvp
+[2025-05-15T10:06:03.373Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T10:06:03.600Z] [INFO] Starting RSVP message batch with URL: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:06:03.601Z] [INFO] Attempting to fetch event details from: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:06:03.601Z] [INFO] Fetching event details from Google Sheets: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:06:03.607Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T10:06:05.822Z] [INFO] Event details response: {"success":true,"details":{"Key":"Value","Name":"Family Reunion","Date":"June 15, 2025","Time":"1899-12-30T15:39:20.000Z","Location":"Grand Hotel, 123 Main St","Description":"Join us for our family reunion! Food and drinks will be provided."}}
+[2025-05-15T10:06:05.823Z] [INFO] Preparing messages for event: Family Reunion
+[2025-05-15T10:06:05.823Z] [INFO] About to fetch guests with key: you...
+[2025-05-15T10:06:05.823Z] [INFO] Using cached guest list data
+[2025-05-15T10:06:05.823Z] [INFO] Guest list response received with 1 guests
+[2025-05-15T10:06:05.823Z] [INFO] First guest data: {"name":"yigal","phone":"+972526901876","email":"","status":"Pending","count":"0","notes":"","lastContacted":""}
+[2025-05-15T10:06:05.823Z] [INFO] Found 1 potential guests to contact
+[2025-05-15T10:06:05.823Z] [INFO] Sending messages to 1 guests in this batch
+[2025-05-15T10:06:05.823Z] [INFO] Sending RSVP message to: +972526901876@s.whatsapp.net
+[2025-05-15T10:08:15.568Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T10:08:32.713Z] [INFO] Message from 972526901876: !debugapi
+[2025-05-15T10:08:32.713Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T10:08:32.713Z] [INFO] Testing API connection...
+[2025-05-15T10:08:32.936Z] [INFO] ENV: APPS_SCRIPT_URL=https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:08:32.937Z] [INFO] ENV: SECRET_KEY=you...
+[2025-05-15T10:08:32.937Z] [INFO] Using cached guest list data
+[2025-05-15T10:08:32.939Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T10:08:33.166Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T10:08:33.388Z] [INFO] Using cached event details
+[2025-05-15T10:08:33.391Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T10:08:33.612Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T10:09:09.095Z] [INFO] Message from 972526901876: !reload
+[2025-05-15T10:09:09.095Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T10:09:09.095Z] [INFO] Attempting API call to fetch guests from: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:09:09.095Z] [INFO] Using secret key starting with: you...
+[2025-05-15T10:09:09.095Z] [INFO] Fetching guest list from Google Sheets: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:09:11.720Z] [INFO] API response status: 200
+[2025-05-15T10:09:11.720Z] [INFO] API response data: {"success":true,"guests":[{"Name":"yigal","Phone":"+972526901876","Status":"Pending","GuestCount":"","Notes":"","LastContacted":""},{"Name":"shiran","Phone":"+972542080237","Status":"Pending","GuestCount":"","Notes":"","LastContacted":""}]}
+[2025-05-15T10:09:11.720Z] [INFO] Fetched 2 guests from Apps Script
+[2025-05-15T10:09:11.942Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T10:09:27.404Z] [INFO] Message from 972526901876: !debugapi
+[2025-05-15T10:09:27.404Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T10:09:27.404Z] [INFO] Testing API connection...
+[2025-05-15T10:09:27.627Z] [INFO] ENV: APPS_SCRIPT_URL=https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:09:27.627Z] [INFO] ENV: SECRET_KEY=you...
+[2025-05-15T10:09:27.627Z] [INFO] Using cached guest list data
+[2025-05-15T10:09:27.629Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T10:09:27.851Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T10:09:28.072Z] [INFO] Attempting to fetch event details from: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:09:28.072Z] [INFO] Fetching event details from Google Sheets: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:09:28.076Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T10:09:30.419Z] [INFO] Event details response: {"success":true,"details":{"Key":"Value","Name":"Family Reunion","Date":"June 15, 2025","Time":"1899-12-30T15:39:20.000Z","Location":"Grand Hotel, 123 Main St","Description":"Join us for our family reunion! Food and drinks will be provided."}}
+[2025-05-15T10:09:30.640Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T10:09:54.904Z] [INFO] Message from 972526901876: !sendrsvp
+[2025-05-15T10:09:54.905Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T10:09:55.128Z] [INFO] Starting RSVP message batch with URL: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:09:55.128Z] [INFO] Using cached event details
+[2025-05-15T10:09:55.128Z] [INFO] Preparing messages for event: Family Reunion
+[2025-05-15T10:09:55.128Z] [INFO] About to fetch guests with key: you...
+[2025-05-15T10:09:55.128Z] [INFO] Using cached guest list data
+[2025-05-15T10:09:55.128Z] [INFO] Guest list response received with 2 guests
+[2025-05-15T10:09:55.128Z] [INFO] First guest data: {"name":"yigal","phone":"+972526901876","email":"","status":"Pending","count":"0","notes":"","lastContacted":""}
+[2025-05-15T10:09:55.128Z] [INFO] Found 2 potential guests to contact
+[2025-05-15T10:09:55.128Z] [INFO] Sending messages to 2 guests in this batch
+[2025-05-15T10:09:55.128Z] [INFO] Sending RSVP message to: +972526901876@s.whatsapp.net
+[2025-05-15T10:09:55.130Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T10:11:32.101Z] [INFO] Message from 972526901876: !test
+[2025-05-15T10:11:32.101Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T10:11:32.328Z] [INFO] Sent test message with buttons
+[2025-05-15T10:11:32.328Z] [INFO] Using cached guest list data
+[2025-05-15T10:11:32.328Z] [INFO] Using cached event details
+[2025-05-15T10:11:32.330Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T10:11:34.407Z] [INFO] Message from 972526901876: test_yes
+[2025-05-15T10:11:34.407Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T10:11:34.407Z] [INFO] Button response received: "test_yes"
+[2025-05-15T10:11:34.631Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T10:11:36.716Z] [INFO] Message from 972526901876: guest_2
+[2025-05-15T10:11:36.716Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T10:11:36.717Z] [INFO] Button response received: "guest_2"
+[2025-05-15T10:11:36.717Z] [INFO] Updating guest status in Apps Script: +972526901876 to Confirmed
+[2025-05-15T10:11:36.717Z] [INFO] Using script URL: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:11:36.717Z] [INFO] Updating guest status in Apps Script: +972526901876
+[2025-05-15T10:11:39.240Z] [INFO] Update response: {"success":true,"message":"Status updated successfully"}
+[2025-05-15T10:11:39.240Z] [INFO] Updated status for +972526901876 to Confirmed with 2 guests
+[2025-05-15T10:11:39.462Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T10:13:15.567Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T10:16:25.563Z] [INFO] Initializing WhatsApp connection...
+[2025-05-15T10:16:25.627Z] [INFO] Setting up RSVP message schedule: 0 9-20 * * *
+[2025-05-15T10:16:25.629Z] [INFO] Command line flag detected: Sending test RSVP message...
+[2025-05-15T10:16:25.630Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-15T10:16:25.630Z] [INFO] Web server running on port 3000
+[2025-05-15T10:16:26.527Z] [INFO] Connection update: {"receivedPendingNotifications":true}
+[2025-05-15T10:16:26.795Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T10:16:26.795Z] [INFO] Connection update: {"connection":"open"}
+[2025-05-15T10:16:26.795Z] [INFO] Bot successfully connected! Bot JID: 972507412770:32@s.whatsapp.net
+[2025-05-15T10:16:26.796Z] [INFO] Available admin commands:
+[2025-05-15T10:16:26.796Z] [INFO] !sendrsvp - Send RSVP messages to pending guests
+[2025-05-15T10:16:26.796Z] [INFO] !status - Show current bot status and event details
+[2025-05-15T10:16:26.796Z] [INFO] !reload - Reload guest list from Google Sheets
+[2025-05-15T10:16:26.796Z] [INFO] !debugapi - Test API connection to Google Apps Script
+[2025-05-15T10:16:30.631Z] [INFO] Attempting to fetch event details from: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:16:30.632Z] [INFO] Fetching event details from Google Sheets: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:16:33.390Z] [INFO] Event details response: {"success":true,"details":{"Key":"Value","Name":"Family Reunion","Date":"June 15, 2025","Time":"1899-12-30T15:39:20.000Z","Location":"Grand Hotel, 123 Main St","Description":"Join us for our family reunion! Food and drinks will be provided."}}
+[2025-05-15T10:21:25.657Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T10:25:42.531Z] [INFO] Initializing WhatsApp connection...
+[2025-05-15T10:25:42.579Z] [INFO] Setting up RSVP message schedule: 0 9-20 * * *
+[2025-05-15T10:25:42.581Z] [INFO] Command line flag detected: Sending test RSVP message...
+[2025-05-15T10:25:42.582Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-15T10:25:42.582Z] [INFO] Web server running on port 3000
+[2025-05-15T10:25:43.772Z] [INFO] Connection update: {"receivedPendingNotifications":true}
+[2025-05-15T10:25:43.843Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T10:25:43.844Z] [INFO] Connection update: {"connection":"open"}
+[2025-05-15T10:25:43.844Z] [INFO] Bot successfully connected! Bot JID: 972507412770:32@s.whatsapp.net
+[2025-05-15T10:25:43.844Z] [INFO] Available admin commands:
+[2025-05-15T10:25:43.844Z] [INFO] !sendrsvp - Send RSVP messages to pending guests
+[2025-05-15T10:25:43.844Z] [INFO] !status - Show current bot status and event details
+[2025-05-15T10:25:43.844Z] [INFO] !reload - Reload guest list from Google Sheets
+[2025-05-15T10:25:43.844Z] [INFO] !debugapi - Test API connection to Google Apps Script
+[2025-05-15T10:25:47.583Z] [INFO] Attempting to fetch event details from: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:25:47.583Z] [INFO] Fetching event details from Google Sheets: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:25:50.451Z] [INFO] Event details response: {"success":true,"details":{"Key":"Value","Name":"Family Reunion","Date":"June 15, 2025","Time":"1899-12-30T15:39:20.000Z","Location":"Grand Hotel, 123 Main St","Description":"Join us for our family reunion! Food and drinks will be provided."}}
+[2025-05-15T10:27:12.790Z] [INFO] Message from 972526901876: !sendrsvpforce
+[2025-05-15T10:27:12.791Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T10:27:13.760Z] [INFO] Using cached event details
+[2025-05-15T10:27:13.760Z] [INFO] Attempting API call to fetch guests from: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:27:13.760Z] [INFO] Using secret key starting with: you...
+[2025-05-15T10:27:13.760Z] [INFO] Fetching guest list from Google Sheets: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:27:13.763Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T10:27:16.020Z] [INFO] API response status: 200
+[2025-05-15T10:27:16.020Z] [INFO] API response data: {"success":true,"guests":[{"Name":"yigal","Phone":"+972526901876","Status":"Confirmed","GuestCount":2,"Notes":"","LastContacted":"2025-05-15T10:11:38.394Z"},{"Name":"shiran","Phone":"+972542080237","Status":"Pending","GuestCount":"","Notes":"","LastContacted":""}]}
+[2025-05-15T10:27:16.020Z] [INFO] Fetched 2 guests from Apps Script
+[2025-05-15T10:27:16.021Z] [INFO] Found 2 guests to message
+[2025-05-15T10:27:16.021Z] [INFO] Sending force RSVP message to: +972526901876@s.whatsapp.net
+[2025-05-15T10:27:26.983Z] [INFO] Message from 972526901876: !sendrsvp
+[2025-05-15T10:27:26.983Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T10:27:27.327Z] [INFO] Using cached guest list data
+[2025-05-15T10:27:27.328Z] [INFO] Total guests: 2
+[2025-05-15T10:27:27.328Z] [INFO] Guest: yigal, Phone: +972526901876, Status: "Confirmed", In contactedSet: false
+[2025-05-15T10:27:27.328Z] [INFO] Guest: shiran, Phone: +972542080237, Status: "Pending", In contactedSet: false
+[2025-05-15T10:27:27.328Z] [INFO] contactedGuests set contains: 
+[2025-05-15T10:27:27.328Z] [INFO] Starting RSVP message batch with URL: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:27:27.328Z] [INFO] Using cached event details
+[2025-05-15T10:27:27.328Z] [INFO] Preparing messages for event: Family Reunion
+[2025-05-15T10:27:27.328Z] [INFO] About to fetch guests with key: you...
+[2025-05-15T10:27:27.328Z] [INFO] Using cached guest list data
+[2025-05-15T10:27:27.329Z] [INFO] Guest list response received with 2 guests
+[2025-05-15T10:27:27.329Z] [INFO] First guest data: {"name":"yigal","phone":"+972526901876","email":"","status":"Confirmed","count":2,"notes":"","lastContacted":"2025-05-15T10:11:38.394Z"}
+[2025-05-15T10:27:27.329Z] [INFO] Found 2 potential guests to contact
+[2025-05-15T10:27:27.329Z] [INFO] Sending messages to 1 guests in this batch
+[2025-05-15T10:27:27.329Z] [INFO] Sending RSVP message to: +972542080237@s.whatsapp.net
+[2025-05-15T10:27:27.331Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T10:29:37.260Z] [INFO] Initializing WhatsApp connection...
+[2025-05-15T10:29:37.369Z] [INFO] Setting up RSVP message schedule: 0 9-20 * * *
+[2025-05-15T10:29:37.373Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-15T10:29:37.374Z] [INFO] Web server running on port 3000
+[2025-05-15T10:29:38.346Z] [INFO] Connection update: {"receivedPendingNotifications":true}
+[2025-05-15T10:29:38.411Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T10:29:38.411Z] [INFO] Connection update: {"connection":"open"}
+[2025-05-15T10:29:38.411Z] [INFO] Bot successfully connected! Bot JID: 972507412770:32@s.whatsapp.net
+[2025-05-15T10:29:38.411Z] [INFO] Available admin commands:
+[2025-05-15T10:29:38.411Z] [INFO] !sendrsvp - Send RSVP messages to pending guests
+[2025-05-15T10:29:38.411Z] [INFO] !status - Show current bot status and event details
+[2025-05-15T10:29:38.411Z] [INFO] !reload - Reload guest list from Google Sheets
+[2025-05-15T10:29:38.411Z] [INFO] !debugapi - Test API connection to Google Apps Script
+[2025-05-15T10:34:37.307Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T10:39:37.304Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T10:44:37.302Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T10:49:37.341Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T10:52:00.213Z] [INFO] Initializing WhatsApp connection...
+[2025-05-15T10:52:00.277Z] [INFO] Setting up RSVP message schedule: 0 9-20 * * *
+[2025-05-15T10:52:00.280Z] [INFO] Command line flag detected: Sending test RSVP message...
+[2025-05-15T10:52:00.285Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-15T10:52:00.285Z] [INFO] Web server running on port 3000
+[2025-05-15T10:52:01.352Z] [INFO] Connection update: {"receivedPendingNotifications":true}
+[2025-05-15T10:52:01.522Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T10:52:01.523Z] [INFO] Connection update: {"connection":"open"}
+[2025-05-15T10:52:01.523Z] [INFO] Bot successfully connected! Bot JID: 972507412770:32@s.whatsapp.net
+[2025-05-15T10:52:01.523Z] [INFO] Available admin commands:
+[2025-05-15T10:52:01.523Z] [INFO] !sendrsvp - Send RSVP messages to pending guests
+[2025-05-15T10:52:01.523Z] [INFO] !status - Show current bot status and event details
+[2025-05-15T10:52:01.523Z] [INFO] !reload - Reload guest list from Google Sheets
+[2025-05-15T10:52:01.523Z] [INFO] !debugapi - Test API connection to Google Apps Script
+[2025-05-15T10:52:05.282Z] [INFO] Attempting to fetch event details from: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:52:05.282Z] [INFO] Fetching event details from Google Sheets: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:52:08.325Z] [INFO] Event details response: {"success":true,"details":{"Key":"Value","Name":"Family Reunion","Date":"June 15, 2025","Time":"1899-12-30T15:39:20.000Z","Location":"Grand Hotel, 123 Main St","Description":"Join us for our family reunion! Food and drinks will be provided."}}
+[2025-05-15T10:52:55.352Z] [INFO] Message from 972526901876: !sendrsvpforce
+[2025-05-15T10:52:55.352Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T10:52:55.833Z] [INFO] Using cached event details
+[2025-05-15T10:52:55.833Z] [INFO] Attempting API call to fetch guests from: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:52:55.833Z] [INFO] Using secret key starting with: you...
+[2025-05-15T10:52:55.833Z] [INFO] Fetching guest list from Google Sheets: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:52:55.836Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T10:52:58.437Z] [INFO] API response status: 200
+[2025-05-15T10:52:58.437Z] [INFO] API response data: {"success":true,"guests":[{"Name":"yigal","Phone":"+972526901876","Status":"Confirmed","GuestCount":2,"Notes":"","LastContacted":"2025-05-15T10:11:38.394Z"},{"Name":"shiran","Phone":"+972542080237","Status":"Pending","GuestCount":"","Notes":"","LastContacted":""}]}
+[2025-05-15T10:52:58.438Z] [INFO] Fetched 2 guests from Apps Script
+[2025-05-15T10:52:58.438Z] [INFO] Found 2 guests to message
+[2025-05-15T10:52:58.438Z] [INFO] Sending force RSVP message to: +972526901876@s.whatsapp.net
+[2025-05-15T10:54:42.191Z] [INFO] Message from 972526901876: !sendrsvp
+[2025-05-15T10:54:42.192Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T10:54:42.397Z] [INFO] Using cached guest list data
+[2025-05-15T10:54:42.397Z] [INFO] Total guests: 2
+[2025-05-15T10:54:42.397Z] [INFO] Guest: yigal, Phone: +972526901876, Status: "Confirmed", In contactedSet: false
+[2025-05-15T10:54:42.397Z] [INFO] Guest: shiran, Phone: +972542080237, Status: "Pending", In contactedSet: false
+[2025-05-15T10:54:42.397Z] [INFO] contactedGuests set contains: 
+[2025-05-15T10:54:42.398Z] [INFO] Starting RSVP message batch with URL: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T10:54:42.398Z] [INFO] Using cached event details
+[2025-05-15T10:54:42.398Z] [INFO] Preparing messages for event: Family Reunion
+[2025-05-15T10:54:42.398Z] [INFO] About to fetch guests with key: you...
+[2025-05-15T10:54:42.398Z] [INFO] Using cached guest list data
+[2025-05-15T10:54:42.398Z] [INFO] Guest list response received with 2 guests
+[2025-05-15T10:54:42.398Z] [INFO] First guest data: {"name":"yigal","phone":"+972526901876","email":"","status":"Confirmed","count":2,"notes":"","lastContacted":"2025-05-15T10:11:38.394Z"}
+[2025-05-15T10:54:42.398Z] [INFO] Found 2 potential guests to contact
+[2025-05-15T10:54:42.398Z] [INFO] Sending messages to 1 guests in this batch
+[2025-05-15T10:54:42.398Z] [INFO] Sending RSVP message to: +972542080237@s.whatsapp.net
+[2025-05-15T10:54:42.400Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T10:57:00.281Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T11:00:00.907Z] [INFO] Starting RSVP message batch with URL: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T11:00:00.908Z] [INFO] Attempting to fetch event details from: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T11:00:00.908Z] [INFO] Fetching event details from Google Sheets: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T11:00:03.357Z] [INFO] Event details response: {"success":true,"details":{"Key":"Value","Name":"Family Reunion","Date":"June 15, 2025","Time":"1899-12-30T15:39:20.000Z","Location":"Grand Hotel, 123 Main St","Description":"Join us for our family reunion! Food and drinks will be provided."}}
+[2025-05-15T11:00:03.358Z] [INFO] Preparing messages for event: Family Reunion
+[2025-05-15T11:00:03.358Z] [INFO] About to fetch guests with key: you...
+[2025-05-15T11:00:03.358Z] [INFO] Using cached guest list data
+[2025-05-15T11:00:03.358Z] [INFO] Guest list response received with 2 guests
+[2025-05-15T11:00:03.358Z] [INFO] First guest data: {"name":"yigal","phone":"+972526901876","email":"","status":"Confirmed","count":2,"notes":"","lastContacted":"2025-05-15T10:11:38.394Z"}
+[2025-05-15T11:00:03.358Z] [INFO] Found 2 potential guests to contact
+[2025-05-15T11:00:03.358Z] [INFO] Sending messages to 1 guests in this batch
+[2025-05-15T11:00:03.358Z] [INFO] Sending RSVP message to: +972542080237@s.whatsapp.net
+[2025-05-15T11:02:00.280Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T11:03:27.639Z] [INFO] Initializing WhatsApp connection...
+[2025-05-15T11:03:27.692Z] [INFO] Setting up RSVP message schedule: 0 9-20 * * *
+[2025-05-15T11:03:27.694Z] [INFO] Command line flag detected: Sending test RSVP message...
+[2025-05-15T11:03:27.695Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-15T11:03:27.695Z] [INFO] Web server running on port 3000
+[2025-05-15T11:03:28.660Z] [INFO] Connection update: {"receivedPendingNotifications":true}
+[2025-05-15T11:03:28.927Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T11:03:28.928Z] [INFO] Connection update: {"connection":"open"}
+[2025-05-15T11:03:28.928Z] [INFO] Bot successfully connected! Bot JID: 972507412770:32@s.whatsapp.net
+[2025-05-15T11:03:28.928Z] [INFO] Available admin commands:
+[2025-05-15T11:03:28.928Z] [INFO] !sendrsvp - Send RSVP messages to pending guests
+[2025-05-15T11:03:28.928Z] [INFO] !status - Show current bot status and event details
+[2025-05-15T11:03:28.928Z] [INFO] !reload - Reload guest list from Google Sheets
+[2025-05-15T11:03:28.928Z] [INFO] !debugapi - Test API connection to Google Apps Script
+[2025-05-15T11:03:32.697Z] [INFO] Attempting to fetch event details from: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T11:03:32.697Z] [INFO] Fetching event details from Google Sheets: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T11:03:35.867Z] [INFO] Event details response: {"success":true,"details":{"Key":"Value","Name":"Family Reunion","Date":"June 15, 2025","Time":"1899-12-30T15:39:20.000Z","Location":"Grand Hotel, 123 Main St","Description":"Join us for our family reunion! Food and drinks will be provided."}}
+[2025-05-15T11:04:19.196Z] [INFO] Message from 972526901876: !sendrsvpforce
+[2025-05-15T11:04:19.196Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T11:04:19.650Z] [INFO] Using cached event details
+[2025-05-15T11:04:19.651Z] [INFO] Attempting API call to fetch guests from: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T11:04:19.651Z] [INFO] Using secret key starting with: you...
+[2025-05-15T11:04:19.651Z] [INFO] Fetching guest list from Google Sheets: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T11:04:19.653Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T11:04:22.109Z] [INFO] API response status: 200
+[2025-05-15T11:04:22.109Z] [INFO] API response data: {"success":true,"guests":[{"Name":"yigal","Phone":"+972526901876","Status":"Confirmed","GuestCount":2,"Notes":"","LastContacted":"2025-05-15T10:11:38.394Z"},{"Name":"shiran","Phone":"+972542080237","Status":"Pending","GuestCount":"","Notes":"","LastContacted":""}]}
+[2025-05-15T11:04:22.109Z] [INFO] Fetched 2 guests from Apps Script
+[2025-05-15T11:04:22.109Z] [INFO] Found 2 guests to message
+[2025-05-15T11:04:22.109Z] [INFO] Sending force RSVP message to: +972526901876@s.whatsapp.net
+[2025-05-15T11:04:22.109Z] [INFO] Formatted phone for WhatsApp: 972526901876@s.whatsapp.net
+[2025-05-15T11:04:22.302Z] [INFO] ✓ Sent RSVP message to yigal (+972526901876)
+[2025-05-15T11:04:22.303Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T11:04:24.307Z] [INFO] Sending force RSVP message to: +972542080237@s.whatsapp.net
+[2025-05-15T11:04:24.307Z] [INFO] Formatted phone for WhatsApp: 972542080237@s.whatsapp.net
+[2025-05-15T11:04:24.740Z] [INFO] ✓ Sent RSVP message to shiran (+972542080237)
+[2025-05-15T11:04:24.740Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T11:04:26.933Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T11:04:57.873Z] [INFO] Message from 972542080237: yes
+[2025-05-15T11:04:57.873Z] [INFO] Checking if 972542080237 (972542080237) is admin: false
+[2025-05-15T11:04:57.873Z] [INFO] Button response received: "yes"
+[2025-05-15T11:04:58.064Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T11:05:04.399Z] [INFO] Message from 972542080237: guest_more
+[2025-05-15T11:05:04.399Z] [INFO] Checking if 972542080237 (972542080237) is admin: false
+[2025-05-15T11:05:04.399Z] [INFO] Button response received: "guest_more"
+[2025-05-15T11:05:04.589Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T11:05:12.796Z] [INFO] Message from 972542080237: 4
+[2025-05-15T11:05:12.796Z] [INFO] Checking if 972542080237 (972542080237) is admin: false
+[2025-05-15T11:05:12.797Z] [INFO] Updating guest status in Apps Script: +972542080237 to Confirmed
+[2025-05-15T11:05:12.797Z] [INFO] Using script URL: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T11:05:12.797Z] [INFO] Updating guest status in Apps Script: +972542080237
+[2025-05-15T11:05:15.896Z] [INFO] Update response: {"success":true,"message":"Status updated successfully"}
+[2025-05-15T11:05:15.896Z] [INFO] Updated status for +972542080237 to Confirmed with 4 guests
+[2025-05-15T11:05:16.082Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T11:08:27.721Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T11:10:53.626Z] [INFO] Message from 972526901876: !sendrsvpforce
+[2025-05-15T11:10:53.627Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T11:10:53.818Z] [INFO] Attempting to fetch event details from: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T11:10:53.818Z] [INFO] Fetching event details from Google Sheets: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T11:10:53.831Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T11:10:56.777Z] [INFO] Event details response: {"success":true,"details":{"Key":"Value","Name":"Family Reunion","Date":"June 15, 2025","Time":"1899-12-30T15:39:20.000Z","Location":"Grand Hotel, 123 Main St","Description":"Join us for our family reunion! Food and drinks will be provided."}}
+[2025-05-15T11:10:56.778Z] [INFO] Attempting API call to fetch guests from: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T11:10:56.778Z] [INFO] Using secret key starting with: you...
+[2025-05-15T11:10:56.778Z] [INFO] Fetching guest list from Google Sheets: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T11:10:58.765Z] [INFO] API response status: 200
+[2025-05-15T11:10:58.765Z] [INFO] API response data: {"success":true,"guests":[{"Name":"yigal","Phone":"+972526901876","Status":"Confirmed","GuestCount":2,"Notes":"","LastContacted":"2025-05-15T10:11:38.394Z"},{"Name":"shiran","Phone":"+972542080237","Status":"Confirmed","GuestCount":4,"Notes":"","LastContacted":"2025-05-15T11:05:14.868Z"},{"Name":"aliza","Phone":"+972503303141","Status":"Pending","GuestCount":"","Notes":"","LastContacted":""}]}
+[2025-05-15T11:10:58.765Z] [INFO] Fetched 3 guests from Apps Script
+[2025-05-15T11:10:58.765Z] [INFO] Found 3 guests to message
+[2025-05-15T11:10:58.765Z] [INFO] Sending force RSVP message to: +972526901876@s.whatsapp.net
+[2025-05-15T11:10:58.765Z] [INFO] Formatted phone for WhatsApp: 972526901876@s.whatsapp.net
+[2025-05-15T11:10:58.954Z] [INFO] ✓ Sent RSVP message to yigal (+972526901876)
+[2025-05-15T11:10:58.954Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T11:11:00.955Z] [INFO] Sending force RSVP message to: +972542080237@s.whatsapp.net
+[2025-05-15T11:11:00.955Z] [INFO] Formatted phone for WhatsApp: 972542080237@s.whatsapp.net
+[2025-05-15T11:11:01.145Z] [INFO] ✓ Sent RSVP message to shiran (+972542080237)
+[2025-05-15T11:11:01.146Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T11:11:03.146Z] [INFO] Sending force RSVP message to: +972503303141@s.whatsapp.net
+[2025-05-15T11:11:03.146Z] [INFO] Formatted phone for WhatsApp: 972503303141@s.whatsapp.net
+[2025-05-15T11:11:03.575Z] [INFO] ✓ Sent RSVP message to aliza (+972503303141)
+[2025-05-15T11:11:03.575Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T11:11:05.768Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T11:11:19.468Z] [INFO] Message from 972526901876: !reload
+[2025-05-15T11:11:19.469Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T11:11:19.469Z] [INFO] Attempting API call to fetch guests from: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T11:11:19.469Z] [INFO] Using secret key starting with: you...
+[2025-05-15T11:11:19.469Z] [INFO] Fetching guest list from Google Sheets: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T11:11:22.676Z] [INFO] API response status: 200
+[2025-05-15T11:11:22.676Z] [INFO] API response data: {"success":true,"guests":[{"Name":"yigal","Phone":"+972526901876","Status":"Confirmed","GuestCount":2,"Notes":"","LastContacted":"2025-05-15T10:11:38.394Z"},{"Name":"shiran","Phone":"+972542080237","Status":"Confirmed","GuestCount":4,"Notes":"","LastContacted":"2025-05-15T11:05:14.868Z"},{"Name":"aliza","Phone":"+972503303141","Status":"Pending","GuestCount":"","Notes":"","LastContacted":""}]}
+[2025-05-15T11:11:22.676Z] [INFO] Fetched 3 guests from Apps Script
+[2025-05-15T11:11:22.863Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T11:11:23.577Z] [INFO] Message from 972526901876: no
+[2025-05-15T11:11:23.577Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T11:11:23.578Z] [INFO] Button response received: "no"
+[2025-05-15T11:11:23.578Z] [INFO] Updating guest status in Apps Script: +972526901876 to Declined
+[2025-05-15T11:11:23.578Z] [INFO] Using script URL: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T11:11:23.578Z] [INFO] Updating guest status in Apps Script: +972526901876
+[2025-05-15T11:11:26.274Z] [INFO] Update response: {"success":true,"message":"Status updated successfully"}
+[2025-05-15T11:11:26.274Z] [INFO] Updated status for +972526901876 to Declined with 0 guests
+[2025-05-15T11:11:26.464Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T11:13:27.722Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T11:18:27.722Z] [INFO] Connection update: {"isOnline":true}

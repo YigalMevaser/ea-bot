@@ -185,12 +185,20 @@ class AppsScriptManager {
         return mockGuests;
       }
       
+      // NEW LOGGING - Log the API details
+      this.log.info(`Attempting API call to fetch guests from: ${this.scriptUrl}`);
+      this.log.info(`Using secret key starting with: ${this.secretKey.substring(0, 3)}...`);
+      
       // Make API request to Apps Script
       this.log.info(`Fetching guest list from Google Sheets: ${this.scriptUrl}`);
       const response = await axios.post(this.scriptUrl, {
         key: this.secretKey,
         operation: "get_guests"
       });
+      
+      // NEW LOGGING - Log API response
+      this.log.info(`API response status: ${response.status}`);
+      this.log.info(`API response data: ${JSON.stringify(response.data)}`);
       
       if (!response.data.success) {
         throw new Error(response.data.message || "Failed to fetch guest list");
@@ -214,7 +222,12 @@ class AppsScriptManager {
       this.log.info(`Fetched ${guests.length} guests from Apps Script`);
       return guests;
     } catch (error) {
-      this.log.error('Failed to fetch guest list:', error);
+      // NEW LOGGING - Enhanced error logging
+      this.log.error(`Failed to fetch guest list: ${error.message}`, error);
+      if (error.response) {
+        this.log.error(`API error response: ${JSON.stringify(error.response.data)}`);
+      }
+      
       // Return empty array or mock data if in development
       if (process.env.NODE_ENV === 'development') {
         this.log.info('Using fallback mock data due to error');
@@ -257,6 +270,10 @@ class AppsScriptManager {
         return true;
       }
       
+      // NEW LOGGING - Log update details
+      this.log.info(`Updating guest status in Apps Script: ${formattedPhone} to ${status}`);
+      this.log.info(`Using script URL: ${this.scriptUrl}`);
+      
       // Make API request to Apps Script
       this.log.info(`Updating guest status in Apps Script: ${formattedPhone}`);
       const response = await axios.post(this.scriptUrl, {
@@ -268,6 +285,9 @@ class AppsScriptManager {
         notes: notes
       });
       
+      // NEW LOGGING - Log response
+      this.log.info(`Update response: ${JSON.stringify(response.data)}`);
+      
       if (!response.data.success) {
         throw new Error(response.data.message || "Failed to update guest status");
       }
@@ -278,7 +298,11 @@ class AppsScriptManager {
       this.log.info(`Updated status for ${formattedPhone} to ${status} with ${guestCount} guests`);
       return true;
     } catch (error) {
+      // NEW LOGGING - Enhanced error logging
       this.log.error(`Failed to update guest status: ${error.message}`, error);
+      if (error.response) {
+        this.log.error(`API error response: ${JSON.stringify(error.response.data)}`);
+      }
       return false;
     }
   }
@@ -327,12 +351,18 @@ class AppsScriptManager {
         return mockEventDetails;
       }
       
+      // NEW LOGGING - Log request details
+      this.log.info(`Attempting to fetch event details from: ${this.scriptUrl}`);
+      
       // Make API request to Apps Script
       this.log.info(`Fetching event details from Google Sheets: ${this.scriptUrl}`);
       const response = await axios.post(this.scriptUrl, {
         key: this.secretKey,
         operation: "get_event_details"
       });
+      
+      // NEW LOGGING - Log response
+      this.log.info(`Event details response: ${JSON.stringify(response.data)}`);
       
       if (!response.data.success) {
         throw new Error(response.data.message || "Failed to fetch event details");
@@ -343,7 +373,10 @@ class AppsScriptManager {
       const eventDetails = {
         name: details.Name || "Event",
         date: details.Date || new Date().toLocaleDateString(),
-        time: details.Time || "12:00 PM",
+        // Fix the time format from Google Sheets
+        time: typeof details.Time === 'string' && details.Time.includes('T') ? 
+          new Date(details.Time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 
+          details.Time || "12:00 PM",
         location: details.Location || "TBD",
         description: details.Description || "Please RSVP for our event"
       };
@@ -354,7 +387,11 @@ class AppsScriptManager {
       
       return eventDetails;
     } catch (error) {
+      // NEW LOGGING - Enhanced error logging
       this.log.error(`Failed to get event details: ${error.message}`, error);
+      if (error.response) {
+        this.log.error(`API error response: ${JSON.stringify(error.response.data)}`);
+      }
       
       // Return mock data in development mode or on error
       if (process.env.NODE_ENV === 'development') {
@@ -482,7 +519,8 @@ async function clientstart() {
     // Helper function to send RSVP messages
     const sendRSVPMessages = async (forced = false) => {
       try {
-        log.info('Starting RSVP message batch');
+        // NEW LOGGING - Start message with more details
+        log.info(`Starting RSVP message batch with URL: ${process.env.APPS_SCRIPT_URL}`);
         
         // Ensure we have a valid connection
         if (!waClient.user) {
@@ -494,8 +532,18 @@ async function clientstart() {
         const eventDetails = await appScriptManager.getEventDetails();
         log.info(`Preparing messages for event: ${eventDetails.name}`);
         
+        // NEW LOGGING - Log before fetching guests
+        log.info(`About to fetch guests with key: ${process.env.SECRET_KEY.substring(0, 3)}...`);
+        
         // Fetch the guest list
         const guests = await appScriptManager.fetchGuestList();
+        
+        // NEW LOGGING - Log guest count and first guest
+        log.info(`Guest list response received with ${guests.length} guests`);
+        if (guests.length > 0) {
+          log.info(`First guest data: ${JSON.stringify(guests[0])}`);
+        }
+        
         log.info(`Found ${guests.length} potential guests to contact`);
         
         // Filter guests who haven't been contacted yet and haven't responded
@@ -531,7 +579,15 @@ async function clientstart() {
             };
             
             // Send the message
-            await waClient.sendMessage(guest.phone + '@s.whatsapp.net', buttonMessage);
+            // NEW LOGGING - Log message details
+            log.info(`Sending RSVP message to: ${guest.phone}@s.whatsapp.net`);
+            
+            // Remove the plus sign from the phone number if present
+            const formattedPhone = guest.phone.startsWith('+') ? 
+            guest.phone.substring(1) + '@s.whatsapp.net' : 
+            guest.phone + '@s.whatsapp.net';
+            log.info(`Formatted phone for WhatsApp: ${formattedPhone}`);
+            await waClient.sendMessage(formattedPhone, buttonMessage);
             
             // Mark as contacted
             contactedGuests.add(guest.phone);
@@ -580,28 +636,31 @@ async function clientstart() {
         
         // Get the sender's phone number
         const senderPhone = m.sender.split('@')[0];
+        
         // Check if the message is from the bot's own number (auto-reply from WhatsApp)
         if (waClient.user && senderPhone === waClient.user.id.split(':')[0]) {
           log.info(`Ignoring message from bot's own number: ${senderPhone}`);
           return;
         }
+        
         // Log incoming messages
         log.info(`Message from ${senderPhone}: ${m.text}`);
-        // Check if this is a message sent as a response to our auto-responses 
-        // by checking patterns that might indicate it's an auto-reply
+        
+        // Define text variable first
         const text = m.text ? m.text.toLowerCase().trim() : '';
-        // Then use it
-        // Use lowercase in the check since we made text lowercase:
+        
+        // Check if this is a message sent as a response to our auto-responses
         const possibleAutoReply = 
-          (text && (text.includes("thank you for confirming") || 
+          (text && (text.includes("thank you for confirming") ||
                   text.includes("thank you for letting us know") || 
                   text.includes("we're sorry you can't make it") || 
                   text.includes("i'm not sure i understand your response")));
-
+        
         if (possibleAutoReply) {
-        log.info(`Detected possible auto-reply message, ignoring: ${text.substring(0, 30)}...`);
-        return;
+          log.info(`Detected possible auto-reply message, ignoring: ${text.substring(0, 30)}...`);
+          return;
         }
+        
         // Check for admin commands
         const ADMIN_NUMBERS = (process.env.ADMIN_NUMBERS || '').split(',');
         const adminPhones = ADMIN_NUMBERS.map(num => {
@@ -617,8 +676,95 @@ async function clientstart() {
         if (isAdmin) {
           if (m.text === '!sendrsvp') {
             await waClient.sendMessage(m.chat, { text: "Starting RSVP message batch..." });
+            
+            // NEW DEBUG CODE - ADD THIS SECTION
+            try {
+              const guests = await appScriptManager.fetchGuestList();
+              log.info(`Total guests: ${guests.length}`);
+              
+              // Check each guest's status
+              guests.forEach(guest => {
+                log.info(`Guest: ${guest.name}, Phone: ${guest.phone}, Status: "${guest.status}", In contactedSet: ${contactedGuests.has(guest.phone)}`);
+              });
+              
+              // Log the contactedGuests set
+              log.info(`contactedGuests set contains: ${Array.from(contactedGuests).join(', ')}`);
+            } catch (error) {
+              log.error('Error in debug code:', error);
+            }
+            // END NEW DEBUG CODE
+            
             await sendRSVPMessages(true);
             await waClient.sendMessage(m.chat, { text: "RSVP message batch completed!" });
+            return;
+          }
+          
+          // ADD THE NEW FORCE COMMAND RIGHT AFTER THE SENDRSVP COMMAND
+          if (m.text === '!sendrsvpforce') {
+            try {
+              await waClient.sendMessage(m.chat, { text: "Forcing RSVP messages to ALL guests..." });
+              
+              // Get event details directly
+              const eventDetails = await appScriptManager.getEventDetails();
+              
+              // Get guests directly
+              const guests = await appScriptManager.fetchGuestList();
+              
+              // Log what we found
+              log.info(`Found ${guests.length} guests to message`);
+              
+              // Send messages without filtering
+              for (const guest of guests) {
+                try {
+                  // Create buttons for interactive responses
+                  const buttons = [
+                    {buttonId: 'yes', buttonText: {displayText: 'Yes, I\'ll attend'}, type: 1},
+                    {buttonId: 'no', buttonText: {displayText: 'No, I can\'t attend'}, type: 1}
+                  ];
+                  
+                  // Fix time format from Google Sheets
+                  let displayTime = eventDetails.time;
+                  if (typeof eventDetails.time === 'string' && eventDetails.time.includes('T')) {
+                    try {
+                      displayTime = new Date(eventDetails.time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    } catch (e) {
+                      log.warn(`Failed to format time: ${e.message}`);
+                    }
+                  }
+                  
+                  const buttonMessage = {
+                    text: `*${eventDetails.name} - RSVP Invitation*\n\nDear ${guest.name},\n\nYou're cordially invited to ${eventDetails.name}!\n\n📅 Date: ${eventDetails.date}\n⏰ Time: ${displayTime}\n📍 Location: ${eventDetails.location}\n\n${eventDetails.description}\n\nWill you be able to attend?`,
+                    footer: 'Please respond using the buttons below',
+                    buttons: buttons,
+                    headerType: 1,
+                    viewOnce: true
+                  };
+                  
+                  // Send the message
+                  log.info(`Sending force RSVP message to: ${guest.phone}@s.whatsapp.net`);
+                  
+                  // Remove the plus sign from the phone number if present
+                  const formattedPhone = guest.phone.startsWith('+') ? 
+                  guest.phone.substring(1) + '@s.whatsapp.net' : 
+                  guest.phone + '@s.whatsapp.net';
+                  log.info(`Formatted phone for WhatsApp: ${formattedPhone}`);
+                  await waClient.sendMessage(formattedPhone, buttonMessage);
+                  log.info(`✓ Sent RSVP message to ${guest.name} (${guest.phone})`);
+                  
+                  // Wait 2 seconds between messages
+                  await new Promise(resolve => setTimeout(resolve, 2000));
+                } catch (error) {
+                  log.error(`Failed to send message to ${guest.name} (${guest.phone}):`, error);
+                }
+              }
+              
+              await waClient.sendMessage(m.chat, { text: `Completed sending force messages to ${guests.length} guests` });
+            } catch (error) {
+              log.error('Error in force send command:', error);
+              await waClient.sendMessage(m.chat, { 
+                text: `Error: ${error.message}` 
+              });
+            }
             return;
           }
           
@@ -689,7 +835,7 @@ async function clientstart() {
           }
           
           // Special test command only in development
-          if (m.text === '!test' && process.env.NODE_ENV === 'development') {
+          if (m.text === '!test') {
             try {
               // Send a test message with buttons
               const buttons = [
@@ -707,6 +853,40 @@ async function clientstart() {
               
               await waClient.sendMessage(m.chat, buttonMessage);
               log.info('Sent test message with buttons');
+              
+              // NEW CODE - Special test for production
+              if (process.env.NODE_ENV === 'production') {
+                try {
+                  // Try sending one RSVP message to admin
+                  const adminPhone = process.env.ADMIN_NUMBERS?.split(',')[0];
+                  const guests = await appScriptManager.fetchGuestList();
+                  const eventDetails = await appScriptManager.getEventDetails();
+                  
+                  // Create message for admin
+                  const prodButtons = [
+                    {buttonId: 'yes', buttonText: {displayText: 'Yes, I\'ll attend'}, type: 1},
+                    {buttonId: 'no', buttonText: {displayText: 'No, I can\'t attend'}, type: 1}
+                  ];
+                  
+                  const prodButtonMessage = {
+                    text: `*${eventDetails.name} - RSVP Invitation (PRODUCTION TEST)*\n\nDear Admin,\n\nThis is a test message for production mode:\n\n📅 Date: ${eventDetails.date}\n⏰ Time: ${eventDetails.time}\n📍 Location: ${eventDetails.location}\n\n${eventDetails.description}\n\nWill you be able to attend?`,
+                    footer: 'Please respond using the buttons below',
+                    buttons: prodButtons,
+                    headerType: 1,
+                    viewOnce: true
+                  };
+                  
+                  await waClient.sendMessage(adminPhone + '@s.whatsapp.net', prodButtonMessage);
+                  await waClient.sendMessage(m.chat, { 
+                    text: `Production test message sent! Guests found: ${guests.length}` 
+                  });
+                } catch (error) {
+                  log.error('Error in production test:', error);
+                  await waClient.sendMessage(m.chat, { 
+                    text: `Error sending production test: ${error.message}` 
+                  });
+                }
+              }
             } catch (error) {
               log.error('Error sending test message:', error);
               await waClient.sendMessage(m.chat, { 
@@ -715,6 +895,57 @@ async function clientstart() {
             }
             return;
           }
+          
+          // NEW CODE - Debug API Command
+          if (m.text === '!debugapi') {
+            try {
+              log.info('Testing API connection...');
+              await waClient.sendMessage(m.chat, { text: "Testing connection to Google Apps Script..." });
+              
+              // Log environment
+              log.info(`ENV: APPS_SCRIPT_URL=${process.env.APPS_SCRIPT_URL}`);
+              log.info(`ENV: SECRET_KEY=${process.env.SECRET_KEY.substring(0, 3)}...`);
+              
+              // Test getting guests
+              try {
+                const guests = await appScriptManager.fetchGuestList();
+                await waClient.sendMessage(m.chat, { 
+                  text: `Successfully fetched ${guests.length} guests from API.` 
+                });
+                
+                // Show first guest
+                if (guests.length > 0) {
+                  await waClient.sendMessage(m.chat, { 
+                    text: `First guest: ${JSON.stringify(guests[0])}` 
+                  });
+                }
+              } catch (error) {
+                await waClient.sendMessage(m.chat, { 
+                  text: `Error fetching guests: ${error.message}` 
+                });
+              }
+              
+              // Test getting event details
+              try {
+                const eventDetails = await appScriptManager.getEventDetails();
+                await waClient.sendMessage(m.chat, { 
+                  text: `Successfully fetched event details: ${JSON.stringify(eventDetails)}` 
+                });
+              } catch (error) {
+                await waClient.sendMessage(m.chat, { 
+                  text: `Error fetching event details: ${error.message}` 
+                });
+              }
+              
+              return;
+            } catch (error) {
+              log.error('Error in debugapi command:', error);
+              await waClient.sendMessage(m.chat, { 
+                text: `Debug error: ${error.message}` 
+              });
+            }
+          }
+          
           if (m.text === '!debug') {
             try {
               // Get the sender's info
@@ -836,7 +1067,7 @@ async function clientstart() {
         
         // Handle text responses
         if (!m.text) return;
-                
+        
         // Manual Yes/No responses
         if (text === 'yes' || text.includes('yes i') || text.includes('i will') || 
           text.includes('i am coming') || text.includes('i\'ll attend')) {
@@ -912,7 +1143,7 @@ async function clientstart() {
         if (text.includes('rsvp') || text.includes('attend') || text.includes('coming')) {
           // This is probably related to the RSVP
           await waClient.sendMessage(m.chat, { 
-            text: "I'm not sure I understand your response. Please reply with 'Yes' if you're attending, or 'No' if you can't attend. If you're attending, please also let me know how many people total will be coming." 
+            text: "I'm not sure I understand your response. Please reply with 'Yes' if you're attending, or 'No' if you can't attend. If you're attending, please also let me know how many people will be in your party."
           });
         }
       } catch (err) {
@@ -942,6 +1173,7 @@ async function clientstart() {
         log.info('!sendrsvp - Send RSVP messages to pending guests');
         log.info('!status - Show current bot status and event details');
         log.info('!reload - Reload guest list from Google Sheets');
+        log.info('!debugapi - Test API connection to Google Apps Script'); // NEW - Log the new command
         if (process.env.NODE_ENV === 'development') {
           log.info('!test - Send a test RSVP message (development only)');
         }
@@ -1085,6 +1317,7 @@ app.get('/', (req, res) => {
           <li><strong>!status</strong> - Show event details and RSVP statistics</li>
           <li><strong>!sendrsvp</strong> - Manually send RSVP messages</li>
           <li><strong>!reload</strong> - Refresh data from Google Sheets</li>
+          <li><strong>!debugapi</strong> - Test API connection</li>
           ${process.env.NODE_ENV === 'development' ? '<li><strong>!test</strong> - Send a test message with buttons</li>' : ''}
         </ul>
       </div>
