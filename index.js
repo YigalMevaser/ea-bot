@@ -571,8 +571,8 @@ async function clientstart() {
             ];
             
             const buttonMessage = {
-              text: `*${eventDetails.name} - RSVP Invitation*\n\nDear ${guest.name},\n\nYou're cordially invited to ${eventDetails.name}!\n\n📅 Date: ${eventDetails.date}\n⏰ Time: ${eventDetails.time}\n📍 Location: ${eventDetails.location}\n\n${eventDetails.description}\n\nWill you be able to attend?`,
-              footer: 'Please respond using the buttons below',
+              text: `*${eventDetails.name} - הזמנה לאירוע*\n\nשלום ${guest.name},\n\nאתם מוזמנים ל ${eventDetails.name}!\n\n📅 תאריך: ${eventDetails.date}\n⏰ שעה: ${eventDetails.time}\n📍 מיקום: ${eventDetails.location}\n\n${eventDetails.description}\n\nהאם תוכלו להגיע?`,
+              footer: 'אנא השיבו באמצעות הכפתורים למטה',
               buttons: buttons,
               headerType: 1,
               viewOnce: true
@@ -718,8 +718,8 @@ async function clientstart() {
                 try {
                   // Create buttons for interactive responses
                   const buttons = [
-                    {buttonId: 'yes', buttonText: {displayText: 'Yes, I\'ll attend'}, type: 1},
-                    {buttonId: 'no', buttonText: {displayText: 'No, I can\'t attend'}, type: 1}
+                    {buttonId: 'yes', buttonText: {displayText: 'כן, אני מגיע/ה'}, type: 1},
+                    {buttonId: 'no', buttonText: {displayText: 'לא אוכל להגיע'}, type: 1}
                   ];
                   
                   // Fix time format from Google Sheets
@@ -733,8 +733,8 @@ async function clientstart() {
                   }
                   
                   const buttonMessage = {
-                    text: `*${eventDetails.name} - RSVP Invitation*\n\nDear ${guest.name},\n\nYou're cordially invited to ${eventDetails.name}!\n\n📅 Date: ${eventDetails.date}\n⏰ Time: ${displayTime}\n📍 Location: ${eventDetails.location}\n\n${eventDetails.description}\n\nWill you be able to attend?`,
-                    footer: 'Please respond using the buttons below',
+                    text: `*${eventDetails.name} - הזמנה לאירוע*\n\nשלום ${guest.name},\n\nאתם מוזמנים ל ${eventDetails.name}!\n\n📅 תאריך: ${eventDetails.date}\n⏰ שעה: ${displayTime}\n📍 מיקום: ${eventDetails.location}\n\n${eventDetails.description}\n\nהאם תוכלו להגיע?`,
+                    footer: 'אנא השיבו באמצעות הכפתורים למטה',
                     buttons: buttons,
                     headerType: 1,
                     viewOnce: true
@@ -839,8 +839,8 @@ async function clientstart() {
             try {
               // Send a test message with buttons
               const buttons = [
-                {buttonId: 'test_yes', buttonText: {displayText: 'Yes (Test)'}, type: 1},
-                {buttonId: 'test_no', buttonText: {displayText: 'No (Test)'}, type: 1}
+                {buttonId: 'test_yes', buttonText: {displayText: 'כן (בדיקה)'}, type: 1},
+                {buttonId: 'test_no', buttonText: {displayText: 'לא (בדיקה)'}, type: 1}
               ];
               
               const buttonMessage = {
@@ -869,8 +869,8 @@ async function clientstart() {
                   ];
                   
                   const prodButtonMessage = {
-                    text: `*${eventDetails.name} - RSVP Invitation (PRODUCTION TEST)*\n\nDear Admin,\n\nThis is a test message for production mode:\n\n📅 Date: ${eventDetails.date}\n⏰ Time: ${eventDetails.time}\n📍 Location: ${eventDetails.location}\n\n${eventDetails.description}\n\nWill you be able to attend?`,
-                    footer: 'Please respond using the buttons below',
+                    text: `*${eventDetails.name} - הזמנה לאירוע (בדיקה פרוד)*\n\nשלום מנהל,\n\nזוהי הודעת בדיקה:\n\n📅 תאריך: ${eventDetails.date}\n⏰ שעה: ${eventDetails.time}\n📍 מיקום: ${eventDetails.location}\n\n${eventDetails.description}\n\nהאם תוכל להגיע?`,
+                    footer: 'אנא השיב באמצעות הכפתורים למטה',
                     buttons: prodButtons,
                     headerType: 1,
                     viewOnce: true
@@ -994,14 +994,14 @@ async function clientstart() {
           if (response.selectedButtonId === 'yes' || response.selectedButtonId === 'test_yes') {
             // Ask for the number of guests
             const buttons = [
-              {buttonId: 'guest_1', buttonText: {displayText: '1 (Just me)'}, type: 1},
-              {buttonId: 'guest_2', buttonText: {displayText: '2 people'}, type: 1},
-              {buttonId: 'guest_more', buttonText: {displayText: '3 or more'}, type: 1}
+              {buttonId: 'guest_1', buttonText: {displayText: '1 (רק אני)'}, type: 1},
+              {buttonId: 'guest_2', buttonText: {displayText: '2 אנשים'}, type: 1},
+              {buttonId: 'guest_more', buttonText: {displayText: '3 או יותר'}, type: 1}
             ];
             
             await waClient.sendMessage(m.chat, {
-              text: "Great! How many people will be attending in total (including yourself)?",
-              footer: 'Please select an option below',
+              text: "מעולה! כמה אנשים יגיעו בסך הכל (כולל אותך)",
+              footer: 'אנא בחרו באחת האפשרויות',
               buttons: buttons,
               headerType: 1,
               viewOnce: true
@@ -1017,7 +1017,7 @@ async function clientstart() {
               
               // Send acknowledgment
               await waClient.sendMessage(m.chat, { 
-                text: "Thank you for letting us know. We're sorry you can't make it!" 
+                text: "תודה שהודעת לנו. חבל שלא תוכל להגיע!" 
               });
             } catch (error) {
               log.error(`Error updating decline status for ${senderPhone}:`, error);
@@ -1040,7 +1040,7 @@ async function clientstart() {
             } else if (response.selectedButtonId === 'guest_more') {
               // Ask for specific number
               await waClient.sendMessage(m.chat, { 
-                text: "Please reply with the total number of people attending (including yourself):" 
+                text: "אנא ציינו את מספר האנשים שיגיעו (כולל אותך):" 
               });
               return;
             }
@@ -1051,7 +1051,7 @@ async function clientstart() {
               
               // Send confirmation
               await waClient.sendMessage(m.chat, { 
-                text: `Thank you for confirming! We've noted that ${guestCount} ${guestCount === 1 ? 'person' : 'people'} will be attending.` 
+                text: ` רשמנו שיגיעו תודה על האישור! ${guestCount} ${guestCount === 1 ? 'איש' : 'אנשים'}` 
               });
             } catch (error) {
               log.error(`Error updating confirm status for ${senderPhone}:`, error);
@@ -1069,29 +1069,34 @@ async function clientstart() {
         if (!m.text) return;
         
         // Manual Yes/No responses
+        // Add Hebrew responses:
         if (text === 'yes' || text.includes('yes i') || text.includes('i will') || 
-          text.includes('i am coming') || text.includes('i\'ll attend')) {
-          
-          // This is an acceptance but we need to ask for the number of guests
-          const buttons = [
-            {buttonId: 'guest_1', buttonText: {displayText: '1 (Just me)'}, type: 1},
-            {buttonId: 'guest_2', buttonText: {displayText: '2 people'}, type: 1},
-            {buttonId: 'guest_more', buttonText: {displayText: '3 or more'}, type: 1}
-          ];
-          
-          await waClient.sendMessage(m.chat, {
-            text: "Great! How many people will be attending in total (including yourself)?",
-            footer: 'Please select an option below',
-            buttons: buttons,
-            headerType: 1,
-            viewOnce: true
-          });
-          
-          return;
+        text.includes('i am coming') || text.includes('i\'ll attend') ||
+        text === 'כן' || text.includes('אני מגיע') || text.includes('אגיע') || 
+        text.includes('נגיע')) {  
+        // This is an acceptance but we need to ask for the number of guests
+        const buttons = [
+        {buttonId: 'guest_1', buttonText: {displayText: '1 (רק אני)'}, type: 1},
+        {buttonId: 'guest_2', buttonText: {displayText: '2 אנשים'}, type: 1},
+        {buttonId: 'guest_more', buttonText: {displayText: '3 או יותר'}, type: 1}
+        ];
+
+        await waClient.sendMessage(m.chat, {
+        text: "מעולה! כמה אנשים יגיעו בסך הכל (כולל אותך)?",
+        footer: 'אנא בחרו באחת האפשרויות',
+        buttons: buttons,
+        headerType: 1,
+        viewOnce: true
+        });
+
+        return;
         }
         
+        // Add Hebrew responses:
         if (text === 'no' || text.includes('cannot') || text.includes("can't") || 
-          text.includes('not attend') || text.includes('won\'t be')) {
+        text.includes('not attend') || text.includes('won\'t be') ||
+        text === 'לא' || text.includes('לא אוכל') || text.includes('לא אגיע') || 
+        text.includes('לא נגיע')) {
           
           // This is a decline
           try {
@@ -1125,7 +1130,7 @@ async function clientstart() {
             
             // Send confirmation
             await waClient.sendMessage(m.chat, { 
-              text: `Thank you for confirming! We've noted that ${guestCount} ${guestCount === 1 ? 'person' : 'people'} will be attending.` 
+              text: `תודה על האישור! רשמנו שיגיעו ${guestCount} ${guestCount === 1 ? 'איש' : 'אנשים'}` 
             });
           } catch (error) {
             log.error(`Error updating confirm status for ${senderPhone}:`, error);
@@ -1143,7 +1148,7 @@ async function clientstart() {
         if (text.includes('rsvp') || text.includes('attend') || text.includes('coming')) {
           // This is probably related to the RSVP
           await waClient.sendMessage(m.chat, { 
-            text: "I'm not sure I understand your response. Please reply with 'Yes' if you're attending, or 'No' if you can't attend. If you're attending, please also let me know how many people will be in your party."
+            text: "לא הבנתי את התשובה. אנא השיבו 'כן' אם אתם מגיעים, או 'לא' אם אינכם יכולים להגיע. אם אתם מגיעים, אנא ציינו גם כמה אנשים יגיעו."
           });
         }
       } catch (err) {
@@ -1447,8 +1452,8 @@ clientstart()
           ];
           
           const buttonMessage = {
-            text: `*${eventDetails.name} - RSVP Invitation (TEST)*\n\nDear Admin,\n\nThis is a test message:\n\n📅 Date: ${eventDetails.date}\n⏰ Time: ${eventDetails.time}\n📍 Location: ${eventDetails.location}\n\n${eventDetails.description}\n\nWill you be able to attend?`,
-            footer: 'Please respond using the buttons below',
+            text: `*${eventDetails.name} - בדיקת הודעה*\n\nמנהל יקר,\n\nזוהי הזמנתRSVP לבדיקה:\n\n📅 תאריך: ${eventDetails.date}\n⏰ שעה: ${eventDetails.time}\n📍 מיקום: ${eventDetails.location}\n\n${eventDetails.description}\n\nהאם תוכלו להגיע`,
+            footer: 'אנא השיב באמצעות הכפתורים למטה',
             buttons: buttons,
             headerType: 1,
             viewOnce: true

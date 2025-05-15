@@ -1859,3 +1859,296 @@ Error: Failed to fetch event details
 [2025-05-15T11:11:26.464Z] [INFO] Ignoring message from bot's own number: 972507412770
 [2025-05-15T11:13:27.722Z] [INFO] Connection update: {"isOnline":true}
 [2025-05-15T11:18:27.722Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T11:23:27.739Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T11:28:27.740Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T11:33:27.742Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T11:38:27.744Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T11:39:37.508Z] [INFO] Message from 120363398569953095: woi masuk mek ch kedua ku+mau g.a
+https://whatsapp.com/channel/0029VbB3VBj17EmvzPsuwS0a/100
+[2025-05-15T11:39:37.509Z] [INFO] Checking if 120363398569953095 (120363398569953095) is admin: false
+[2025-05-15T11:39:37.509Z] [INFO] Updating guest status in Apps Script: +120363398569953095 to Confirmed
+[2025-05-15T11:39:37.509Z] [INFO] Using script URL: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T11:39:37.509Z] [INFO] Updating guest status in Apps Script: +120363398569953095
+[2025-05-15T11:39:42.677Z] [INFO] Update response: {"success":false,"message":"Guest not found"}
+[2025-05-15T11:39:42.678Z] [ERROR] Failed to update guest status: Guest not found
+Error: Guest not found
+    at AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:292:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:1124:13)
+[2025-05-15T11:39:42.688Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T11:42:50.222Z] [INFO] Message from 120363398569953095: 
+[2025-05-15T11:42:50.222Z] [INFO] Checking if 120363398569953095 (120363398569953095) is admin: false
+[2025-05-15T11:43:27.746Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T11:48:27.748Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T11:53:27.625Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T11:58:27.620Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T12:00:00.130Z] [INFO] Starting RSVP message batch with URL: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T12:00:00.130Z] [INFO] Attempting to fetch event details from: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T12:00:00.130Z] [INFO] Fetching event details from Google Sheets: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T12:00:03.314Z] [INFO] Event details response: {"success":true,"details":{"Key":"Value","Name":"החתונה של יסמין ונתנאל","Date":"18.06.2025","Time":"19:30 קבלת פנים | 20:30 חופה וקידושין","Location":"אולמי חמישים ושמונה הירקונים 58,פתח תקווה","Description":"בשבח והודיה להשם יתברך אנו נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו ביום רביעי כ״ב בסיון תשפ״ה"}}
+[2025-05-15T12:00:03.314Z] [INFO] Preparing messages for event: החתונה של יסמין ונתנאל
+[2025-05-15T12:00:03.314Z] [INFO] About to fetch guests with key: you...
+[2025-05-15T12:00:03.314Z] [INFO] Attempting API call to fetch guests from: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T12:00:03.314Z] [INFO] Using secret key starting with: you...
+[2025-05-15T12:00:03.314Z] [INFO] Fetching guest list from Google Sheets: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T12:00:05.890Z] [INFO] API response status: 200
+[2025-05-15T12:00:05.890Z] [INFO] API response data: {"success":true,"guests":[{"Name":"yigal","Phone":"+972526901876","Status":"Declined","GuestCount":0,"Notes":"","LastContacted":"2025-05-15T11:11:25.298Z"},{"Name":"shiran","Phone":"+972542080237","Status":"Confirmed","GuestCount":4,"Notes":"","LastContacted":"2025-05-15T11:05:14.868Z"},{"Name":"aliza","Phone":"+972503303141","Status":"Pending","GuestCount":"","Notes":"","LastContacted":""}]}
+[2025-05-15T12:00:05.891Z] [INFO] Fetched 3 guests from Apps Script
+[2025-05-15T12:00:05.891Z] [INFO] Guest list response received with 3 guests
+[2025-05-15T12:00:05.891Z] [INFO] First guest data: {"name":"yigal","phone":"+972526901876","email":"","status":"Declined","count":"0","notes":"","lastContacted":"2025-05-15T11:11:25.298Z"}
+[2025-05-15T12:00:05.891Z] [INFO] Found 3 potential guests to contact
+[2025-05-15T12:00:05.891Z] [INFO] Sending messages to 1 guests in this batch
+[2025-05-15T12:00:05.891Z] [INFO] Sending RSVP message to: +972503303141@s.whatsapp.net
+[2025-05-15T12:00:05.891Z] [INFO] Formatted phone for WhatsApp: 972503303141@s.whatsapp.net
+[2025-05-15T12:00:06.086Z] [INFO] Sent RSVP message to aliza (+972503303141)
+[2025-05-15T12:00:06.088Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:00:14.087Z] [INFO] Completed RSVP message batch, sent 1 messages
+[2025-05-15T12:03:27.615Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T12:03:59.842Z] [INFO] Initializing WhatsApp connection...
+[2025-05-15T12:03:59.895Z] [INFO] Setting up RSVP message schedule: 0 9-20 * * *
+[2025-05-15T12:03:59.897Z] [INFO] Command line flag detected: Sending test RSVP message...
+[2025-05-15T12:03:59.898Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-15T12:03:59.899Z] [INFO] Web server running on port 3000
+[2025-05-15T12:04:01.507Z] [INFO] Connection update: {"receivedPendingNotifications":true}
+[2025-05-15T12:04:01.688Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T12:04:01.688Z] [INFO] Connection update: {"connection":"open"}
+[2025-05-15T12:04:01.689Z] [INFO] Bot successfully connected! Bot JID: 972507412770:32@s.whatsapp.net
+[2025-05-15T12:04:01.689Z] [INFO] Available admin commands:
+[2025-05-15T12:04:01.689Z] [INFO] !sendrsvp - Send RSVP messages to pending guests
+[2025-05-15T12:04:01.689Z] [INFO] !status - Show current bot status and event details
+[2025-05-15T12:04:01.689Z] [INFO] !reload - Reload guest list from Google Sheets
+[2025-05-15T12:04:01.689Z] [INFO] !debugapi - Test API connection to Google Apps Script
+[2025-05-15T12:04:04.899Z] [INFO] Attempting to fetch event details from: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T12:04:04.900Z] [INFO] Fetching event details from Google Sheets: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T12:04:07.479Z] [INFO] Event details response: {"success":true,"details":{"Key":"Value","Name":"החתונה של יסמין ונתנאל","Date":"18.06.2025","Time":"19:30 קבלת פנים | 20:30 חופה וקידושין","Location":"אולמי חמישים ושמונה הירקונים 58,פתח תקווה","Description":"בשבח והודיה להשם יתברך אנו נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו ביום רביעי כ״ב בסיון תשפ״ה"}}
+[2025-05-15T12:05:10.077Z] [INFO] Message from 972526901876: !reload
+[2025-05-15T12:05:10.077Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T12:05:10.077Z] [INFO] Attempting API call to fetch guests from: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T12:05:10.077Z] [INFO] Using secret key starting with: you...
+[2025-05-15T12:05:10.077Z] [INFO] Fetching guest list from Google Sheets: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T12:05:12.396Z] [INFO] API response status: 200
+[2025-05-15T12:05:12.396Z] [INFO] API response data: {"success":true,"guests":[{"Name":"yigal","Phone":"+972526901876","Status":"Declined","GuestCount":0,"Notes":"","LastContacted":"2025-05-15T11:11:25.298Z"},{"Name":"shiran","Phone":"+972542080237","Status":"Confirmed","GuestCount":4,"Notes":"","LastContacted":"2025-05-15T11:05:14.868Z"},{"Name":"aliza","Phone":"+972503303141","Status":"Pending","GuestCount":"","Notes":"","LastContacted":""}]}
+[2025-05-15T12:05:12.396Z] [INFO] Fetched 3 guests from Apps Script
+[2025-05-15T12:05:13.008Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:05:19.860Z] [INFO] Message from 972526901876: !sendrsvpforce
+[2025-05-15T12:05:19.860Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T12:05:20.103Z] [INFO] Attempting to fetch event details from: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T12:05:20.103Z] [INFO] Fetching event details from Google Sheets: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T12:05:20.107Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:05:23.606Z] [INFO] Event details response: {"success":true,"details":{"Key":"Value","Name":"החתונה של יסמין ונתנאל","Date":"18.06.2025","Time":"19:30 קבלת פנים | 20:30 חופה וקידושין","Location":"אולמי חמישים ושמונה הירקונים 58,פתח תקווה","Description":"בשבח והודיה להשם יתברך אנו נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו ביום רביעי כ״ב בסיון תשפ״ה"}}
+[2025-05-15T12:05:23.606Z] [INFO] Using cached guest list data
+[2025-05-15T12:05:23.606Z] [INFO] Found 3 guests to message
+[2025-05-15T12:05:23.606Z] [INFO] Sending force RSVP message to: +972526901876@s.whatsapp.net
+[2025-05-15T12:05:23.606Z] [INFO] Formatted phone for WhatsApp: 972526901876@s.whatsapp.net
+[2025-05-15T12:05:23.848Z] [INFO] ✓ Sent RSVP message to yigal (+972526901876)
+[2025-05-15T12:05:23.849Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:05:25.849Z] [INFO] Sending force RSVP message to: +972542080237@s.whatsapp.net
+[2025-05-15T12:05:25.849Z] [INFO] Formatted phone for WhatsApp: 972542080237@s.whatsapp.net
+[2025-05-15T12:05:26.461Z] [INFO] ✓ Sent RSVP message to shiran (+972542080237)
+[2025-05-15T12:05:26.461Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:05:28.462Z] [INFO] Sending force RSVP message to: +972503303141@s.whatsapp.net
+[2025-05-15T12:05:28.462Z] [INFO] Formatted phone for WhatsApp: 972503303141@s.whatsapp.net
+[2025-05-15T12:05:29.059Z] [INFO] ✓ Sent RSVP message to aliza (+972503303141)
+[2025-05-15T12:05:29.060Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:05:31.300Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:05:43.209Z] [INFO] Message from 972526901876: yes
+[2025-05-15T12:05:43.210Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T12:05:43.210Z] [INFO] Button response received: "yes"
+[2025-05-15T12:05:43.451Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:05:49.907Z] [INFO] Message from 972526901876: guest_2
+[2025-05-15T12:05:49.908Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T12:05:49.908Z] [INFO] Button response received: "guest_2"
+[2025-05-15T12:05:49.908Z] [INFO] Updating guest status in Apps Script: +972526901876 to Confirmed
+[2025-05-15T12:05:49.908Z] [INFO] Using script URL: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T12:05:49.908Z] [INFO] Updating guest status in Apps Script: +972526901876
+[2025-05-15T12:05:52.746Z] [INFO] Update response: {"success":true,"message":"Status updated successfully"}
+[2025-05-15T12:05:52.747Z] [INFO] Updated status for +972526901876 to Confirmed with 2 guests
+[2025-05-15T12:05:52.987Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:06:30.595Z] [INFO] Message from 972542080237: yes
+[2025-05-15T12:06:30.596Z] [INFO] Checking if 972542080237 (972542080237) is admin: false
+[2025-05-15T12:06:30.596Z] [INFO] Button response received: "yes"
+[2025-05-15T12:06:30.836Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:06:34.514Z] [INFO] Message from 972542080237: guest_more
+[2025-05-15T12:06:34.514Z] [INFO] Checking if 972542080237 (972542080237) is admin: false
+[2025-05-15T12:06:34.514Z] [INFO] Button response received: "guest_more"
+[2025-05-15T12:06:34.756Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:06:41.674Z] [INFO] Message from 972542080237: 8
+[2025-05-15T12:06:41.674Z] [INFO] Checking if 972542080237 (972542080237) is admin: false
+[2025-05-15T12:06:41.674Z] [INFO] Updating guest status in Apps Script: +972542080237 to Confirmed
+[2025-05-15T12:06:41.674Z] [INFO] Using script URL: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T12:06:41.674Z] [INFO] Updating guest status in Apps Script: +972542080237
+[2025-05-15T12:06:44.079Z] [INFO] Update response: {"success":true,"message":"Status updated successfully"}
+[2025-05-15T12:06:44.079Z] [INFO] Updated status for +972542080237 to Confirmed with 8 guests
+[2025-05-15T12:06:44.322Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:08:59.849Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T12:12:13.657Z] [INFO] Message from 972503303141: yes
+[2025-05-15T12:12:13.658Z] [INFO] Checking if 972503303141 (972503303141) is admin: false
+[2025-05-15T12:12:13.658Z] [INFO] Button response received: "yes"
+[2025-05-15T12:12:13.903Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:13:59.842Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T12:14:20.261Z] [INFO] Message from 972526901876: !reload
+[2025-05-15T12:14:20.261Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T12:14:20.261Z] [INFO] Attempting API call to fetch guests from: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T12:14:20.261Z] [INFO] Using secret key starting with: you...
+[2025-05-15T12:14:20.261Z] [INFO] Fetching guest list from Google Sheets: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T12:14:23.198Z] [INFO] API response status: 200
+[2025-05-15T12:14:23.198Z] [INFO] API response data: {"success":true,"guests":[{"Name":"yigal","Phone":"+972526901876","Status":"Confirmed","GuestCount":2,"Notes":"","LastContacted":"2025-05-15T12:05:51.750Z"},{"Name":"shiran","Phone":"+972542080237","Status":"Confirmed","GuestCount":8,"Notes":"","LastContacted":"2025-05-15T12:06:43.291Z"},{"Name":"aliza","Phone":"+972503303141","Status":"Pending","GuestCount":"","Notes":"","LastContacted":""},{"Name":"נתנאל","Phone":"+972548157882","Status":"","GuestCount":"","Notes":"","LastContacted":""},{"Name":"טל","Phone":"+972546287589","Status":"","GuestCount":"","Notes":"","LastContacted":""},{"Name":"יניב","Phone":"+972543435595","Status":"","GuestCount":"","Notes":"","LastContacted":""},{"Name":"יסמין","Phone":"+972533302058","Status":"","GuestCount":"","Notes":"","LastContacted":""},{"Name":"לינוי","Phone":"+972548161419","Status":"","GuestCount":"","Notes":"","LastContacted":""},{"Name":"רותם","Phone":"+972503401188","Status":"","GuestCount":"","Notes":"","LastContacted":""}]}
+[2025-05-15T12:14:23.198Z] [INFO] Fetched 9 guests from Apps Script
+[2025-05-15T12:14:23.442Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:15:15.093Z] [INFO] Message from 972526901876: !sendrsvp
+[2025-05-15T12:15:15.093Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T12:15:15.335Z] [INFO] Using cached guest list data
+[2025-05-15T12:15:15.335Z] [INFO] Total guests: 9
+[2025-05-15T12:15:15.335Z] [INFO] Guest: yigal, Phone: +972526901876, Status: "Confirmed", In contactedSet: false
+[2025-05-15T12:15:15.335Z] [INFO] Guest: shiran, Phone: +972542080237, Status: "Confirmed", In contactedSet: false
+[2025-05-15T12:15:15.335Z] [INFO] Guest: aliza, Phone: +972503303141, Status: "Pending", In contactedSet: false
+[2025-05-15T12:15:15.335Z] [INFO] Guest: נתנאל, Phone: +972548157882, Status: "Pending", In contactedSet: false
+[2025-05-15T12:15:15.335Z] [INFO] Guest: טל, Phone: +972546287589, Status: "Pending", In contactedSet: false
+[2025-05-15T12:15:15.335Z] [INFO] Guest: יניב, Phone: +972543435595, Status: "Pending", In contactedSet: false
+[2025-05-15T12:15:15.335Z] [INFO] Guest: יסמין, Phone: +972533302058, Status: "Pending", In contactedSet: false
+[2025-05-15T12:15:15.335Z] [INFO] Guest: לינוי, Phone: +972548161419, Status: "Pending", In contactedSet: false
+[2025-05-15T12:15:15.335Z] [INFO] Guest: רותם, Phone: +972503401188, Status: "Pending", In contactedSet: false
+[2025-05-15T12:15:15.335Z] [INFO] contactedGuests set contains: 
+[2025-05-15T12:15:15.336Z] [INFO] Starting RSVP message batch with URL: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T12:15:15.336Z] [INFO] Attempting to fetch event details from: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T12:15:15.336Z] [INFO] Fetching event details from Google Sheets: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T12:15:15.340Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:15:44.133Z] [INFO] Event details response: {"success":true,"details":{"Key":"Value","Name":"החתונה של יסמין ונתנאל","Date":"18.06.2025","Time":"19:30 קבלת פנים | 20:30 חופה וקידושין","Location":"אולמי חמישים ושמונה הירקונים 58,פתח תקווה","Description":"בשבח והודיה להשם יתברך אנו נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו ביום רביעי כ״ב בסיון תשפ״ה"}}
+[2025-05-15T12:15:44.133Z] [INFO] Preparing messages for event: החתונה של יסמין ונתנאל
+[2025-05-15T12:15:44.133Z] [INFO] About to fetch guests with key: you...
+[2025-05-15T12:15:44.133Z] [INFO] Using cached guest list data
+[2025-05-15T12:15:44.133Z] [INFO] Guest list response received with 9 guests
+[2025-05-15T12:15:44.134Z] [INFO] First guest data: {"name":"yigal","phone":"+972526901876","email":"","status":"Confirmed","count":2,"notes":"","lastContacted":"2025-05-15T12:05:51.750Z"}
+[2025-05-15T12:15:44.134Z] [INFO] Found 9 potential guests to contact
+[2025-05-15T12:15:44.134Z] [INFO] Sending messages to 7 guests in this batch
+[2025-05-15T12:15:44.134Z] [INFO] Sending RSVP message to: +972503303141@s.whatsapp.net
+[2025-05-15T12:15:44.134Z] [INFO] Formatted phone for WhatsApp: 972503303141@s.whatsapp.net
+[2025-05-15T12:15:44.377Z] [INFO] Sent RSVP message to aliza (+972503303141)
+[2025-05-15T12:15:44.378Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:15:52.379Z] [INFO] Sending RSVP message to: +972548157882@s.whatsapp.net
+[2025-05-15T12:15:52.379Z] [INFO] Formatted phone for WhatsApp: 972548157882@s.whatsapp.net
+[2025-05-15T12:15:52.958Z] [INFO] Sent RSVP message to נתנאל (+972548157882)
+[2025-05-15T12:15:52.958Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:16:00.258Z] [INFO] Message from 972503303141: yes
+[2025-05-15T12:16:00.258Z] [INFO] Checking if 972503303141 (972503303141) is admin: false
+[2025-05-15T12:16:00.258Z] [INFO] Button response received: "yes"
+[2025-05-15T12:16:00.509Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:16:00.958Z] [INFO] Sending RSVP message to: +972546287589@s.whatsapp.net
+[2025-05-15T12:16:00.959Z] [INFO] Formatted phone for WhatsApp: 972546287589@s.whatsapp.net
+[2025-05-15T12:16:01.546Z] [INFO] Sent RSVP message to טל (+972546287589)
+[2025-05-15T12:16:01.546Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:16:09.067Z] [INFO] Message from 972503303141: guest_more
+[2025-05-15T12:16:09.067Z] [INFO] Checking if 972503303141 (972503303141) is admin: false
+[2025-05-15T12:16:09.067Z] [INFO] Button response received: "guest_more"
+[2025-05-15T12:16:09.307Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:16:09.546Z] [INFO] Sending RSVP message to: +972543435595@s.whatsapp.net
+[2025-05-15T12:16:09.547Z] [INFO] Formatted phone for WhatsApp: 972543435595@s.whatsapp.net
+[2025-05-15T12:16:10.141Z] [INFO] Sent RSVP message to יניב (+972543435595)
+[2025-05-15T12:16:10.142Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:16:18.143Z] [INFO] Sending RSVP message to: +972533302058@s.whatsapp.net
+[2025-05-15T12:16:18.143Z] [INFO] Formatted phone for WhatsApp: 972533302058@s.whatsapp.net
+[2025-05-15T12:16:18.733Z] [INFO] Sent RSVP message to יסמין (+972533302058)
+[2025-05-15T12:16:18.734Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:16:26.735Z] [INFO] Sending RSVP message to: +972548161419@s.whatsapp.net
+[2025-05-15T12:16:26.735Z] [INFO] Formatted phone for WhatsApp: 972548161419@s.whatsapp.net
+[2025-05-15T12:16:27.327Z] [INFO] Sent RSVP message to לינוי (+972548161419)
+[2025-05-15T12:16:27.327Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:16:35.328Z] [INFO] Sending RSVP message to: +972503401188@s.whatsapp.net
+[2025-05-15T12:16:35.329Z] [INFO] Formatted phone for WhatsApp: 972503401188@s.whatsapp.net
+[2025-05-15T12:16:35.902Z] [INFO] Sent RSVP message to רותם (+972503401188)
+[2025-05-15T12:16:35.902Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:16:37.257Z] [INFO] Message from 972503303141: 3
+[2025-05-15T12:16:37.257Z] [INFO] Checking if 972503303141 (972503303141) is admin: false
+[2025-05-15T12:16:37.257Z] [INFO] Updating guest status in Apps Script: +972503303141 to Confirmed
+[2025-05-15T12:16:37.258Z] [INFO] Using script URL: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T12:16:37.258Z] [INFO] Updating guest status in Apps Script: +972503303141
+[2025-05-15T12:16:42.546Z] [INFO] Update response: {"success":true,"message":"Status updated successfully"}
+[2025-05-15T12:16:42.546Z] [INFO] Updated status for +972503303141 to Confirmed with 3 guests
+[2025-05-15T12:16:42.786Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:16:43.903Z] [INFO] Completed RSVP message batch, sent 7 messages
+[2025-05-15T12:16:44.149Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:16:49.407Z] [INFO] Message from 972548157882: yes
+[2025-05-15T12:16:49.407Z] [INFO] Checking if 972548157882 (972548157882) is admin: false
+[2025-05-15T12:16:49.408Z] [INFO] Button response received: "yes"
+[2025-05-15T12:16:49.648Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:16:51.763Z] [INFO] Message from 972503303141: 👍🏻
+[2025-05-15T12:16:51.763Z] [INFO] Checking if 972503303141 (972503303141) is admin: false
+[2025-05-15T12:16:57.566Z] [INFO] Message from 972533302058: yes
+[2025-05-15T12:16:57.566Z] [INFO] Checking if 972533302058 (972533302058) is admin: false
+[2025-05-15T12:16:57.566Z] [INFO] Button response received: "yes"
+[2025-05-15T12:16:57.807Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:16:58.246Z] [INFO] Message from 972548157882: guest_2
+[2025-05-15T12:16:58.246Z] [INFO] Checking if 972548157882 (972548157882) is admin: false
+[2025-05-15T12:16:58.246Z] [INFO] Button response received: "guest_2"
+[2025-05-15T12:16:58.246Z] [INFO] Updating guest status in Apps Script: +972548157882 to Confirmed
+[2025-05-15T12:16:58.246Z] [INFO] Using script URL: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T12:16:58.246Z] [INFO] Updating guest status in Apps Script: +972548157882
+[2025-05-15T12:16:59.778Z] [INFO] Message from 972548157882: guest_more
+[2025-05-15T12:16:59.778Z] [INFO] Checking if 972548157882 (972548157882) is admin: false
+[2025-05-15T12:16:59.778Z] [INFO] Button response received: "guest_more"
+[2025-05-15T12:17:00.022Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:17:02.126Z] [INFO] Update response: {"success":true,"message":"Status updated successfully"}
+[2025-05-15T12:17:02.127Z] [INFO] Updated status for +972548157882 to Confirmed with 2 guests
+[2025-05-15T12:17:02.370Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:17:03.069Z] [INFO] Message from 972533302058: guest_1
+[2025-05-15T12:17:03.070Z] [INFO] Checking if 972533302058 (972533302058) is admin: false
+[2025-05-15T12:17:03.070Z] [INFO] Button response received: "guest_1"
+[2025-05-15T12:17:03.070Z] [INFO] Updating guest status in Apps Script: +972533302058 to Confirmed
+[2025-05-15T12:17:03.070Z] [INFO] Using script URL: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T12:17:03.070Z] [INFO] Updating guest status in Apps Script: +972533302058
+[2025-05-15T12:17:06.095Z] [INFO] Update response: {"success":true,"message":"Status updated successfully"}
+[2025-05-15T12:17:06.096Z] [INFO] Updated status for +972533302058 to Confirmed with 1 guests
+[2025-05-15T12:17:06.336Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:18:59.833Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T12:23:59.897Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T12:27:47.605Z] [INFO] Message from 972543435595: yes
+[2025-05-15T12:27:47.605Z] [INFO] Checking if 972543435595 (972543435595) is admin: false
+[2025-05-15T12:27:47.605Z] [INFO] Button response received: "yes"
+[2025-05-15T12:27:47.848Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:27:52.020Z] [INFO] Message from 972543435595: guest_2
+[2025-05-15T12:27:52.020Z] [INFO] Checking if 972543435595 (972543435595) is admin: false
+[2025-05-15T12:27:52.020Z] [INFO] Button response received: "guest_2"
+[2025-05-15T12:27:52.020Z] [INFO] Updating guest status in Apps Script: +972543435595 to Confirmed
+[2025-05-15T12:27:52.020Z] [INFO] Using script URL: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T12:27:52.020Z] [INFO] Updating guest status in Apps Script: +972543435595
+[2025-05-15T12:27:57.060Z] [INFO] Update response: {"success":true,"message":"Status updated successfully"}
+[2025-05-15T12:27:57.060Z] [INFO] Updated status for +972543435595 to Confirmed with 2 guests
+[2025-05-15T12:27:57.302Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:28:05.607Z] [INFO] Message from 972503401188: yes
+[2025-05-15T12:28:05.607Z] [INFO] Checking if 972503401188 (972503401188) is admin: false
+[2025-05-15T12:28:05.607Z] [INFO] Button response received: "yes"
+[2025-05-15T12:28:05.850Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:28:08.719Z] [INFO] Message from 972503401188: guest_2
+[2025-05-15T12:28:08.719Z] [INFO] Checking if 972503401188 (972503401188) is admin: false
+[2025-05-15T12:28:08.719Z] [INFO] Button response received: "guest_2"
+[2025-05-15T12:28:08.720Z] [INFO] Updating guest status in Apps Script: +972503401188 to Confirmed
+[2025-05-15T12:28:08.720Z] [INFO] Using script URL: https://script.google.com/macros/s/AKfycbxb9mGb5WsKt-h_3JcPJDC9Oz7m_Ec3_FXF-P622i6Gh4Py6b9U_7KJ83nX7auW9Hx2-w/exec
+[2025-05-15T12:28:08.720Z] [INFO] Updating guest status in Apps Script: +972503401188
+[2025-05-15T12:28:15.772Z] [INFO] Update response: {"success":true,"message":"Status updated successfully"}
+[2025-05-15T12:28:15.772Z] [INFO] Updated status for +972503401188 to Confirmed with 2 guests
+[2025-05-15T12:28:16.012Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T12:28:59.895Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T12:33:59.891Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T12:38:59.909Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T12:43:59.908Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T12:45:30.130Z] [INFO] Connection update: {"connection":"close","lastDisconnect":{"error":{"data":null,"isBoom":true,"isServer":false,"output":{"statusCode":428,"payload":{"statusCode":428,"error":"Precondition Required","message":"Connection Terminated"},"headers":{}}},"date":"2025-05-15T12:45:30.130Z"}}
+[2025-05-15T12:45:30.131Z] [INFO] Connection closed. Attempting to reconnect...
+[2025-05-15T12:45:30.133Z] [WARN] Disconnected with status code: 428
+[2025-05-15T12:45:30.133Z] [INFO] Reconnecting...
+[2025-05-15T12:45:30.133Z] [INFO] Initializing WhatsApp connection...
+[2025-05-15T12:45:30.134Z] [ERROR] Error sending test message:
+1006
+[2025-05-15T12:45:30.145Z] [INFO] Setting up RSVP message schedule: 0 9-20 * * *
+[2025-05-15T12:45:30.148Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-15T12:45:31.250Z] [INFO] Connection update: {"receivedPendingNotifications":true}
+[2025-05-15T12:45:31.325Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T12:45:31.326Z] [INFO] Connection update: {"connection":"open"}
+[2025-05-15T12:45:31.326Z] [INFO] Bot successfully connected! Bot JID: 972507412770:32@s.whatsapp.net
+[2025-05-15T12:45:31.326Z] [INFO] Available admin commands:
+[2025-05-15T12:45:31.326Z] [INFO] !sendrsvp - Send RSVP messages to pending guests
+[2025-05-15T12:45:31.326Z] [INFO] !status - Show current bot status and event details
+[2025-05-15T12:45:31.326Z] [INFO] !reload - Reload guest list from Google Sheets
+[2025-05-15T12:45:31.326Z] [INFO] !debugapi - Test API connection to Google Apps Script
+[2025-05-15T12:48:59.906Z] [WARN] Heartbeat failed, connection may be unstable
+[2025-05-15T12:50:30.145Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T12:53:59.895Z] [WARN] Heartbeat failed, connection may be unstable
