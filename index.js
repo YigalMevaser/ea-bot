@@ -581,7 +581,8 @@ async function clientstart() {
             // Create buttons for interactive responses
             const buttons = [
               {buttonId: 'yes', buttonText: {displayText: 'כן, אני מגיע/ה'}, type: 1},
-              {buttonId: 'no', buttonText: {displayText: 'לא אוכל להגיע'}, type: 1}
+              {buttonId: 'no', buttonText: {displayText: 'לא אוכל להגיע'}, type: 1},
+              {buttonId: 'maybe', buttonText: {displayText: 'לא בטוח/ה, תשאל אותי מחר'}, type: 1}
             ];
             
             // Create message with image if available, otherwise text only
@@ -641,16 +642,68 @@ async function clientstart() {
         await sendRSVPMessages();
       });
       
-      // Add daily automatic cache reset at 1:00 AM
-      log.info('Setting up daily cache reset at 1:00 AM');
-      cron.schedule('0 1 * * *', () => {
-        contactedGuests.clear();
-        log.info('Daily automated cache reset completed');
+      // Add scheduler to check for follow-ups every hour
+      log.info('Setting up follow-up checker to run every hour');
+      cron.schedule('0 * * * *', async () => {
+        try {
+          if (!global.scheduledFollowUps || !Array.isArray(global.scheduledFollowUps)) {
+            global.scheduledFollowUps = [];
+            return;
+          }
+          
+          const currentTime = Date.now();
+          const followUpsToSend = global.scheduledFollowUps.filter(f => f.scheduledTime <= currentTime);
+          
+          if (followUpsToSend.length === 0) return;
+          
+          log.info(`Found ${followUpsToSend.length} follow-ups to send`);
+          
+          // Get event details for the follow-ups
+          const eventDetails = await appScriptManager.getEventDetails();
+          
+          // Process each follow-up
+          for (const followUp of followUpsToSend) {
+            try {
+              // Create buttons for interactive responses
+              const buttons = [
+                {buttonId: 'yes', buttonText: {displayText: 'כן, אני מגיע/ה'}, type: 1},
+                {buttonId: 'no', buttonText: {displayText: 'לא אוכל להגיע'}, type: 1}
+              ];
+              
+              const formattedPhone = followUp.phone.startsWith('+') ? 
+                followUp.phone.substring(1) + '@s.whatsapp.net' : 
+                followUp.phone + '@s.whatsapp.net';
+              
+              // Send follow-up message
+              const followUpMessage = {
+                text: `שלום ${followUp.name},\n\nאתמול ציינת שאינך בטוח/ה לגבי הגעתך ל${eventDetails.name}.\n\nהאם כעת יש לך תשובה סופית לגבי ההגעה לאירוע?\n\n📅 תאריך: ${eventDetails.date}\n⏰ שעה: ${eventDetails.time}\n📍 מיקום: ${eventDetails.location}`,
+                footer: 'אנא השיבו באמצעות הכפתורים למטה',
+                buttons: buttons,
+                headerType: 1,
+                viewOnce: true
+              };
+              
+              await waClient.sendMessage(formattedPhone, followUpMessage);
+              log.info(`Sent follow-up to ${followUp.name} (${followUp.phone})`);
+              
+              // Remove this follow-up from the list
+              global.scheduledFollowUps = global.scheduledFollowUps.filter(
+                f => f.phone !== followUp.phone
+              );
+              
+              // Add a delay between messages
+              await new Promise(resolve => setTimeout(resolve, 3000));
+            } catch (error) {
+              log.error(`Error sending follow-up to ${followUp.phone}:`, error);
+            }
+          }
+        } catch (error) {
+          log.error('Error in follow-up scheduler:', error);
+        }
       });
     } else {
       log.info('Automatic message scheduling disabled in development mode');
     }
-
     // --- Messages upsert handler for RSVP responses ---
     waClient.ev.on("messages.upsert", async (chatUpdate) => {
       try {
@@ -708,6 +761,33 @@ async function clientstart() {
         
         
         if (isAdmin) {
+          // ...existing code...
+          if (m.text === '!followups') {
+            try {
+              if (!global.scheduledFollowUps || global.scheduledFollowUps.length === 0) {
+                await waClient.sendMessage(m.chat, { 
+                  text: "אין תזכורות מתוזמנות כרגע." 
+                });
+                return;
+              }
+              
+              // Format the list of follow-ups
+              const followUps = global.scheduledFollowUps.map(f => {
+                const date = new Date(f.scheduledTime);
+                return `- ${f.name} (${f.phone}): ${date.toLocaleString()}`;
+              }).join('\n');
+              
+              await waClient.sendMessage(m.chat, { 
+                text: `*תזכורות מתוזמנות:*\n\n${followUps}` 
+              });
+            } catch (error) {
+              log.error('Error checking follow-ups:', error);
+              await waClient.sendMessage(m.chat, { 
+                text: "שגיאה בבדיקת תזכורות מתוזמנות." 
+              });
+            }
+            return;
+          }
           if (m.text === '!sendrsvp') {
             await waClient.sendMessage(m.chat, { text: "Starting RSVP message batch..." });
             
@@ -1128,6 +1208,47 @@ async function clientstart() {
             }
             return;
           }
+          else if (response.selectedButtonId === 'maybe') {
+            try {
+              // Update their status in the sheet as "Maybe"
+              await appScriptManager.updateGuestStatus(senderPhone, 'Maybe', '0', 'Will follow up tomorrow');
+              
+              // Schedule a follow-up for tomorrow
+              const tomorrowDate = new Date();
+              tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+              tomorrowDate.setHours(12, 0, 0, 0); // Set to noon tomorrow
+              
+              const followUpTime = tomorrowDate.getTime();
+              const currentTime = Date.now();
+              const delayMs = followUpTime - currentTime;
+              
+              // Store this in a scheduled follow-ups list
+              if (!global.scheduledFollowUps) {
+                global.scheduledFollowUps = [];
+              }
+              
+              global.scheduledFollowUps.push({
+                phone: senderPhone,
+                name: (await appScriptManager.fetchGuestList()).find(g => g.phone === appScriptManager.formatPhoneNumber(senderPhone))?.name || '',
+                scheduledTime: followUpTime
+              });
+              
+              // Send acknowledgment
+              await waClient.sendMessage(m.chat, { 
+                text: "אין בעיה, נשלח לך תזכורת מחר לגבי האירוע." 
+              });
+              
+              log.info(`Scheduled follow-up for ${senderPhone} at ${tomorrowDate.toISOString()}`);
+            } catch (error) {
+              log.error(`Error handling 'maybe' response for ${senderPhone}:`, error);
+              
+              // Send generic acknowledgment if update fails
+              await waClient.sendMessage(m.chat, { 
+                text: "קיבלנו את תשובתך, ננסה ליצור איתך קשר מחר." 
+              });
+            }
+            return;
+          }
           // Handle guest count responses
           else if (response.selectedButtonId.startsWith('guest_')) {
             let guestCount = 1;
@@ -1280,6 +1401,7 @@ async function clientstart() {
         log.info('!status - Show current bot status and event details');
         log.info('!reload - Reload guest list from Google Sheets');
         log.info('!debugapi - Test API connection to Google Apps Script');
+        log.info('!followups - View scheduled follow-up reminders');
         if (process.env.NODE_ENV === 'development') {
           log.info('!test - Send a test RSVP message (development only)');
         }
