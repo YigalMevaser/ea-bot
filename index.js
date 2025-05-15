@@ -157,11 +157,20 @@ class AppsScriptManager {
       if (useMockData) {
         this.log.info('Using mock guest data');
         const mockGuests = [
-          // Add your own phone for testing
+          // Add admin phone for testing - with explicit different formats to debug
           {
-            name: "Test User",
+            name: "Admin User (With +)",
             phone: process.env.ADMIN_NUMBERS?.split(',')[0] || "+972526901876",
-            email: "test@example.com",
+            email: "admin@example.com",
+            status: "Pending",
+            count: "0",
+            notes: "",
+            lastContacted: ""
+          },
+          {
+            name: "Admin User (Without +)",
+            phone: (process.env.ADMIN_NUMBERS?.split(',')[0] || "+972526901876").replace('+', ''),
+            email: "admin2@example.com",
             status: "Pending",
             count: "0",
             notes: "",
@@ -574,10 +583,28 @@ async function clientstart() {
         
         // Log incoming messages
         log.info(`Message from ${senderPhone}: ${m.text}`);
-        
+        // Check if this is a message sent as a response to our auto-responses 
+        // by checking patterns that might indicate it's an auto-reply
+        const possibleAutoReply = 
+        (text && (text.includes("Thank you for letting us know") || 
+                text.includes("We're sorry you can't make it") || 
+                text.includes("I'm not sure I understand your response")));
+
+        if (possibleAutoReply) {
+        log.info(`Detected possible auto-reply message, ignoring: ${text.substring(0, 30)}...`);
+        return;
+        }
         // Check for admin commands
         const ADMIN_NUMBERS = (process.env.ADMIN_NUMBERS || '').split(',');
-        const isAdmin = ADMIN_NUMBERS.some(num => m.sender.includes(num));
+        const adminPhones = ADMIN_NUMBERS.map(num => {
+          // Ensure consistency by removing the "+" and any other non-numeric characters
+          return num.replace(/\D/g, '');
+        });
+        const senderDigitsOnly = senderPhone.replace(/\D/g, '');
+        const isAdmin = adminPhones.some(num => senderDigitsOnly.includes(num));
+        
+        log.info(`Checking if ${senderPhone} (${senderDigitsOnly}) is admin: ${isAdmin}`);
+        
         
         if (isAdmin) {
           if (m.text === '!sendrsvp') {
@@ -679,6 +706,44 @@ async function clientstart() {
               });
             }
             return;
+          }
+          if (m.text === '!debug') {
+            try {
+              // Get the sender's info
+              const senderInfo = {
+                number: senderPhone,
+                formattedNumber: appScriptManager.formatPhoneNumber(senderPhone),
+                isAdmin: isAdmin,
+                adminNumbers: ADMIN_NUMBERS,
+                message: m.text
+              };
+              
+              await waClient.sendMessage(m.chat, { 
+                text: `Debug Info: \n${JSON.stringify(senderInfo, null, 2)}` 
+              });
+              
+              // Also check if they're in the guest list
+              const guests = await appScriptManager.fetchGuestList();
+              const matchingGuest = guests.find(g => {
+                const guestDigits = g.phone.replace(/\D/g, '');
+                const senderDigits = senderPhone.replace(/\D/g, '');
+                return guestDigits.includes(senderDigits) || senderDigits.includes(guestDigits);
+              });
+              
+              if (matchingGuest) {
+                await waClient.sendMessage(m.chat, { 
+                  text: `You are in the guest list as: \n${JSON.stringify(matchingGuest, null, 2)}` 
+                });
+              } else {
+                await waClient.sendMessage(m.chat, { 
+                  text: `You are NOT found in the guest list.` 
+                });
+              }
+              
+              return;
+            } catch (error) {
+              log.error('Error in debug command:', error);
+            }
           }
         }
         
