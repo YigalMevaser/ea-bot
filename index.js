@@ -1,3 +1,4 @@
+
 /*─────────────────────────────────────────
   Event RSVP Bot - Family Event Attendance Tracker  
 ──────────────────────────────────────────*/
@@ -14,6 +15,7 @@ import axios from 'axios';
 import cron from 'node-cron';
 import express from 'express';
 import qrcode from 'qrcode';
+
 
 const args = process.argv.slice(2);
 const shouldSendTestMessage = args.includes('--test-message');
@@ -420,6 +422,18 @@ function isEmptyObject(obj) {
   return obj && Object.keys(obj).length === 0 && obj.constructor === Object;
 }
 
+// Load the invitation image
+let invitationImage;
+try {
+  const imagePath = path.join(__dirname, 'invitation.jpeg');
+  log.info(`Loading invitation image from: ${imagePath}`);
+  invitationImage = fs.readFileSync(imagePath);
+  log.info('Invitation image loaded successfully');
+} catch (error) {
+  log.error('Failed to load invitation image:', error);
+  // Continue without image if there's an error
+}
+
 // Declare client at the top level so it's accessible in event handlers
 let client = null;
 
@@ -566,17 +580,30 @@ async function clientstart() {
           try {
             // Create buttons for interactive responses
             const buttons = [
-              {buttonId: 'yes', buttonText: {displayText: 'Yes, I\'ll attend'}, type: 1},
-              {buttonId: 'no', buttonText: {displayText: 'No, I can\'t attend'}, type: 1}
+              {buttonId: 'yes', buttonText: {displayText: 'כן, אני מגיע/ה'}, type: 1},
+              {buttonId: 'no', buttonText: {displayText: 'לא אוכל להגיע'}, type: 1}
             ];
             
-            const buttonMessage = {
-              text: `*${eventDetails.name} - הזמנה לאירוע*\n\nשלום ${guest.name},\n\nאתם מוזמנים ל ${eventDetails.name}!\n\n📅 תאריך: ${eventDetails.date}\n⏰ שעה: ${eventDetails.time}\n📍 מיקום: ${eventDetails.location}\n\n${eventDetails.description}\n\nהאם תוכלו להגיע?`,
-              footer: 'אנא השיבו באמצעות הכפתורים למטה',
-              buttons: buttons,
-              headerType: 1,
-              viewOnce: true
-            };
+            // Create message with image if available, otherwise text only
+            let buttonMessage;
+            if (invitationImage) {
+              buttonMessage = {
+                image: invitationImage,
+                caption: `*${eventDetails.name} - הזמנה לאירוע*\n\nשלום ${guest.name},\n\nאתם מוזמנים ל${eventDetails.name}!\n\n📅 תאריך: ${eventDetails.date}\n⏰ שעה: ${eventDetails.time}\n📍 מיקום: ${eventDetails.location}\n\n${eventDetails.description}\n\nהאם תוכלו להגיע?`,
+                footer: 'אנא השיבו באמצעות הכפתורים למטה',
+                buttons: buttons,
+                headerType: 4, // Type 4 for image with caption
+                viewOnce: true
+              };
+            } else {
+              buttonMessage = {
+                text: `*${eventDetails.name} - הזמנה לאירוע*\n\nשלום ${guest.name},\n\nאתם מוזמנים ל${eventDetails.name}!\n\n📅 תאריך: ${eventDetails.date}\n⏰ שעה: ${eventDetails.time}\n📍 מיקום: ${eventDetails.location}\n\n${eventDetails.description}\n\nהאם תוכלו להגיע?`,
+                footer: 'אנא השיבו באמצעות הכפתורים למטה',
+                buttons: buttons,
+                headerType: 1,
+                viewOnce: true
+              };
+            }
             
             // Send the message
             // NEW LOGGING - Log message details
@@ -612,6 +639,13 @@ async function clientstart() {
       log.info(`Setting up RSVP message schedule: ${MESSAGE_SCHEDULE}`);
       cron.schedule(MESSAGE_SCHEDULE, async () => {
         await sendRSVPMessages();
+      });
+      
+      // Add daily automatic cache reset at 1:00 AM
+      log.info('Setting up daily cache reset at 1:00 AM');
+      cron.schedule('0 1 * * *', () => {
+        contactedGuests.clear();
+        log.info('Daily automated cache reset completed');
       });
     } else {
       log.info('Automatic message scheduling disabled in development mode');
@@ -758,13 +792,26 @@ async function clientstart() {
                     }
                   }
                   
-                  const buttonMessage = {
-                    text: `*${eventDetails.name} - הזמנה לאירוע*\n\nשלום ${guest.name},\n\nאתם מוזמנים ל ${eventDetails.name}!\n\n📅 תאריך: ${eventDetails.date}\n⏰ שעה: ${displayTime}\n📍 מיקום: ${eventDetails.location}\n\n${eventDetails.description}\n\nהאם תוכלו להגיע?`,
-                    footer: 'אנא השיבו באמצעות הכפתורים למטה',
-                    buttons: buttons,
-                    headerType: 1,
-                    viewOnce: true
-                  };
+                  // Create message with image if available, otherwise text only
+                  let buttonMessage;
+                  if (invitationImage) {
+                    buttonMessage = {
+                      image: invitationImage,
+                      caption: `*${eventDetails.name} - הזמנה לאירוע*\n\nשלום ${guest.name},\n\nאתם מוזמנים ל${eventDetails.name}!\n\n📅 תאריך: ${eventDetails.date}\n⏰ שעה: ${displayTime}\n📍 מיקום: ${eventDetails.location}\n\n${eventDetails.description}\n\nהאם תוכלו להגיע?`,
+                      footer: 'אנא השיבו באמצעות הכפתורים למטה',
+                      buttons: buttons,
+                      headerType: 4, // Type 4 for image with caption
+                      viewOnce: true
+                    };
+                  } else {
+                    buttonMessage = {
+                      text: `*${eventDetails.name} - הזמנה לאירוע*\n\nשלום ${guest.name},\n\nאתם מוזמנים ל${eventDetails.name}!\n\n📅 תאריך: ${eventDetails.date}\n⏰ שעה: ${displayTime}\n📍 מיקום: ${eventDetails.location}\n\n${eventDetails.description}\n\nהאם תוכלו להגיע?`,
+                      footer: 'אנא השיבו באמצעות הכפתורים למטה',
+                      buttons: buttons,
+                      headerType: 1,
+                      viewOnce: true
+                    };
+                  }
                   
                   // Send the message
                   log.info(`Sending force RSVP message to: ${guest.phone}@s.whatsapp.net`);
@@ -869,13 +916,26 @@ async function clientstart() {
                 {buttonId: 'test_no', buttonText: {displayText: 'לא (בדיקה)'}, type: 1}
               ];
               
-              const buttonMessage = {
-                text: `*TEST MESSAGE*\n\nThis is a test RSVP invitation.\n\nWill you be able to attend the test event?`,
-                footer: 'Please respond using the buttons below',
-                buttons: buttons,
-                headerType: 1,
-                viewOnce: true
-              };
+              // Create message with image if available
+              let buttonMessage;
+              if (invitationImage) {
+                buttonMessage = {
+                  image: invitationImage,
+                  caption: `*בדיקת הודעה*\n\nזוהי הזמנה לבדיקה.\n\nהאם תוכל להגיע לאירוע הבדיקה?`,
+                  footer: 'אנא השיב באמצעות הכפתורים למטה',
+                  buttons: buttons,
+                  headerType: 4, // Type 4 for image with caption
+                  viewOnce: true
+                };
+              } else {
+                buttonMessage = {
+                  text: `*בדיקת הודעה*\n\nזוהי הזמנה לבדיקה.\n\nהאם תוכל להגיע לאירוע הבדיקה?`,
+                  footer: 'אנא השיב באמצעות הכפתורים למטה',
+                  buttons: buttons,
+                  headerType: 1,
+                  viewOnce: true
+                };
+              }
               
               await waClient.sendMessage(m.chat, buttonMessage);
               log.info('Sent test message with buttons');
@@ -890,17 +950,30 @@ async function clientstart() {
                   
                   // Create message for admin
                   const prodButtons = [
-                    {buttonId: 'yes', buttonText: {displayText: 'Yes, I\'ll attend'}, type: 1},
-                    {buttonId: 'no', buttonText: {displayText: 'No, I can\'t attend'}, type: 1}
+                    {buttonId: 'yes', buttonText: {displayText: 'כן, אני מגיע/ה'}, type: 1},
+                    {buttonId: 'no', buttonText: {displayText: 'לא אוכל להגיע'}, type: 1}
                   ];
                   
-                  const prodButtonMessage = {
-                    text: `*${eventDetails.name} - הזמנה לאירוע (בדיקה פרוד)*\n\nשלום מנהל,\n\nזוהי הודעת בדיקה:\n\n📅 תאריך: ${eventDetails.date}\n⏰ שעה: ${eventDetails.time}\n📍 מיקום: ${eventDetails.location}\n\n${eventDetails.description}\n\nהאם תוכל להגיע?`,
-                    footer: 'אנא השיב באמצעות הכפתורים למטה',
-                    buttons: prodButtons,
-                    headerType: 1,
-                    viewOnce: true
-                  };
+                  // Create message with image if available
+                  let prodButtonMessage;
+                  if (invitationImage) {
+                    prodButtonMessage = {
+                      image: invitationImage,
+                      caption: `*${eventDetails.name} - הזמנה לאירוע (בדיקה פרוד)*\n\nשלום מנהל,\n\nזוהי הודעת בדיקה:\n\n📅 תאריך: ${eventDetails.date}\n⏰ שעה: ${eventDetails.time}\n📍 מיקום: ${eventDetails.location}\n\n${eventDetails.description}\n\nהאם תוכל להגיע?`,
+                      footer: 'אנא השיב באמצעות הכפתורים למטה',
+                      buttons: prodButtons,
+                      headerType: 4,
+                      viewOnce: true
+                    };
+                  } else {
+                    prodButtonMessage = {
+                      text: `*${eventDetails.name} - הזמנה לאירוע (בדיקה פרוד)*\n\nשלום מנהל,\n\nזוהי הודעת בדיקה:\n\n📅 תאריך: ${eventDetails.date}\n⏰ שעה: ${eventDetails.time}\n📍 מיקום: ${eventDetails.location}\n\n${eventDetails.description}\n\nהאם תוכל להגיע?`,
+                      footer: 'אנא השיב באמצעות הכפתורים למטה',
+                      buttons: prodButtons,
+                      headerType: 1,
+                      viewOnce: true
+                    };
+                  }
                   
                   await waClient.sendMessage(adminPhone + '@s.whatsapp.net', prodButtonMessage);
                   await waClient.sendMessage(m.chat, { 
@@ -1050,7 +1123,7 @@ async function clientstart() {
               
               // Send generic acknowledgment if update fails
               await waClient.sendMessage(m.chat, { 
-                text: "Thank you for your response!" 
+                text: "תודה על תשובתך!" 
               });
             }
             return;
@@ -1077,14 +1150,14 @@ async function clientstart() {
               
               // Send confirmation
               await waClient.sendMessage(m.chat, { 
-                text: ` רשמנו שיגיעו תודה על האישור! ${guestCount} ${guestCount === 1 ? 'איש' : 'אנשים'}` 
+                text: `תודה על האישור! רשמנו שיגיעו ${guestCount} ${guestCount === 1 ? 'איש' : 'אנשים'}` 
               });
             } catch (error) {
               log.error(`Error updating confirm status for ${senderPhone}:`, error);
               
               // Send generic acknowledgment if update fails
               await waClient.sendMessage(m.chat, { 
-                text: "Thank you for your RSVP! We've noted your attendance." 
+                text: "תודה על תשובתך! רשמנו את נוכחותך." 
               });
             }
             return;
@@ -1100,22 +1173,22 @@ async function clientstart() {
         text.includes('i am coming') || text.includes('i\'ll attend') ||
         text === 'כן' || text.includes('אני מגיע') || text.includes('אגיע') || 
         text.includes('נגיע')) {  
-        // This is an acceptance but we need to ask for the number of guests
-        const buttons = [
-        {buttonId: 'guest_1', buttonText: {displayText: '1 (רק אני)'}, type: 1},
-        {buttonId: 'guest_2', buttonText: {displayText: '2 אנשים'}, type: 1},
-        {buttonId: 'guest_more', buttonText: {displayText: '3 או יותר'}, type: 1}
-        ];
+          // This is an acceptance but we need to ask for the number of guests
+          const buttons = [
+            {buttonId: 'guest_1', buttonText: {displayText: '1 (רק אני)'}, type: 1},
+            {buttonId: 'guest_2', buttonText: {displayText: '2 אנשים'}, type: 1},
+            {buttonId: 'guest_more', buttonText: {displayText: '3 או יותר'}, type: 1}
+          ];
 
-        await waClient.sendMessage(m.chat, {
-        text: "מעולה! כמה אנשים יגיעו בסך הכל (כולל אותך)?",
-        footer: 'אנא בחרו באחת האפשרויות',
-        buttons: buttons,
-        headerType: 1,
-        viewOnce: true
-        });
+          await waClient.sendMessage(m.chat, {
+            text: "מעולה! כמה אנשים יגיעו בסך הכל (כולל אותך)?",
+            footer: 'אנא בחרו באחת האפשרויות',
+            buttons: buttons,
+            headerType: 1,
+            viewOnce: true
+          });
 
-        return;
+          return;
         }
         
         // Add Hebrew responses:
@@ -1129,16 +1202,16 @@ async function clientstart() {
             // Update their status in the sheet
             await appScriptManager.updateGuestStatus(senderPhone, 'Declined', '0');
             
-            // Send acknowledgment
+            // Send acknowledgment in Hebrew
             await waClient.sendMessage(m.chat, { 
-              text: "Thank you for letting us know. We're sorry you can't make it!" 
+              text: "תודה שהודעת לנו. חבל שלא תוכל להגיע!" 
             });
           } catch (error) {
             log.error(`Error updating decline status for ${senderPhone}:`, error);
             
             // Send generic acknowledgment if update fails
             await waClient.sendMessage(m.chat, { 
-              text: "Thank you for your response!" 
+              text: "תודה על תשובתך!" 
             });
           }
           
@@ -1163,7 +1236,7 @@ async function clientstart() {
             
             // Send generic acknowledgment if update fails
             await waClient.sendMessage(m.chat, { 
-              text: "Thank you for your response! We've noted your attendance." 
+              text: "תודה על תשובתך! רשמנו את נוכחותך." 
             });
           }
           
@@ -1202,9 +1275,11 @@ async function clientstart() {
         // Admin commands
         log.info('Available admin commands:');
         log.info('!sendrsvp - Send RSVP messages to pending guests');
+        log.info('!sendrsvpforce - Send RSVP messages to ALL guests');
+        log.info('!clearcache - Clear the contacted guests cache');
         log.info('!status - Show current bot status and event details');
         log.info('!reload - Reload guest list from Google Sheets');
-        log.info('!debugapi - Test API connection to Google Apps Script'); // NEW - Log the new command
+        log.info('!debugapi - Test API connection to Google Apps Script');
         if (process.env.NODE_ENV === 'development') {
           log.info('!test - Send a test RSVP message (development only)');
         }
@@ -1347,6 +1422,8 @@ app.get('/', (req, res) => {
         <ul>
           <li><strong>!status</strong> - Show event details and RSVP statistics</li>
           <li><strong>!sendrsvp</strong> - Manually send RSVP messages</li>
+          <li><strong>!sendrsvpforce</strong> - Send to ALL guests</li>
+          <li><strong>!clearcache</strong> - Clear the contacted guests cache</li>
           <li><strong>!reload</strong> - Refresh data from Google Sheets</li>
           <li><strong>!debugapi</strong> - Test API connection</li>
           ${process.env.NODE_ENV === 'development' ? '<li><strong>!test</strong> - Send a test message with buttons</li>' : ''}
