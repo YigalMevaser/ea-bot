@@ -1240,3 +1240,153 @@ AxiosError: Request failed with status code 404
 [2025-05-15T08:25:13.899Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
 [2025-05-15T08:25:14.093Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
 [2025-05-15T08:25:14.094Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-15T08:43:32.745Z] [INFO] Initializing WhatsApp connection...
+[2025-05-15T08:43:32.824Z] [INFO] Automatic message scheduling disabled in development mode
+[2025-05-15T08:43:32.826Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-15T08:43:32.826Z] [INFO] Web server running on port 3000
+[2025-05-15T08:43:33.512Z] [INFO] Connection update: {"qr":"2@VbDcygiYhAlttOi6rmM238r9FnZOf0fjzxVMVD5tgAeRMfPshar22zi/3q89l9bxFSvQ0WwrkPPlFSGA+4nPSShIsEbmn6+MnKA=,65clquFzF8KZypVQj118L9IDjNJNml7uoNWCNgIR5T4=,ILhGopMUn9oNGUgCBaodTqLGwys2Oz9GQmG8caSWfyk=,43Nf9DIW3+yzh5R2zJNvqPICBNn/uy4kPmlcCnyhOeM="}
+[2025-05-15T08:43:33.546Z] [INFO] 
+
+==== WHATSAPP QR CODE (SCAN WITH PHONE) ====
+[2025-05-15T08:43:33.546Z] [INFO] ============================================
+[2025-05-15T08:43:33.546Z] [INFO] Scan this QR code with WhatsApp to connect your bot
+[2025-05-15T08:43:33.546Z] [INFO] If you cannot see the QR code clearly, check your terminal settings or try a different terminal
+[2025-05-15T08:43:45.035Z] [INFO] Connection update: {"isNewLogin":true}
+[2025-05-15T08:43:45.308Z] [INFO] Connection update: {"connection":"close","lastDisconnect":{"error":{"data":{"tag":"stream:error","attrs":{"code":"515"}},"isBoom":true,"isServer":true,"output":{"statusCode":515,"payload":{"statusCode":515,"error":"Unknown","message":"Stream Errored (restart required)"},"headers":{}}},"date":"2025-05-15T08:43:45.307Z"}}
+[2025-05-15T08:43:45.308Z] [INFO] Connection closed. Attempting to reconnect...
+[2025-05-15T08:43:45.310Z] [WARN] Disconnected with status code: 515
+[2025-05-15T08:43:45.310Z] [INFO] Reconnecting...
+[2025-05-15T08:43:45.310Z] [INFO] Initializing WhatsApp connection...
+[2025-05-15T08:43:45.315Z] [INFO] Automatic message scheduling disabled in development mode
+[2025-05-15T08:43:45.316Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-15T08:43:46.679Z] [INFO] Connection update: {"receivedPendingNotifications":true}
+[2025-05-15T08:43:47.289Z] [INFO] Connection update: {"connection":"open"}
+[2025-05-15T08:43:47.289Z] [INFO] Bot successfully connected! Bot JID: 972507412770:31@s.whatsapp.net
+[2025-05-15T08:43:47.289Z] [INFO] Available admin commands:
+[2025-05-15T08:43:47.289Z] [INFO] !sendrsvp - Send RSVP messages to pending guests
+[2025-05-15T08:43:47.289Z] [INFO] !status - Show current bot status and event details
+[2025-05-15T08:43:47.289Z] [INFO] !reload - Reload guest list from Google Sheets
+[2025-05-15T08:43:47.289Z] [INFO] !test - Send a test RSVP message (development only)
+[2025-05-15T08:43:51.813Z] [INFO] Message from 972507412770: 
+[2025-05-15T08:43:51.813Z] [ERROR] Error processing message:
+ReferenceError: Cannot access 'text' before initialization
+    at EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:589:9)
+    at EventEmitter.emit (node:events:536:35)
+    at EventEmitter.<anonymous> (/Users/yigalm/MyProjects/github/ea-bot/node_modules/@nstar/baileys/lib/Utils/event-buffer.js:40:16)
+    at EventEmitter.emit (node:events:524:28)
+    at Object.flush (/Users/yigalm/MyProjects/github/ea-bot/node_modules/@nstar/baileys/lib/Utils/event-buffer.js:73:16)
+    at processNodeWithBuffer (/Users/yigalm/MyProjects/github/ea-bot/node_modules/@nstar/baileys/lib/Socket/messages-recv.js:930:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[2025-05-15T08:43:52.906Z] [INFO] Message from 972507412770: 
+[2025-05-15T08:43:52.907Z] [ERROR] Error processing message:
+ReferenceError: Cannot access 'text' before initialization
+    at EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:589:9)
+    at EventEmitter.emit (node:events:536:35)
+    at EventEmitter.<anonymous> (/Users/yigalm/MyProjects/github/ea-bot/node_modules/@nstar/baileys/lib/Utils/event-buffer.js:40:16)
+    at EventEmitter.emit (node:events:524:28)
+    at Object.flush (/Users/yigalm/MyProjects/github/ea-bot/node_modules/@nstar/baileys/lib/Utils/event-buffer.js:73:16)
+    at processNodeWithBuffer (/Users/yigalm/MyProjects/github/ea-bot/node_modules/@nstar/baileys/lib/Socket/messages-recv.js:930:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[2025-05-15T08:48:45.296Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T08:53:45.307Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T08:58:54.844Z] [INFO] Initializing WhatsApp connection...
+[2025-05-15T08:58:54.918Z] [INFO] Automatic message scheduling disabled in development mode
+[2025-05-15T08:58:54.919Z] [INFO] Command line flag detected: Sending test RSVP message...
+[2025-05-15T08:58:54.920Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-15T08:58:54.920Z] [INFO] Web server running on port 3000
+[2025-05-15T08:58:55.896Z] [INFO] Connection update: {"receivedPendingNotifications":true}
+[2025-05-15T08:58:56.110Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T08:58:56.111Z] [INFO] Connection update: {"connection":"open"}
+[2025-05-15T08:58:56.111Z] [INFO] Bot successfully connected! Bot JID: 972507412770:31@s.whatsapp.net
+[2025-05-15T08:58:56.111Z] [INFO] Available admin commands:
+[2025-05-15T08:58:56.111Z] [INFO] !sendrsvp - Send RSVP messages to pending guests
+[2025-05-15T08:58:56.111Z] [INFO] !status - Show current bot status and event details
+[2025-05-15T08:58:56.111Z] [INFO] !reload - Reload guest list from Google Sheets
+[2025-05-15T08:58:56.111Z] [INFO] !test - Send a test RSVP message (development only)
+[2025-05-15T08:58:59.921Z] [INFO] Using mock event details
+[2025-05-15T08:59:11.578Z] [INFO] Message from 972526901876: !test
+[2025-05-15T08:59:11.578Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T08:59:11.905Z] [INFO] Sent test message with buttons
+[2025-05-15T08:59:11.921Z] [INFO] Message from 972507412770: 
+[2025-05-15T08:59:11.921Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:21.264Z] [INFO] Message from 972526901876: test_yes
+[2025-05-15T08:59:21.264Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T08:59:21.264Z] [INFO] Button response received: "test_yes"
+[2025-05-15T08:59:21.575Z] [INFO] Message from 972507412770: 
+[2025-05-15T08:59:21.575Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:27.424Z] [INFO] Message from 972526901876: guest_2
+[2025-05-15T08:59:27.424Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T08:59:27.424Z] [INFO] Button response received: "guest_2"
+[2025-05-15T08:59:27.425Z] [INFO] [MOCK DATA] Would update guest status: +972526901876 to Confirmed with 2 guests
+[2025-05-15T08:59:27.744Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T08:59:27.744Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:27.744Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests
+[2025-05-15T08:59:28.071Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T08:59:28.071Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:28.072Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests
+[2025-05-15T08:59:28.373Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T08:59:28.374Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:28.374Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests
+[2025-05-15T08:59:28.685Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T08:59:28.686Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:28.686Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests
+[2025-05-15T08:59:29.010Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T08:59:29.011Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:29.011Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests
+[2025-05-15T08:59:29.325Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T08:59:29.326Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:29.326Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests
+[2025-05-15T08:59:29.809Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T08:59:29.810Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:29.810Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests
+[2025-05-15T08:59:30.124Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T08:59:30.124Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:30.124Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests
+[2025-05-15T08:59:30.437Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T08:59:30.437Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:30.437Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests
+[2025-05-15T08:59:30.749Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T08:59:30.749Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:30.749Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests
+[2025-05-15T08:59:31.070Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T08:59:31.070Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:31.070Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests
+[2025-05-15T08:59:31.369Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T08:59:31.369Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:31.369Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests
+[2025-05-15T08:59:31.679Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T08:59:31.679Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:31.679Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests
+[2025-05-15T08:59:32.200Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T08:59:32.200Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:32.200Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests
+[2025-05-15T08:59:32.521Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T08:59:32.521Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:32.521Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests
+[2025-05-15T08:59:32.838Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T08:59:32.839Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:32.839Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests
+[2025-05-15T08:59:33.161Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T08:59:33.161Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:33.161Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests
+[2025-05-15T08:59:33.464Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T08:59:33.464Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:33.464Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests
+[2025-05-15T08:59:33.773Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T08:59:33.774Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:33.774Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests
+[2025-05-15T08:59:34.083Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T08:59:34.084Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:34.084Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests
+[2025-05-15T08:59:34.404Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T08:59:34.404Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:34.405Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests
+[2025-05-15T08:59:34.722Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T08:59:34.722Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:34.722Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests
+[2025-05-15T08:59:35.049Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T08:59:35.049Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:35.050Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests
+[2025-05-15T08:59:35.378Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T08:59:35.379Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
+[2025-05-15T08:59:35.379Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests

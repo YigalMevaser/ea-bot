@@ -585,10 +585,13 @@ async function clientstart() {
         log.info(`Message from ${senderPhone}: ${m.text}`);
         // Check if this is a message sent as a response to our auto-responses 
         // by checking patterns that might indicate it's an auto-reply
+        const text = m.text ? m.text.toLowerCase().trim() : '';
+        // Then use it
+        // Use lowercase in the check since we made text lowercase:
         const possibleAutoReply = 
-        (text && (text.includes("Thank you for letting us know") || 
-                text.includes("We're sorry you can't make it") || 
-                text.includes("I'm not sure I understand your response")));
+        (text && (text.includes("thank you for letting us know") || 
+                text.includes("we're sorry you can't make it") || 
+                text.includes("i'm not sure i understand your response")));
 
         if (possibleAutoReply) {
         log.info(`Detected possible auto-reply message, ignoring: ${text.substring(0, 30)}...`);
@@ -828,9 +831,7 @@ async function clientstart() {
         
         // Handle text responses
         if (!m.text) return;
-        
-        const text = m.text.toLowerCase().trim();
-        
+                
         // Manual Yes/No responses
         if (text === 'yes' || text.includes('yes i') || text.includes('i will') || 
           text.includes('i am coming') || text.includes('i\'ll attend')) {
