@@ -1390,3 +1390,31 @@ ReferenceError: Cannot access 'text' before initialization
 [2025-05-15T08:59:35.378Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
 [2025-05-15T08:59:35.379Z] [INFO] Checking if 972507412770 (972507412770) is admin: false
 [2025-05-15T08:59:35.379Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Confirmed with 2 guests
+[2025-05-15T09:12:33.602Z] [INFO] Initializing WhatsApp connection...
+[2025-05-15T09:12:33.671Z] [INFO] Automatic message scheduling disabled in development mode
+[2025-05-15T09:12:33.672Z] [INFO] Command line flag detected: Sending test RSVP message...
+[2025-05-15T09:12:33.674Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-15T09:12:33.674Z] [INFO] Web server running on port 3000
+[2025-05-15T09:12:34.773Z] [INFO] Connection update: {"receivedPendingNotifications":true}
+[2025-05-15T09:12:34.826Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T09:12:34.826Z] [INFO] Connection update: {"connection":"open"}
+[2025-05-15T09:12:34.826Z] [INFO] Bot successfully connected! Bot JID: 972507412770:31@s.whatsapp.net
+[2025-05-15T09:12:34.826Z] [INFO] Available admin commands:
+[2025-05-15T09:12:34.826Z] [INFO] !sendrsvp - Send RSVP messages to pending guests
+[2025-05-15T09:12:34.826Z] [INFO] !status - Show current bot status and event details
+[2025-05-15T09:12:34.826Z] [INFO] !reload - Reload guest list from Google Sheets
+[2025-05-15T09:12:34.826Z] [INFO] !test - Send a test RSVP message (development only)
+[2025-05-15T09:12:38.673Z] [INFO] Using mock event details
+[2025-05-15T09:13:12.680Z] [INFO] Message from 972526901876: !test
+[2025-05-15T09:13:12.681Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T09:13:12.871Z] [INFO] Sent test message with buttons
+[2025-05-15T09:13:12.872Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T09:13:17.807Z] [INFO] Message from 972526901876: test_yes
+[2025-05-15T09:13:17.807Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T09:13:17.807Z] [INFO] Button response received: "test_yes"
+[2025-05-15T09:13:17.996Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T09:13:20.095Z] [INFO] Message from 972526901876: guest_2
+[2025-05-15T09:13:20.095Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T09:13:20.095Z] [INFO] Button response received: "guest_2"
+[2025-05-15T09:13:20.096Z] [INFO] [MOCK DATA] Would update guest status: +972526901876 to Confirmed with 2 guests
+[2025-05-15T09:13:20.286Z] [INFO] Ignoring message from bot's own number: 972507412770

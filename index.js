@@ -580,7 +580,11 @@ async function clientstart() {
         
         // Get the sender's phone number
         const senderPhone = m.sender.split('@')[0];
-        
+        // Check if the message is from the bot's own number (auto-reply from WhatsApp)
+        if (waClient.user && senderPhone === waClient.user.id.split(':')[0]) {
+          log.info(`Ignoring message from bot's own number: ${senderPhone}`);
+          return;
+        }
         // Log incoming messages
         log.info(`Message from ${senderPhone}: ${m.text}`);
         // Check if this is a message sent as a response to our auto-responses 
@@ -589,9 +593,10 @@ async function clientstart() {
         // Then use it
         // Use lowercase in the check since we made text lowercase:
         const possibleAutoReply = 
-        (text && (text.includes("thank you for letting us know") || 
-                text.includes("we're sorry you can't make it") || 
-                text.includes("i'm not sure i understand your response")));
+          (text && (text.includes("thank you for confirming") || 
+                  text.includes("thank you for letting us know") || 
+                  text.includes("we're sorry you can't make it") || 
+                  text.includes("i'm not sure i understand your response")));
 
         if (possibleAutoReply) {
         log.info(`Detected possible auto-reply message, ignoring: ${text.substring(0, 30)}...`);
