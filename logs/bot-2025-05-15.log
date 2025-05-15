@@ -1,0 +1,1154 @@
+[2025-05-15T04:50:24.327Z] [INFO] Initializing WhatsApp connection...
+[2025-05-15T04:50:24.388Z] [INFO] Setting up RSVP message schedule: 0 9-20 * * *
+[2025-05-15T04:50:24.391Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-15T04:50:24.391Z] [INFO] Web server running on port 3000
+[2025-05-15T04:50:25.932Z] [INFO] Connection update: {"receivedPendingNotifications":true}
+[2025-05-15T04:50:25.935Z] [INFO] Connection update: {"connection":"open"}
+[2025-05-15T04:50:25.935Z] [INFO] Bot successfully connected! Bot JID: 972507412770:29@s.whatsapp.net
+[2025-05-15T04:50:25.935Z] [INFO] Available admin commands:
+[2025-05-15T04:50:25.935Z] [INFO] !sendrsvp - Send RSVP messages to pending guests
+[2025-05-15T04:50:25.935Z] [INFO] !status - Show current bot status and event details
+[2025-05-15T04:50:25.935Z] [INFO] !reload - Reload guest list from Google Sheets
+[2025-05-15T04:50:25.964Z] [INFO] Message from 972526901876: !test
+[2025-05-15T04:50:25.971Z] [INFO] Message from 972526901876: Yes
+[2025-05-15T04:50:26.276Z] [INFO] Message from 972507412770: 
+[2025-05-15T04:50:44.188Z] [INFO] Message from 972526901876: guest_2
+[2025-05-15T04:50:44.188Z] [INFO] Button response received: "guest_2"
+[2025-05-15T04:50:44.188Z] [INFO] Updating guest status in Apps Script: +972526901876
+[2025-05-15T04:50:44.217Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:743:15)
+[2025-05-15T04:50:44.442Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:44.443Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:44.444Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:44.652Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:44.652Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:44.656Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:44.922Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:44.922Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:44.925Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:45.154Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:45.154Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:45.159Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:45.449Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:45.449Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:45.454Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:45.663Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:45.663Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:45.666Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:45.881Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:45.881Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:45.885Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:46.167Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:46.167Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:46.173Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:46.388Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:46.388Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:46.392Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:46.691Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:46.691Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:46.694Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:46.909Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:46.909Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:46.913Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:47.125Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:47.126Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:47.129Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:47.413Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:47.413Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:47.417Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:47.632Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:47.633Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:47.636Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:47.850Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:47.850Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:47.854Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:48.074Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:48.074Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:48.077Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:48.288Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:48.289Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:48.292Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:48.596Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:48.596Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:48.603Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:48.816Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:48.816Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:48.819Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:49.116Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:49.116Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:49.120Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:49.331Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:49.332Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:49.332Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:49.537Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:49.538Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:49.539Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:49.746Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:49.747Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:49.750Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:50.033Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:50.033Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:50.036Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:50.243Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:50.243Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:50.244Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:50.450Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:50.450Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:50.453Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:50.688Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:50.688Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:50.690Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:50.903Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:50.903Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:50.906Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:51.117Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:51.117Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:51.119Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:51.410Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:51.410Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:51.415Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:51.628Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:51.628Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:51.632Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:51.853Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:51.853Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:51.856Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:52.263Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:52.263Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:52.266Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:52.507Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:52.507Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:52.509Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:52.783Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:52.783Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:52.784Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:52.993Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:52.993Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:52.997Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:53.308Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:53.309Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:53.311Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:53.518Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:53.518Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:53.521Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:53.836Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:53.836Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:53.839Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:54.062Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:54.062Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:54.065Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:54.359Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:54.359Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:54.361Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:54.573Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:54.573Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:54.576Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:54.880Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:54.880Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:54.881Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:55.087Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:55.088Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:55.091Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:55.403Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:55.403Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:55.404Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:55.607Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:55.607Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:55.609Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:55.931Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:55.931Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:55.933Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:56.166Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:56.166Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:56.169Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:56.458Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:56.458Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:56.461Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:56.669Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:56.669Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:56.672Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:56.876Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:56.876Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:56.878Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:57.084Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:57.084Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:57.086Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:57.298Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:57.298Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:57.301Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:57.511Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:57.512Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:57.514Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:57.725Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:57.725Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:57.727Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:57.933Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:57.933Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:57.935Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:58.223Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:58.223Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:58.226Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:58.435Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:58.435Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:58.438Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:58.644Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:58.644Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:58.646Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:58.852Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:58.852Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:58.853Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:59.078Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:59.078Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:59.081Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:59.288Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:59.289Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:59.291Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:59.501Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:59.501Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:59.505Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:50:59.795Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:50:59.795Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:50:59.796Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:51:00.002Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:51:00.002Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:51:00.004Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:51:00.211Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:51:00.211Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:51:00.213Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:51:00.418Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:51:00.418Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:51:00.420Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:51:00.650Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:51:00.650Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:51:00.652Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:51:00.859Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:51:00.859Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:51:00.862Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:51:01.067Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:51:01.067Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:51:01.069Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:51:01.275Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:51:01.275Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:51:01.279Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:51:01.488Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:51:01.488Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:51:01.490Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:51:01.701Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:51:01.701Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:51:01.702Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:51:01.913Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:51:01.913Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:51:01.914Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:51:02.120Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:51:02.120Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:51:02.122Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:51:02.332Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:51:02.332Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:51:02.335Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:51:02.540Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:51:02.540Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:51:02.542Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:51:02.751Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:51:02.752Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:51:02.753Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:51:02.964Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:51:02.964Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:51:02.967Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:51:03.267Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:51:03.267Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:51:03.268Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:51:03.474Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:51:03.474Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:51:03.476Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:51:03.800Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:51:03.800Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:51:03.804Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:51:04.019Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:51:04.020Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:51:04.022Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:51:04.322Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:51:04.322Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:51:04.326Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:51:04.536Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:51:04.536Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:51:04.537Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T04:51:04.842Z] [INFO] Message from 972507412770: Thank you for confirming! We've noted that 2 people will be attending.
+[2025-05-15T04:51:04.842Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-15T04:51:04.843Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:819:13)
+[2025-05-15T07:51:03.003Z] [INFO] Initializing WhatsApp connection...
+[2025-05-15T07:51:03.073Z] [INFO] Setting up RSVP message schedule: 0 9-20 * * *
+[2025-05-15T07:51:03.078Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-15T07:51:03.078Z] [INFO] Web server running on port 3000
+[2025-05-15T07:51:03.774Z] [INFO] Connection update: {"qr":"2@mdbFU0fkpkuZEIMUxiK2xx2qG0sucBP2+xWLwLPOc+5FtNYNyD5LBm1b9DsdD+rI0l7R7HvTK2LOEOOhyh85IgcDXuJgslpt1sQ=,to2GumYpAGlrjIhahKsdvX8RUh7pYWzhF+wi5ckmVmY=,k7dmBnKwWYCS98mPPQ4lrbmRgHdhgeP68M1RcAsEi1A=,GsQeNyJZD807b6uvGp5Np5k1XhIebpOgLc1s18u2EQA="}
+[2025-05-15T07:51:03.793Z] [INFO] ==== WHATSAPP QR CODE (SCAN WITH PHONE) ====
+[2025-05-15T07:51:03.794Z] [INFO] ============================================
+[2025-05-15T07:51:03.794Z] [INFO] Scan this QR code with WhatsApp to connect your bot

@@ -1,0 +1,781 @@
+[2025-05-14T21:07:31.638Z] [INFO] Initializing WhatsApp connection...
+[2025-05-14T21:07:31.717Z] [INFO] Automatic message scheduling disabled in development mode
+[2025-05-14T21:07:31.719Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-14T21:07:31.719Z] [INFO] Web server running on port 3000
+[2025-05-14T21:07:42.929Z] [INFO] Connection update: {"qr":"2@g53ETU6wq5GMPsDuqh08BZT1mVZn+a+mXx1gKxyHzbi9okWfZRx1H8b0jg9WDfS3EiwBxOZYC37HzMrPqmkyvgt8oY45KdFLlnU=,0Xrkl4u8rp/xSPY3T+MGrwv6wR/uBioN3urGtJnNcxk=,vi3ZEAbLxXo4yI+SDjH4mw+vVwUARQgZgQJbgzutbAs=,AFIDtMYir+5viYmoMI2W7Xzou3jXTYwNxA6RxXVLcKg="}
+[2025-05-14T21:07:42.955Z] [INFO] ==== WHATSAPP QR CODE (SCAN WITH PHONE) ====
+[2025-05-14T21:07:42.956Z] [INFO] ============================================
+[2025-05-14T21:07:42.956Z] [INFO] Scan this QR code with WhatsApp to connect your bot
+[2025-05-14T21:08:34.769Z] [INFO] Connection update: {"isNewLogin":true}
+[2025-05-14T21:08:35.376Z] [INFO] Connection update: {"connection":"close","lastDisconnect":{"error":{"data":{"tag":"stream:error","attrs":{"code":"515"}},"isBoom":true,"isServer":true,"output":{"statusCode":515,"payload":{"statusCode":515,"error":"Unknown","message":"Stream Errored (restart required)"},"headers":{}}},"date":"2025-05-14T21:08:35.375Z"}}
+[2025-05-14T21:08:35.376Z] [INFO] Connection closed. Attempting to reconnect...
+[2025-05-14T21:08:35.377Z] [WARN] Disconnected with status code: 515
+[2025-05-14T21:08:35.377Z] [INFO] Reconnecting...
+[2025-05-14T21:08:35.377Z] [INFO] Initializing WhatsApp connection...
+[2025-05-14T21:08:35.382Z] [INFO] Automatic message scheduling disabled in development mode
+[2025-05-14T21:08:35.382Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-14T21:08:36.246Z] [INFO] Connection update: {"receivedPendingNotifications":true}
+[2025-05-14T21:08:36.668Z] [INFO] Connection update: {"connection":"open"}
+[2025-05-14T21:08:36.668Z] [INFO] Bot successfully connected! Bot JID: 972507412770:28@s.whatsapp.net
+[2025-05-14T21:08:36.668Z] [INFO] Available admin commands:
+[2025-05-14T21:08:36.668Z] [INFO] !sendrsvp - Send RSVP messages to pending guests
+[2025-05-14T21:08:36.668Z] [INFO] !status - Show current bot status and event details
+[2025-05-14T21:08:36.668Z] [INFO] !reload - Reload guest list from Google Sheets
+[2025-05-14T21:08:36.668Z] [INFO] !test - Send a test RSVP message (development only)
+[2025-05-14T21:08:40.433Z] [INFO] Message from 972507412770: 
+[2025-05-14T21:08:41.028Z] [INFO] Message from 972507412770: 
+[2025-05-14T21:08:42.454Z] [INFO] Message from 972507412770: 
+[2025-05-14T21:11:38.351Z] [INFO] Initializing WhatsApp connection...
+[2025-05-14T21:11:38.401Z] [INFO] Automatic message scheduling disabled in development mode
+[2025-05-14T21:11:38.403Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-14T21:11:38.403Z] [INFO] Web server running on port 3000
+[2025-05-14T21:11:39.277Z] [INFO] Connection update: {"receivedPendingNotifications":true}
+[2025-05-14T21:11:39.355Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-14T21:11:39.355Z] [INFO] Connection update: {"connection":"open"}
+[2025-05-14T21:11:39.355Z] [INFO] Bot successfully connected! Bot JID: 972507412770:28@s.whatsapp.net
+[2025-05-14T21:11:39.355Z] [INFO] Available admin commands:
+[2025-05-14T21:11:39.355Z] [INFO] !sendrsvp - Send RSVP messages to pending guests
+[2025-05-14T21:11:39.355Z] [INFO] !status - Show current bot status and event details
+[2025-05-14T21:11:39.355Z] [INFO] !reload - Reload guest list from Google Sheets
+[2025-05-14T21:11:39.355Z] [INFO] !test - Send a test RSVP message (development only)
+[2025-05-14T21:13:05.777Z] [INFO] Message from 972507412770: !test
+[2025-05-14T21:14:35.957Z] [INFO] Message from 972526901876: 
+[2025-05-14T21:14:46.896Z] [INFO] Message from 972526901876: !test
+[2025-05-14T21:16:38.403Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-14T21:17:25.131Z] [INFO] Initializing WhatsApp connection...
+[2025-05-14T21:17:25.171Z] [INFO] Automatic message scheduling disabled in development mode
+[2025-05-14T21:17:25.172Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-14T21:17:25.173Z] [INFO] Web server running on port 3000
+[2025-05-14T21:17:26.353Z] [INFO] Connection update: {"receivedPendingNotifications":true}
+[2025-05-14T21:17:26.573Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-14T21:17:26.574Z] [INFO] Connection update: {"connection":"open"}
+[2025-05-14T21:17:26.574Z] [INFO] Bot successfully connected! Bot JID: 972507412770:28@s.whatsapp.net
+[2025-05-14T21:17:26.574Z] [INFO] Available admin commands:
+[2025-05-14T21:17:26.574Z] [INFO] !sendrsvp - Send RSVP messages to pending guests
+[2025-05-14T21:17:26.574Z] [INFO] !status - Show current bot status and event details
+[2025-05-14T21:17:26.574Z] [INFO] !reload - Reload guest list from Google Sheets
+[2025-05-14T21:17:26.574Z] [INFO] !test - Send a test RSVP message (development only)
+[2025-05-14T21:17:48.965Z] [INFO] Message from 972526901876: !sendrsvp
+[2025-05-14T21:17:49.595Z] [INFO] Message from 972507412770: I'm not sure I understand your response. Please reply with 'Yes' if you're attending, or 'No' if you can't attend. If you're attending, please also let me know how many people total will be coming.
+[2025-05-14T21:17:49.595Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:49.828Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:49.828Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:50.060Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:50.060Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:50.298Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:50.299Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:50.538Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:50.538Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:50.776Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:50.777Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:51.012Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:51.013Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:51.248Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:51.249Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:51.483Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:51.483Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:51.721Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:51.721Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:51.955Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:51.955Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:52.188Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:52.188Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:52.421Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:52.421Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:52.652Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:52.652Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:52.887Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:52.887Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:53.122Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:53.122Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:53.357Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:53.357Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:53.594Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:53.594Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:53.829Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:53.830Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:54.065Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:54.065Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:54.300Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:54.301Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:54.537Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:54.537Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:54.771Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:54.771Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:55.003Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:55.003Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:55.238Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:55.238Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:55.474Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:55.474Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:55.710Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:55.711Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:55.947Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:55.948Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:56.186Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:56.186Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:56.422Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:56.422Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:56.658Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:56.658Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:56.893Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:56.894Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:57.129Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:57.130Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:57.368Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:57.369Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:57.604Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:57.605Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:57.842Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:57.842Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:58.076Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:58.076Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:58.314Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:58.314Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:58.548Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:58.549Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:58.780Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:58.780Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:59.015Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:59.015Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:59.249Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:59.249Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:59.485Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:59.485Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:59.721Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:59.721Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:17:59.959Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:17:59.959Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:00.193Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:00.193Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:00.427Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:00.427Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:00.663Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:00.664Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:00.896Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:00.896Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:01.133Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:01.133Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:01.436Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:01.436Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:01.672Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:01.672Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:01.904Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:01.904Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:02.138Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:02.138Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:02.372Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:02.372Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:02.609Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:02.609Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:02.853Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:02.853Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:03.087Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:03.087Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:03.324Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:03.324Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:03.559Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:03.559Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:03.795Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:03.795Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:04.031Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:04.031Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:04.266Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:04.266Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:04.503Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:04.503Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:04.740Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:04.740Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:04.973Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:04.973Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:05.207Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:05.208Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:05.444Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:05.445Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:05.680Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:05.681Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:05.917Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:05.917Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:06.153Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:06.153Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:06.386Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:06.387Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:06.618Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:06.619Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:06.850Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:06.850Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:07.082Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:07.082Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:07.319Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:07.320Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:07.556Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:07.556Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:07.790Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:07.790Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:08.023Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:08.023Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:08.255Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:08.255Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:08.492Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:08.492Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:08.727Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:18:08.727Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:18:14.881Z] [INFO] Initializing WhatsApp connection...
+[2025-05-14T21:18:14.906Z] [INFO] Automatic message scheduling disabled in development mode
+[2025-05-14T21:18:14.907Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-14T21:18:14.907Z] [INFO] Web server running on port 3000
+[2025-05-14T21:18:15.892Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-14T21:18:15.893Z] [INFO] Connection update: {"connection":"open"}
+[2025-05-14T21:18:15.893Z] [INFO] Bot successfully connected! Bot JID: 972507412770:28@s.whatsapp.net
+[2025-05-14T21:18:15.893Z] [INFO] Available admin commands:
+[2025-05-14T21:18:15.893Z] [INFO] !sendrsvp - Send RSVP messages to pending guests
+[2025-05-14T21:18:15.893Z] [INFO] !status - Show current bot status and event details
+[2025-05-14T21:18:15.893Z] [INFO] !reload - Reload guest list from Google Sheets
+[2025-05-14T21:18:15.893Z] [INFO] !test - Send a test RSVP message (development only)
+[2025-05-14T21:18:15.922Z] [INFO] Connection update: {"receivedPendingNotifications":true}
+[2025-05-14T21:18:32.258Z] [INFO] Message from 972526901876: !reload
+[2025-05-14T21:18:51.036Z] [INFO] Message from 972526901876: !test
+[2025-05-14T21:19:00.298Z] [INFO] Message from 972526901876: !status
+[2025-05-14T21:22:06.285Z] [INFO] Initializing WhatsApp connection...
+[2025-05-14T21:22:06.327Z] [INFO] Automatic message scheduling disabled in development mode
+[2025-05-14T21:22:06.328Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-14T21:22:06.329Z] [INFO] Web server running on port 3000
+[2025-05-14T21:22:07.339Z] [INFO] Connection update: {"receivedPendingNotifications":true}
+[2025-05-14T21:22:07.552Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-14T21:22:07.553Z] [INFO] Connection update: {"connection":"open"}
+[2025-05-14T21:22:07.553Z] [INFO] Bot successfully connected! Bot JID: 972507412770:28@s.whatsapp.net
+[2025-05-14T21:22:07.553Z] [INFO] Available admin commands:
+[2025-05-14T21:22:07.553Z] [INFO] !sendrsvp - Send RSVP messages to pending guests
+[2025-05-14T21:22:07.553Z] [INFO] !status - Show current bot status and event details
+[2025-05-14T21:22:07.553Z] [INFO] !reload - Reload guest list from Google Sheets
+[2025-05-14T21:22:07.553Z] [INFO] !test - Send a test RSVP message (development only)
+[2025-05-14T21:22:25.682Z] [INFO] Message from 972526901876: !test
+[2025-05-14T21:22:38.191Z] [INFO] Message from 972526901876: !reload
+[2025-05-14T21:23:04.543Z] [INFO] Message from 972526901876: !send rsvp
+[2025-05-14T21:23:04.773Z] [INFO] Message from 972507412770: I'm not sure I understand your response. Please reply with 'Yes' if you're attending, or 'No' if you can't attend. If you're attending, please also let me know how many people total will be coming.
+[2025-05-14T21:23:04.774Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:04.990Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:04.990Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:05.203Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:05.204Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:05.419Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:05.419Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:05.631Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:05.631Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:05.848Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:05.848Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:06.062Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:06.062Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:06.275Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:06.275Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:06.498Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:06.499Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:06.714Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:06.715Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:06.936Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:06.936Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:07.157Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:07.157Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:07.370Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:07.370Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:07.582Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:07.582Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:07.792Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:07.792Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:08.003Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:08.004Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:08.211Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:08.211Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:08.429Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:08.429Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:08.644Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:08.644Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:08.860Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:08.860Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:09.078Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:09.078Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:09.297Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:09.298Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:09.513Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:09.513Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:09.729Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:09.729Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:09.946Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:09.947Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:10.162Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:10.162Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:10.377Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:10.377Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:10.586Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:10.586Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:10.796Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:10.797Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:11.008Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:11.008Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:11.219Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:11.219Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:11.430Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:11.430Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:11.641Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:11.641Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:11.856Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:11.856Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:12.067Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:12.067Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:12.276Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:12.277Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:12.494Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:12.494Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:12.712Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:12.712Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:12.930Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:12.930Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:13.140Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:13.140Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:13.353Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:13.353Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:13.609Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:13.609Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:13.822Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:13.822Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:14.038Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:14.038Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:14.251Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:14.251Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:14.740Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:14.740Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:15.267Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:15.267Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:15.785Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:23:15.785Z] [INFO] [MOCK DATA] Would update guest status: +972507412770 to Declined with 0 guests
+[2025-05-14T21:23:49.670Z] [INFO] Initializing WhatsApp connection...
+[2025-05-14T21:23:49.747Z] [INFO] Setting up RSVP message schedule: 0 9-20 * * *
+[2025-05-14T21:23:49.750Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-14T21:23:49.750Z] [INFO] Web server running on port 3000
+[2025-05-14T21:23:50.887Z] [INFO] Connection update: {"qr":"2@aSFLlEkVBalNcq1BcoJJvYEMlvXq2uk1xcnZ4h0MasCt9q7XhUR4SpLcjhok55qWWnSlk1NkaBFLyBKV/UBAm7TARBACkkrfrd8=,fCZn2Dh3mr30r/T7ocpOOUM56ro/Y5w2vR5DYykrRXg=,KmqO+S4dfhH5zEwd/2Q4WpwFwliIA2l2XBecu4vO2V0=,GLumZHXH+ngg8VOc/+kT7dQyuZJ2RuSCXI00AQvAmxc="}
+[2025-05-14T21:23:50.915Z] [INFO] ==== WHATSAPP QR CODE (SCAN WITH PHONE) ====
+[2025-05-14T21:23:50.915Z] [INFO] ============================================
+[2025-05-14T21:23:50.915Z] [INFO] Scan this QR code with WhatsApp to connect your bot
+[2025-05-14T21:24:07.110Z] [INFO] Connection update: {"isNewLogin":true}
+[2025-05-14T21:24:07.774Z] [INFO] Connection update: {"connection":"close","lastDisconnect":{"error":{"data":{"tag":"stream:error","attrs":{"code":"515"}},"isBoom":true,"isServer":true,"output":{"statusCode":515,"payload":{"statusCode":515,"error":"Unknown","message":"Stream Errored (restart required)"},"headers":{}}},"date":"2025-05-14T21:24:07.774Z"}}
+[2025-05-14T21:24:07.774Z] [INFO] Connection closed. Attempting to reconnect...
+[2025-05-14T21:24:07.776Z] [WARN] Disconnected with status code: 515
+[2025-05-14T21:24:07.776Z] [INFO] Reconnecting...
+[2025-05-14T21:24:07.776Z] [INFO] Initializing WhatsApp connection...
+[2025-05-14T21:24:07.782Z] [INFO] Setting up RSVP message schedule: 0 9-20 * * *
+[2025-05-14T21:24:07.784Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-14T21:24:08.940Z] [INFO] Connection update: {"receivedPendingNotifications":true}
+[2025-05-14T21:24:09.516Z] [INFO] Connection update: {"connection":"open"}
+[2025-05-14T21:24:09.517Z] [INFO] Bot successfully connected! Bot JID: 972507412770:29@s.whatsapp.net
+[2025-05-14T21:24:09.517Z] [INFO] Available admin commands:
+[2025-05-14T21:24:09.517Z] [INFO] !sendrsvp - Send RSVP messages to pending guests
+[2025-05-14T21:24:09.517Z] [INFO] !status - Show current bot status and event details
+[2025-05-14T21:24:09.517Z] [INFO] !reload - Reload guest list from Google Sheets
+[2025-05-14T21:24:12.005Z] [INFO] Message from 972507412770: 
+[2025-05-14T21:24:12.512Z] [INFO] Message from 972507412770: 
+[2025-05-14T21:24:13.792Z] [INFO] Message from 972507412770: 
+[2025-05-14T21:24:34.077Z] [INFO] Message from 972526901876: !test
+[2025-05-14T21:24:53.142Z] [INFO] Message from 972526901876: !sendrsvp
+[2025-05-14T21:24:53.433Z] [INFO] Message from 972507412770: I'm not sure I understand your response. Please reply with 'Yes' if you're attending, or 'No' if you can't attend. If you're attending, please also let me know how many people total will be coming.
+[2025-05-14T21:24:53.433Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:24:53.444Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:24:53.746Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:24:53.746Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:24:53.751Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:24:54.038Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:24:54.038Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:24:54.042Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:24:54.340Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:24:54.340Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:24:54.342Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:24:54.640Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:24:54.641Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:24:54.645Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:24:54.934Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:24:54.934Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:24:54.938Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:24:55.238Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:24:55.238Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:24:55.241Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:24:55.540Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:24:55.540Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:24:55.543Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:24:55.843Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:24:55.843Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:24:55.846Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:24:56.145Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:24:56.145Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:24:56.148Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:24:56.650Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:24:56.650Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:24:56.653Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:24:56.925Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:24:56.925Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:24:56.926Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:24:57.207Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:24:57.207Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:24:57.208Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:24:57.506Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:24:57.506Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:24:57.510Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:24:57.797Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:24:57.798Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:24:57.802Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:24:58.103Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:24:58.104Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:24:58.106Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:24:58.397Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:24:58.397Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:24:58.401Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:24:58.773Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:24:58.773Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:24:58.779Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:24:59.079Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:24:59.080Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:24:59.084Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:24:59.375Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:24:59.375Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:24:59.377Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:24:59.685Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:24:59.686Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:24:59.689Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:25:00.144Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:25:00.145Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:25:00.148Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:25:00.439Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:25:00.439Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:25:00.443Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:25:00.738Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:25:00.738Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:25:00.740Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:25:01.029Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:25:01.029Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:25:01.032Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:25:01.332Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:25:01.332Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:25:01.335Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:25:01.831Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:25:01.832Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:25:01.835Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:25:02.305Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:25:02.305Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:25:02.307Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:25:02.595Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:25:02.595Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:25:02.598Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:25:02.875Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:25:02.876Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:25:02.877Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
+[2025-05-14T21:25:03.161Z] [INFO] Message from 972507412770: Thank you for letting us know. We're sorry you can't make it!
+[2025-05-14T21:25:03.161Z] [INFO] Updating guest status in Apps Script: +972507412770
+[2025-05-14T21:25:03.163Z] [ERROR] Failed to update guest status: Request failed with status code 404
+AxiosError: Request failed with status code 404
+    at settle (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/adapters/http.js:599:11)
+    at IncomingMessage.emit (node:events:536:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (file:///Users/yigalm/MyProjects/github/ea-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async AppsScriptManager.updateGuestStatus (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:250:24)
+    at async EventEmitter.<anonymous> (file:///Users/yigalm/MyProjects/github/ea-bot/index.js:794:13)
