@@ -5,8 +5,8 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-      "dev": "cross-env NODE_ENV=development USE_MOCK_DATA=true node start.js",
-      "start": "cross-env NODE_ENV=production USE_MOCK_DATA=false node index.js"
+      "dev": "cross-env NODE_ENV=development node start.js",
+      "start": "cross-env NODE_ENV=production node index.js"
     },
     "dependencies": {
       "@hapi/boom": "^10.0.1",

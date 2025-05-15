@@ -97,9 +97,7 @@ console.clear();
 console.log('Starting Event RSVP Bot...');
 console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 
-// Add the useMockData constant
-const useMockData = process.env.USE_MOCK_DATA === 'true';
-console.log(`Using mock data: ${useMockData ? 'Yes' : 'No'}`);
+// Initialize the application
 
 // Create logs directory if it doesn't exist
 const logDir = path.join(__dirname, 'logs');
@@ -155,39 +153,7 @@ class AppsScriptManager {
         return this.cachedGuests;
       }
 
-      // Check if we're using mock data (regardless of environment)
-      if (useMockData) {
-        this.log.info('Using mock guest data');
-        const mockGuests = [
-          // Add admin phone for testing - with explicit different formats to debug
-          {
-            name: "Admin User (With +)",
-            phone: process.env.ADMIN_NUMBERS?.split(',')[0] || "+972526901876",
-            email: "admin@example.com",
-            status: "Pending",
-            count: "0",
-            notes: "",
-            lastContacted: ""
-          },
-          {
-            name: "Admin User (Without +)",
-            phone: (process.env.ADMIN_NUMBERS?.split(',')[0] || "+972526901876").replace('+', ''),
-            email: "admin2@example.com",
-            status: "Pending",
-            count: "0",
-            notes: "",
-            lastContacted: ""
-          }
-        ];
-        
-        const adminPhone = process.env.ADMIN_NUMBERS?.split(',')[0] || "+972526901876";
-        this.log.info(`Added admin phone ${adminPhone} to mock data for testing`);
-        this.cachedGuests = mockGuests;
-        this.lastFetchTime = now;
-        return mockGuests;
-      }
-      
-      // NEW LOGGING - Log the API details
+            // NEW LOGGING - Log the API details
       this.log.info(`Attempting API call to fetch guests from: ${this.scriptUrl}`);
       this.log.info(`Using secret key starting with: ${this.secretKey.substring(0, 3)}...`);
       
@@ -230,21 +196,9 @@ class AppsScriptManager {
         this.log.error(`API error response: ${JSON.stringify(error.response.data)}`);
       }
       
-      // Return empty array or mock data if in development
-      if (process.env.NODE_ENV === 'development') {
-        this.log.info('Using fallback mock data due to error');
-        return [
-          {
-            name: "Test User",
-            phone: process.env.ADMIN_NUMBERS?.split(',')[0] || "+12345678901",
-            email: "test@example.com",
-            status: "Pending",
-            count: "0",
-            notes: "",
-            lastContacted: ""
-          }
-        ];
-      }
+      // Return empty array on error
+      this.log.warn('Returning empty list due to API error');
+      return [];
       return [];
     }
   }
@@ -253,24 +207,6 @@ class AppsScriptManager {
     try {
       // Format the phone number consistently
       const formattedPhone = this.formatPhoneNumber(guestPhone);
-      
-      // If using mock data, just log the update
-      if (useMockData) {
-        this.log.info(`[MOCK DATA] Would update guest status: ${formattedPhone} to ${status} with ${guestCount} guests`);
-        
-        // Update cached guests for testing
-        if (this.cachedGuests) {
-          const guestIndex = this.cachedGuests.findIndex(g => g.phone === formattedPhone);
-          if (guestIndex >= 0) {
-            this.cachedGuests[guestIndex].status = status;
-            this.cachedGuests[guestIndex].count = guestCount.toString();
-            this.cachedGuests[guestIndex].notes = notes;
-            this.cachedGuests[guestIndex].lastContacted = new Date().toISOString();
-          }
-        }
-        
-        return true;
-      }
       
       // NEW LOGGING - Log update details
       this.log.info(`Updating guest status in Apps Script: ${formattedPhone} to ${status}`);
@@ -337,22 +273,6 @@ class AppsScriptManager {
         return this.cachedEventDetails;
       }
       
-      // Use mock data if specified
-      if (useMockData) {
-        this.log.info('Using mock event details');
-        const mockEventDetails = {
-          name: "Family Reunion",
-          date: "June 15, 2025",
-          time: "6:00 PM",
-          location: "Grand Hotel, 123 Main St",
-          description: "Join us for our family reunion! Food and drinks will be provided."
-        };
-        
-        this.cachedEventDetails = mockEventDetails;
-        this.lastFetchTime = now;
-        return mockEventDetails;
-      }
-      
       // NEW LOGGING - Log request details
       this.log.info(`Attempting to fetch event details from: ${this.scriptUrl}`);
       
@@ -395,17 +315,7 @@ class AppsScriptManager {
         this.log.error(`API error response: ${JSON.stringify(error.response.data)}`);
       }
       
-      // Return mock data in development mode or on error
-      if (process.env.NODE_ENV === 'development') {
-        return {
-          name: "Family Reunion (Dev)",
-          date: "June 15, 2025",
-          time: "6:00 PM",
-          location: "Grand Hotel, 123 Main St",
-          description: "Join us for our family reunion! Food and drinks will be provided."
-        };
-      }
-      
+      // Return default data on error
       return {
         name: "Event",
         date: new Date().toLocaleDateString(),
@@ -443,7 +353,7 @@ const serverPort = process.env.PORT || 3000;
 
 // Initialize Apps Script manager before clientstart
 const appScriptManager = new AppsScriptManager(
-  process.env.APPS_SCRIPT_URL || 'http://localhost:3000/mock',
+  process.env.APPS_SCRIPT_URL || '',
   process.env.SECRET_KEY || 'your_secret_key_here',
   log
 );
@@ -1556,86 +1466,7 @@ app.get('/', (req, res) => {
   `);
 });
 
-// Mock API for development testing
-if (process.env.NODE_ENV === 'development') {
-  app.post('/mock', (req, res) => {
-    let body = '';
-    req.on('data', chunk => {
-      body += chunk.toString();
-    });
-    req.on('end', () => {
-      try {
-        const data = JSON.parse(body);
-        log.info('Mock API received:', data);
-        
-        // Handle operations
-        if (data.operation === 'get_guests') {
-          res.json({
-            success: true,
-            guests: [
-              {
-                Name: "John Smith",
-                Phone: "+15551234567",
-                Email: "john@example.com",
-                Status: "Pending",
-                GuestCount: "",
-                Notes: "",
-                LastContacted: ""
-              },
-              {
-                Name: "Jane Doe",
-                Phone: "+15557654321",
-                Email: "jane@example.com",
-                Status: "Pending",
-                GuestCount: "",
-                Notes: "",
-                LastContacted: ""
-              },
-              {
-                Name: "Test Admin",
-                Phone: process.env.ADMIN_NUMBERS?.split(',')[0] || "+12345678901",
-                Email: "admin@example.com",
-                Status: "Pending",
-                GuestCount: "",
-                Notes: "",
-                LastContacted: ""
-              }
-            ]
-          });
-        } 
-        else if (data.operation === 'get_event_details') {
-          res.json({
-            success: true,
-            details: {
-              Name: "Family Reunion (Mock)",
-              Date: "June 15, 2025",
-              Time: "6:00 PM",
-              Location: "Grand Hotel, 123 Main St",
-              Description: "Join us for our family reunion! Food and drinks will be provided."
-            }
-          });
-        }
-        else if (data.operation === 'update_status') {
-          res.json({
-            success: true,
-            message: "Status updated successfully"
-          });
-        }
-        else {
-          res.json({
-            success: false,
-            message: "Unknown operation"
-          });
-        }
-      } catch (e) {
-        res.json({
-          success: false,
-          message: "Invalid request: " + e.message
-        });
-      }
-    });
-  });
-}
+// API handling logic has been moved to the Google Apps Script
 
 // Watch for file changes (useful during development)
 function watchForChanges() {

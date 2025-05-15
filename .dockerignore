@@ -1,0 +1,9 @@
+node_modules
+npm-debug.log
+whatsapp-qr.png
+.env
+local_session
+session
+logs
+.git
+.gitignore
