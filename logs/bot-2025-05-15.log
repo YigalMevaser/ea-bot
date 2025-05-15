@@ -2152,3 +2152,23 @@ Error: Guest not found
 [2025-05-15T12:48:59.906Z] [WARN] Heartbeat failed, connection may be unstable
 [2025-05-15T12:50:30.145Z] [INFO] Connection update: {"isOnline":true}
 [2025-05-15T12:53:59.895Z] [WARN] Heartbeat failed, connection may be unstable
+[2025-05-15T13:06:01.273Z] [INFO] Initializing WhatsApp connection...
+[2025-05-15T13:06:01.361Z] [INFO] Setting up RSVP message schedule: 0 9-20 * * *
+[2025-05-15T13:06:01.365Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-15T13:06:01.365Z] [INFO] Web server running on port 3000
+[2025-05-15T13:06:02.477Z] [INFO] Connection update: {"receivedPendingNotifications":true}
+[2025-05-15T13:06:02.491Z] [INFO] Message from 120363398569953095: *FOLLOW WOI CH KEDUA TUH☝️ G.A NYA DISANA DLU NAK PUSH P NYA DLU TRUS OPEN ADMIN CH*
+[2025-05-15T13:06:02.491Z] [INFO] Checking if 120363398569953095 (120363398569953095) is admin: false
+[2025-05-15T13:06:02.550Z] [INFO] Connection update: {"isOnline":true}
+[2025-05-15T13:06:02.550Z] [INFO] Connection update: {"connection":"open"}
+[2025-05-15T13:06:02.550Z] [INFO] Bot successfully connected! Bot JID: 972507412770:32@s.whatsapp.net
+[2025-05-15T13:06:02.550Z] [INFO] Available admin commands:
+[2025-05-15T13:06:02.550Z] [INFO] !sendrsvp - Send RSVP messages to pending guests
+[2025-05-15T13:06:02.550Z] [INFO] !status - Show current bot status and event details
+[2025-05-15T13:06:02.550Z] [INFO] !reload - Reload guest list from Google Sheets
+[2025-05-15T13:06:02.550Z] [INFO] !debugapi - Test API connection to Google Apps Script
+[2025-05-15T13:07:13.126Z] [INFO] Message from 972526901876: !clearcache
+[2025-05-15T13:07:13.126Z] [INFO] Checking if 972526901876 (972526901876) is admin: true
+[2025-05-15T13:07:14.117Z] [INFO] Cache cleared manually by admin
+[2025-05-15T13:07:14.118Z] [INFO] Ignoring message from bot's own number: 972507412770
+[2025-05-15T13:11:01.360Z] [INFO] Connection update: {"isOnline":true}

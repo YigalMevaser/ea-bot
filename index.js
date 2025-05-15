@@ -699,6 +699,32 @@ async function clientstart() {
             return;
           }
           
+          if (m.text === '!clearcache') {
+            try {
+              // Clear the contactedGuests set
+              contactedGuests.clear();
+              
+              // Also clear the cached data to force fresh data
+              appScriptManager.cachedGuests = null;
+              appScriptManager.cachedEventDetails = null;
+              appScriptManager.lastFetchTime = 0;
+              
+              await waClient.sendMessage(m.chat, { 
+                text: "✅ Cache cleared successfully! Automatic hourly messages will now be sent to all pending guests again." 
+              });
+              
+              // Log the operation
+              log.info('Cache cleared manually by admin');
+            } catch (error) {
+              log.error('Error clearing cache:', error);
+              await waClient.sendMessage(m.chat, { 
+                text: "Error clearing cache. Check logs for details." 
+              });
+            }
+            return;
+          }
+          // Check if the message is a response to our RSVP buttons
+
           // ADD THE NEW FORCE COMMAND RIGHT AFTER THE SENDRSVP COMMAND
           if (m.text === '!sendrsvpforce') {
             try {
