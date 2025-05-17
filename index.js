@@ -1520,14 +1520,28 @@ const SESSION_PATH = process.env.SESSION_PATH ||
     
     // Handle connection heartbeat to ensure connection stays alive
     setInterval(async () => {
-      if (waClient.user) {
-        try {
+      try {
+        if (waClient && waClient.user) {
           // Send a ping to keep the connection alive
           await waClient.sendPresenceUpdate('available');
-        } catch (error) {
-          log.warn('Heartbeat failed, connection may be unstable');
+          log.info('Heartbeat sent successfully');
         }
+      } catch (error) {
+        log.warn('Heartbeat failed, connection may be unstable', error);
+        
+        // Try to recover connection if repeatedly failing
+        if (global.lastHeartbeatFailed) {
+          log.warn('Second consecutive heartbeat failure, checking connection status');
+          if (waClient && waClient.ws && waClient.ws.readyState !== 1) {
+            log.warn('WebSocket not in OPEN state, connection may need to be restored');
+          }
+        }
+        global.lastHeartbeatFailed = true;
+        return;
       }
+      
+      // Reset the failure flag on success
+      global.lastHeartbeatFailed = false;
     }, 5 * 60 * 1000); // Every 5 minutes
     
     // Save credentials on update
@@ -1613,7 +1627,7 @@ app.use(express.static(__dirname));
 
 // Health check endpoint for Docker
 app.get('/health', (req, res) => {
-  if (waClient && waClient.user) {
+  if (client && client.user) {
     res.status(200).json({
       status: 'healthy',
       timestamp: new Date().toISOString(),

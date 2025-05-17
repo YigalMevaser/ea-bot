@@ -43,5 +43,12 @@ VOLUME ["/session", "/app/logs"]
 # Expose the port the app runs on
 EXPOSE 3000
 
-# Start the bot
-CMD ["node", "index.js"]
+# Add Docker healthcheck
+HEALTHCHECK --interval=60s --timeout=10s --start-period=30s --retries=3 \
+  CMD node auto-restart.js || exit 1
+
+# Make the health and monitor scripts executable
+RUN chmod +x check-deps.sh
+
+# Start the bot with proper entrypoint
+ENTRYPOINT ["node", "start.js"]

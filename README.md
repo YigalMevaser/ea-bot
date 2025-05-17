@@ -166,6 +166,27 @@ Send these commands via WhatsApp message to the bot's number:
 - `!test` - Send a test RSVP message (development only)
 - `!clearcache` - Clear the contacted guests cache
 - `!sendrsvpforce` - Send RSVP to all guests, ignoring cache
+- `!eventdate` - Show event date and messaging schedule
+
+### Utility Scripts
+
+The bot includes several utility scripts for monitoring and maintenance:
+
+- **health-check.js**: Checks if the bot is running properly and can restart it if needed
+  - Run with: `npm run health`
+  - Can be scheduled on Railway.app to run periodically
+  
+- **connection-monitor.js**: More detailed connection monitoring for diagnostics
+  - Run with: `npm run monitor`
+  - Logs comprehensive connection details
+  
+- **bot-wrapper.js**: Launches the bot with automatic restart on crash
+  - Run with: `npm run wrapper`
+  - Best for local deployments where you want continuous uptime
+  
+- **check-deps.sh**: Verifies required dependencies are installed
+  - Run with: `npm run check`
+  - Automatically installed before the bot starts
 
 ### Guest Interaction
 
@@ -270,6 +291,58 @@ When to Use Each Command
 
 The --test-message flag is especially useful for quickly testing your setup without having to manually send the !test command via WhatsApp after the bot starts.
 
+
+Event Message Reminder Strategy
+Your WhatsApp RSVP bot uses a time-based event proximity strategy to determine when to send messages to guests. The bot sends different types of reminders at specific time intervals before the event. Here's how the strategy works:
+
+Message Schedule Timeline
+The bot sends messages at these key intervals:
+
+Initial Invitation (28-30 days before)
+
+First announcement about the event
+Sent to all guests with pending status
+Contains full event details and RSVP request
+First Reminder (14 days before)
+
+Sent exactly 2 weeks before the event
+Only sent to non-respondents (guests who haven't confirmed or declined)
+Gentle reminder about the upcoming event
+Second Reminder (7 days before)
+
+Sent exactly 1 week before the event
+More urgent tone for non-respondents
+Emphasizes the event is approaching soon
+Final Reminder (2-3 days before)
+
+Last reminder sent 2-3 days before the event
+Sent to both confirmed guests (as a courtesy) and non-respondents
+Most urgent tone, final chance to respond
+Implementation Details
+The scheduling logic is implemented in eventScheduler.js with these key functions:
+
+calculateDaysRemaining() - Calculates days until the event
+shouldSendMessagesToday() - Determines if messages should be sent based on event proximity
+filterGuestsByEventProximity() - Filters guest list based on event date
+getMessageByProximity() - Provides customized messages based on days remaining
+The behavior is controlled by the EVENT_DATE parameter in your .env file:
+EVENT_DATE=2025-06-15
+
+How to Check Current Status
+You can use the !eventdate admin command in WhatsApp to check:
+
+The current event date
+Days remaining until the event
+Which messaging phase you're currently in
+The full scheduling strategy
+Custom Message Content
+Each phase has customized message content in Hebrew:
+
+Initial Invitation: "אתם מוזמנים ל[event name]!"
+First Reminder: "אנו מזכירים לכם את ההזמנה ל[event name]"
+Second Reminder: "בעוד שבוע יתקיים [event name]"
+Final Reminder: "בעוד [X] ימים יתקיים [event name]. זוהי תזכורת אחרונה"
+Since today's date is May 17, 2025, and your event is on June 15, 2025 (29 days away), you're currently in the "Initial invitation" phase.
 
 ## License
 

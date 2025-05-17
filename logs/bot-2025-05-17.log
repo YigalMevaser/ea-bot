@@ -1,0 +1,12 @@
+[2025-05-17T19:12:53.061Z] [INFO] Loading invitation image from: /Users/yigalm/MyProjects/github/ea-bot/invitation.jpeg
+[2025-05-17T19:12:53.062Z] [INFO] Invitation image loaded successfully
+[2025-05-17T19:12:53.064Z] [INFO] Initializing WhatsApp connection...
+[2025-05-17T19:12:53.110Z] [INFO] Setting up RSVP message schedule: */5 * * * *
+[2025-05-17T19:12:53.113Z] [INFO] Setting up follow-up checker to run every hour
+[2025-05-17T19:12:53.115Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-17T19:12:53.115Z] [INFO] Web server running on port 3000
+[2025-05-17T19:12:56.686Z] [INFO] Connection update: {"connection":"close","lastDisconnect":{"error":{"data":{"reason":"401","location":"frc"},"isBoom":true,"isServer":false,"output":{"statusCode":401,"payload":{"statusCode":401,"error":"Unauthorized","message":"Connection Failure"},"headers":{}}},"date":"2025-05-17T19:12:56.686Z"}}
+[2025-05-17T19:12:56.687Z] [INFO] Connection closed. Attempting to reconnect...
+[2025-05-17T19:12:56.690Z] [WARN] Disconnected with status code: 401
+[2025-05-17T19:12:56.690Z] [ERROR] Device logged out, please scan the QR code again
+No stack trace
