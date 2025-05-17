@@ -6,6 +6,10 @@ A WhatsApp-based bot for managing RSVPs for events. The bot sends invitations to
 
 ![WhatsApp RSVP Bot](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExODA2MjIxNDEzZjM3OThhMzE3MjJjZDYyM2FhNTgxYjZjOGIzZGFjNiZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/3oEduQX8l9Fp8rVbYQ/giphy.gif)
 
+## Deployment Status
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/yigalbot)
+
 ## Features
 
 - **WhatsApp Integration**: Send and receive messages via WhatsApp
@@ -25,8 +29,79 @@ A WhatsApp-based bot for managing RSVPs for events. The bot sends invitations to
 
 ## Installation
 
+### Local Setup
+
 1. Clone the repository:
-git clone https://github.com/yourusername/event-rsvp-bot.git cd event-rsvp-bot
+```bash
+git clone https://github.com/yourusername/event-rsvp-bot.git
+cd event-rsvp-bot
+```
+
+### Railway.app Deployment
+
+The bot can be easily deployed to Railway.app with the following steps:
+
+1. Fork this repository to your GitHub account
+2. Click the "Deploy on Railway" button above
+3. Connect your GitHub account and select your forked repository
+4. Configure the following environment variables:
+   - `NODE_ENV=production`
+   - `PORT=8080`
+   - `SESSION_PATH=/session` (important for persistent sessions)
+   - `APPS_SCRIPT_URL=https://script.google.com/macros/s/your-script-id/exec`
+   - `SECRET_KEY=your_secret_key_here`
+   - `ADMIN_NUMBERS=+972123456789` (comma-separated list of admin phone numbers)
+   - `MESSAGE_SCHEDULE=0 9-20 * * *` (cron schedule for sending messages)
+5. Deploy the application
+6. **Important**: Visit your Railway deployment URL to scan the QR code with WhatsApp
+   - Go to `https://your-railway-url.railway.app/qr`
+   - Scan with your WhatsApp app (Settings > Linked Devices > Link a Device)
+
+### Docker Deployment
+
+You can run the bot using Docker for easier deployment and maintenance:
+
+1. **Prerequisites:**
+   - Docker and Docker Compose installed on your server
+   - `.env` file configured with your settings (see Configuration section)
+
+2. **Using Docker Compose (recommended):**
+   ```bash
+   # Build and run using docker-compose
+   docker-compose up -d
+   
+   # View logs
+   docker-compose logs -f
+   
+   # Stop the bot
+   docker-compose down
+   ```
+
+3. **Manual Docker deployment:**
+   ```bash
+   # Build the Docker image
+   docker build -t ea-bot .
+   
+   # Run the container
+   docker run -d --name ea-bot \
+     -p 3000:3000 \
+     -v $(pwd)/session:/session \
+     -v $(pwd)/logs:/app/logs \
+     -v $(pwd)/.env:/app/.env:ro \
+     -e NODE_ENV=production \
+     ea-bot
+   
+   # Check logs
+   docker logs -f ea-bot
+   ```
+
+4. **Access the QR code:**
+   - Open `http://your-server-ip:3000/qr` in your browser
+   - Scan with WhatsApp to connect your bot
+
+5. **Health monitoring:**
+   - The bot includes a health endpoint at `http://your-server-ip:3000/health`
+   - Docker will automatically monitor this endpoint and restart the container if needed
 
 
 2. Install dependencies:

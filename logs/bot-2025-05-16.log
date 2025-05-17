@@ -1,0 +1,24 @@
+[2025-05-16T08:22:37.490Z] [INFO] Loading invitation image from: /Users/yigalm/MyProjects/github/ea-bot/invitation.jpeg
+[2025-05-16T08:22:37.492Z] [INFO] Invitation image loaded successfully
+[2025-05-16T08:22:37.494Z] [INFO] Initializing WhatsApp connection...
+[2025-05-16T08:22:37.537Z] [INFO] Setting up RSVP message schedule: */5 * * * *
+[2025-05-16T08:22:37.539Z] [INFO] Setting up follow-up checker to run every hour
+[2025-05-16T08:22:37.541Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-16T08:22:37.541Z] [INFO] Web server running on port 3000
+[2025-05-16T08:22:39.044Z] [INFO] Connection update: {"connection":"close","lastDisconnect":{"error":{"data":{"reason":"401","location":"cco"},"isBoom":true,"isServer":false,"output":{"statusCode":401,"payload":{"statusCode":401,"error":"Unauthorized","message":"Connection Failure"},"headers":{}}},"date":"2025-05-16T08:22:39.044Z"}}
+[2025-05-16T08:22:39.045Z] [INFO] Connection closed. Attempting to reconnect...
+[2025-05-16T08:22:39.048Z] [WARN] Disconnected with status code: 401
+[2025-05-16T08:22:39.048Z] [ERROR] Device logged out, please scan the QR code again
+No stack trace
+[2025-05-16T08:33:54.160Z] [INFO] Loading invitation image from: /Users/yigalm/MyProjects/github/ea-bot/invitation.jpeg
+[2025-05-16T08:33:54.163Z] [INFO] Invitation image loaded successfully
+[2025-05-16T08:33:54.168Z] [INFO] Initializing WhatsApp connection...
+[2025-05-16T08:33:54.220Z] [INFO] Setting up RSVP message schedule: */5 * * * *
+[2025-05-16T08:33:54.222Z] [INFO] Setting up follow-up checker to run every hour
+[2025-05-16T08:33:54.224Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-16T08:33:54.224Z] [INFO] Web server running on port 3000
+[2025-05-16T08:33:57.864Z] [INFO] Connection update: {"connection":"close","lastDisconnect":{"error":{"data":{"reason":"401","location":"rva"},"isBoom":true,"isServer":false,"output":{"statusCode":401,"payload":{"statusCode":401,"error":"Unauthorized","message":"Connection Failure"},"headers":{}}},"date":"2025-05-16T08:33:57.864Z"}}
+[2025-05-16T08:33:57.865Z] [INFO] Connection closed. Attempting to reconnect...
+[2025-05-16T08:33:57.866Z] [WARN] Disconnected with status code: 401
+[2025-05-16T08:33:57.867Z] [ERROR] Device logged out, please scan the QR code again
+No stack trace

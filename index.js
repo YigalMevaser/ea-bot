@@ -1,4 +1,3 @@
-
 /*─────────────────────────────────────────
   Event RSVP Bot - Family Event Attendance Tracker  
 ──────────────────────────────────────────*/
@@ -15,7 +14,30 @@ import axios from 'axios';
 import cron from 'node-cron';
 import express from 'express';
 import qrcode from 'qrcode';
+import { calculateDaysRemaining, filterGuestsByEventProximity, getMessageByProximity } from './utils/eventScheduler.js';
 
+// Import all Baileys functions via dynamic import to handle ES Module vs CommonJS compatibility
+import * as baileysImport from '@nstar/baileys';
+const { 
+    prepareWAMessageMedia, 
+    removeAuthState,
+    fetchLatestBaileysVersion, 
+    generateWAMessageFromContent, 
+    generateWAMessageContent, 
+    generateWAMessage,
+    relayWAMessage, 
+    generateMessageTag,
+    getAggregateVotesInPollMessage, 
+    downloadContentFromMessage, 
+    fetchLatestWaWebVersion, 
+    InteractiveMessage, 
+    generateForwardMessageContent, 
+    MessageRetryMap 
+} = baileysImport; // Using GataNina-Li's fork
+
+// Import FileType via dynamic import
+import * as fileTypeImport from 'file-type';
+const FileType = fileTypeImport.default || fileTypeImport;
 
 const args = process.argv.slice(2);
 const shouldSendTestMessage = args.includes('--test-message');
@@ -349,7 +371,10 @@ let client = null;
 
 // Setup Express server
 const app = express();
-const serverPort = process.env.PORT || 3000;
+const serverPort = process.env.PORT || 8080; // Use Railway.app default port 
+
+// Store the latest QR code
+let lastQR = null;
 
 // Initialize Apps Script manager before clientstart
 const appScriptManager = new AppsScriptManager(
@@ -371,10 +396,13 @@ async function clientstart() {
   log.info('Initializing WhatsApp connection...');
   
   // Session path - detect if we're running in Docker/Railway or locally
-  const SESSION_PATH = process.env.NODE_ENV === 'production' 
-    ? path.join(__dirname, 'session')  // Production path
-    : path.join(__dirname, 'local_session');  // Local path for development
+  // Use environment variable to override session path for Railway.com compatibility
+const SESSION_PATH = process.env.SESSION_PATH || 
+    (process.env.NODE_ENV === 'production' 
+      ? path.join(__dirname, 'session')  // Production path
+      : path.join(__dirname, 'local_session'));  // Local path for development
 
+  // Important: Railway.app needs the absolute path
   console.log('Using session path:', SESSION_PATH);
 
   // Ensure the directory exists
@@ -456,6 +484,11 @@ async function clientstart() {
         const eventDetails = await appScriptManager.getEventDetails();
         log.info(`Preparing messages for event: ${eventDetails.name}`);
         
+        // Get event date (either from env var or from event details)
+        const eventDate = process.env.EVENT_DATE || eventDetails.date;
+        const daysRemaining = calculateDaysRemaining(eventDate);
+        log.info(`Days remaining until event: ${daysRemaining}`);
+        
         // NEW LOGGING - Log before fetching guests
         log.info(`About to fetch guests with key: ${process.env.SECRET_KEY.substring(0, 3)}...`);
         
@@ -470,11 +503,26 @@ async function clientstart() {
         
         log.info(`Found ${guests.length} potential guests to contact`);
         
-        // Filter guests who haven't been contacted yet and haven't responded
-        const pendingGuests = guests.filter(guest => 
-          !contactedGuests.has(guest.phone) && 
-          (guest.status === 'Pending' || guest.status === '')
-        );
+        // Use event-aware scheduling if not forced
+        let pendingGuests;
+        if (forced) {
+          // If forced (manual trigger), use original filtering logic
+          pendingGuests = guests.filter(guest => 
+            !contactedGuests.has(guest.phone) && 
+            (guest.status === 'Pending' || guest.status === '')
+          );
+          log.info(`Manual trigger: using standard filtering (${pendingGuests.length} guests)`);
+        } else {
+          // Use event proximity-based filtering for automatic scheduling
+          pendingGuests = filterGuestsByEventProximity(guests, eventDate, contactedGuests);
+          log.info(`Automatic scheduling: ${daysRemaining} days until event, selected ${pendingGuests.length} guests`);
+          
+          // If no guests to message today based on schedule, exit early
+          if (pendingGuests.length === 0 && daysRemaining > 0) {
+            log.info(`No guests to message today according to event scheduling strategy (${daysRemaining} days until event)`);
+            return;
+          }
+        }
         
         if (pendingGuests.length === 0) {
           log.info('No new guests to contact in this batch');
@@ -493,14 +541,19 @@ async function clientstart() {
               {buttonId: 'yes', buttonText: {displayText: 'כן, אני מגיע/ה'}, type: 1},
               {buttonId: 'no', buttonText: {displayText: 'לא אוכל להגיע'}, type: 1},
               {buttonId: 'maybe', buttonText: {displayText: 'לא בטוח/ה, תשאל אותי מחר'}, type: 1}
-            ];
+            ];              // Get event date and calculate days remaining
+            const eventDate = process.env.EVENT_DATE || eventDetails.date;
+            const daysRemaining = calculateDaysRemaining(eventDate);
+              
+            // Get the appropriate message based on event proximity
+            const messageText = getMessageByProximity(daysRemaining, eventDetails, guest.name);
             
             // Create message with image if available, otherwise text only
             let buttonMessage;
             if (invitationImage) {
               buttonMessage = {
                 image: invitationImage,
-                caption: `*${eventDetails.name} - הזמנה לאירוע*\n\nשלום ${guest.name},\n\nאתם מוזמנים ל${eventDetails.name}!\n\n📅 תאריך: ${eventDetails.date}\n⏰ שעה: ${eventDetails.time}\n📍 מיקום: ${eventDetails.location}\n\n${eventDetails.description}\n\nהאם תוכלו להגיע?`,
+                caption: messageText,
                 footer: 'אנא השיבו באמצעות הכפתורים למטה',
                 buttons: buttons,
                 headerType: 4, // Type 4 for image with caption
@@ -508,7 +561,7 @@ async function clientstart() {
               };
             } else {
               buttonMessage = {
-                text: `*${eventDetails.name} - הזמנה לאירוע*\n\nשלום ${guest.name},\n\nאתם מוזמנים ל${eventDetails.name}!\n\n📅 תאריך: ${eventDetails.date}\n⏰ שעה: ${eventDetails.time}\n📍 מיקום: ${eventDetails.location}\n\n${eventDetails.description}\n\nהאם תוכלו להגיע?`,
+                text: messageText,
                 footer: 'אנא השיבו באמצעות הכפתורים למטה',
                 buttons: buttons,
                 headerType: 1,
@@ -1035,6 +1088,48 @@ async function clientstart() {
             }
           }
           
+          if (m.text === '!eventdate') {
+            try {
+              // Get event date (either from env var or from event details)
+              const eventDetails = await appScriptManager.getEventDetails();
+              const eventDate = process.env.EVENT_DATE || eventDetails.date;
+              const daysRemaining = calculateDaysRemaining(eventDate);
+              
+              let message = `*Event Date Information*\n\n`;
+              message += `Event: ${eventDetails.name}\n`;
+              message += `Date: ${eventDate}\n`;
+              message += `Days remaining: ${daysRemaining}\n\n`;
+              
+              // Add scheduling information
+              message += `*Messaging Schedule:*\n`;
+              message += `- Initial invitation: 28-30 days before\n`;
+              message += `- First reminder: 14 days before\n`;
+              message += `- Second reminder: 7 days before\n`;
+              message += `- Final reminder: 2-3 days before\n`;
+              
+              // Show which phase we're in
+              if (daysRemaining >= 28 && daysRemaining <= 30) {
+                message += `\n*Current phase: Initial invitation*`;
+              } else if (daysRemaining === 14) {
+                message += `\n*Current phase: First reminder*`;
+              } else if (daysRemaining === 7) {
+                message += `\n*Current phase: Second reminder*`;
+              } else if (daysRemaining >= 2 && daysRemaining <= 3) {
+                message += `\n*Current phase: Final reminder*`;
+              } else {
+                message += `\n*Current phase: No scheduled messages today*`;
+              }
+              
+              await waClient.sendMessage(m.chat, { text: message });
+            } catch (error) {
+              log.error('Error in eventdate command:', error);
+              await waClient.sendMessage(m.chat, { 
+                text: "Error getting event date information." 
+              });
+            }
+            return;
+          }
+          
           if (m.text === '!debug') {
             try {
               // Get the sender's info
@@ -1309,6 +1404,7 @@ async function clientstart() {
         log.info('!sendrsvpforce - Send RSVP messages to ALL guests');
         log.info('!clearcache - Clear the contacted guests cache');
         log.info('!status - Show current bot status and event details');
+        log.info('!eventdate - Show event date and days remaining');
         log.info('!reload - Reload guest list from Google Sheets');
         log.info('!debugapi - Test API connection to Google Apps Script');
         log.info('!followups - View scheduled follow-up reminders');
@@ -1316,20 +1412,87 @@ async function clientstart() {
           log.info('!test - Send a test RSVP message (development only)');
         }
       }
-      // Enhanced QR code logging
+      // Enhanced QR code logging and web access
       else if (update.qr) {
-        // Log QR to console
+        // Save the QR code for web access
+        lastQR = update.qr;
+        
+        // Generate QR in terminal
         qrcode.toString(update.qr, { type: 'terminal', small: true }, (err, text) => {
           if (!err) {
             log.info('\n\n==== WHATSAPP QR CODE (SCAN WITH PHONE) ====');
             console.log('\x1b[36m%s\x1b[0m', text); // Cyan color for visibility
             log.info('============================================');
             log.info('Scan this QR code with WhatsApp to connect your bot');
-            log.info('If you cannot see the QR code clearly, check your terminal settings or try a different terminal');
+            log.info(`Or visit http://localhost:${serverPort}/qr or your Railway.app URL to scan it`);
           } else {
             log.error('Failed to generate QR code:', err);
           }
         });
+        
+        // Also create an image file and HTML for web access
+        try {
+          // Generate QR as PNG
+          qrcode.toFile('whatsapp-qr.png', update.qr, {
+            errorCorrectionLevel: 'H',
+            margin: 1,
+            width: 300
+          });
+          
+          // Generate HTML with the QR code
+          const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WhatsApp QR Code</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="60">
+  <style>
+    body { 
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f2f5;
+    }
+    .container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 500px;
+    }
+    h1 { color: #128C7E; }
+    .qr-container { margin: 20px 0; }
+    img { max-width: 100%; height: auto; }
+    p { margin: 10px 0; line-height: 1.5; }
+    .refresh { margin-top: 20px; color: #777; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>WhatsApp QR Code</h1>
+    <div class="qr-container">
+      <img src="data:image/png;base64,${Buffer.from(update.qr).toString('base64')}" alt="WhatsApp QR Code">
+    </div>
+    <p>1. Open WhatsApp on your phone</p>
+    <p>2. Tap Menu or Settings and select <strong>Linked Devices</strong></p>
+    <p>3. Tap on <strong>Link a Device</strong></p>
+    <p>4. Scan this QR code with your phone's camera</p>
+    <p class="refresh">This page will refresh automatically every 60 seconds</p>
+  </div>
+</body>
+</html>`;
+          
+          fs.writeFileSync('whatsapp-qr.html', htmlContent);
+          log.info('QR code saved as HTML and PNG files');
+        } catch (qrErr) {
+          log.error('Error saving QR code files:', qrErr);
+        }
       }
       
       // Connection state handling
@@ -1380,6 +1543,93 @@ async function clientstart() {
   }
 }
 
+// Add route for QR code
+app.get('/qr', (req, res) => {
+  if (lastQR) {
+    // Generate QR image and serve it
+    qrcode.toDataURL(lastQR, (err, url) => {
+      if (err) {
+        res.status(500).send('Error generating QR code');
+        return;
+      }
+
+      const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WhatsApp QR Code</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="60">
+  <style>
+    body { 
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f2f5;
+    }
+    .container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 500px;
+    }
+    h1 { color: #128C7E; }
+    .qr-container { margin: 20px 0; }
+    img { max-width: 100%; height: auto; }
+    p { margin: 10px 0; line-height: 1.5; }
+    .refresh { margin-top: 20px; color: #777; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>WhatsApp QR Code</h1>
+    <div class="qr-container">
+      <img src="${url}" alt="WhatsApp QR Code">
+    </div>
+    <p>1. Open WhatsApp on your phone</p>
+    <p>2. Tap Menu or Settings and select <strong>Linked Devices</strong></p>
+    <p>3. Tap on <strong>Link a Device</strong></p>
+    <p>4. Scan this QR code with your phone's camera</p>
+    <p class="refresh">This page will refresh automatically every 60 seconds</p>
+  </div>
+</body>
+</html>`;
+
+      res.send(html);
+    });
+  } else {
+    res.send('No QR code available yet. Please try again in a few moments.');
+  }
+});
+
+// Serve static files
+app.use(express.static(__dirname));
+
+// Health check endpoint for Docker
+app.get('/health', (req, res) => {
+  if (waClient && waClient.user) {
+    res.status(200).json({
+      status: 'healthy',
+      timestamp: new Date().toISOString(),
+      botConnected: true,
+      uptime: process.uptime()
+    });
+  } else {
+    res.status(503).json({
+      status: 'unhealthy',
+      timestamp: new Date().toISOString(),
+      botConnected: false,
+      uptime: process.uptime()
+    });
+  }
+});
+
 // Home page
 app.get('/', (req, res) => {
   res.send(`
@@ -1421,6 +1671,19 @@ app.get('/', (req, res) => {
           background-color: #cce5ff;
           color: #004085;
         }
+        .button {
+          display: inline-block;
+          background-color: #128C7E;
+          color: white;
+          padding: 10px 15px;
+          text-decoration: none;
+          border-radius: 5px;
+          font-weight: bold;
+          margin-top: 10px;
+        }
+        .button:hover {
+          background-color: #0C6B5B;
+        }
       </style>
     </head>
     <body>
@@ -1443,16 +1706,18 @@ app.get('/', (req, res) => {
         <h2>Connection Instructions</h2>
         <p>To connect WhatsApp:</p>
         <ul>
-          <li>Check the console/terminal for QR code</li>
+          <li>Open the QR code page</li>
           <li>Scan the QR code with WhatsApp on your phone</li>
           <li>Once connected, you can use the admin commands</li>
         </ul>
+        ${!client ? `<a href="/qr" class="button">Open QR Code Scanner</a>` : ''}
       </div>
       
       <div class="card">
         <h2>Admin Commands</h2>
         <ul>
           <li><strong>!status</strong> - Show event details and RSVP statistics</li>
+          <li><strong>!eventdate</strong> - Show event date and messaging schedule</li>
           <li><strong>!sendrsvp</strong> - Manually send RSVP messages</li>
           <li><strong>!sendrsvpforce</strong> - Send to ALL guests</li>
           <li><strong>!clearcache</strong> - Clear the contacted guests cache</li>

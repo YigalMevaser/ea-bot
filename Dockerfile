@@ -1,4 +1,5 @@
-FROM --platform=linux/amd64 node:24-slim
+FROM --platform=linux/amd64 node:20-slim
+
 # Install git, python, ffmpeg and build tools needed for native modules
 RUN apt-get update && apt-get install -y \
     git \
@@ -12,27 +13,35 @@ RUN apt-get update && apt-get install -y \
 # Create app directory
 WORKDIR /app
 
-# Install app dependencies with better error handling
+# Copy package files
 COPY package*.json ./
-# Modify package.json to use public npm package instead of private GitHub repo
-RUN sed -i 's|"git+ssh://git@github.com/GataNina-Li/baileys.git"|"@nstar/baileys@latest"|g' package.json \
-    && cat package.json
-#RUN npm install --no-fund --no-audit || (cat /root/.npm/_logs/*-debug-0.log && exit 1)
 
-# Bundle app source
+# Modify package.json to use baileys directly and ensure date-fns is included
+RUN sed -i 's|"@nstar/baileys": ".*"|"baileys": "github:GataNina-Li/baileys"|g' package.json && \
+    if ! grep -q '"date-fns":' package.json; then \
+      sed -i 's|"dependencies": {|"dependencies": {\n        "date-fns": "^2.30.0",|' package.json; \
+    fi
+
+# Install dependencies with force to bypass peer dependency issues
+RUN npm install --no-fund --production --omit=dev --force
+
+# Copy app source and update imports if needed
 COPY . .
+RUN find . -type f -name "*.js" -exec sed -i 's|@nstar/baileys|baileys|g' {} \;
 
-# Create persistent session directory that Railway will mount to
-RUN mkdir -p /app/session
+# Create persistent directories
+RUN mkdir -p /app/session /app/logs /session
 
 # Set environment variables
 ENV NODE_ENV=production
+ENV SESSION_PATH=/session
+ENV PORT=8080
 
 # Create volume mounts for persistence
-VOLUME ["/app/session", "/app/logs"]
+VOLUME ["/session", "/app/logs"]
 
 # Expose the port the app runs on
 EXPOSE 3000
 
 # Start the bot
-CMD ["npm", "start"]
+CMD ["node", "index.js"]
