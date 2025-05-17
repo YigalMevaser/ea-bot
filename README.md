@@ -47,15 +47,43 @@ The bot can be easily deployed to Railway.app with the following steps:
 4. Configure the following environment variables:
    - `NODE_ENV=production`
    - `PORT=8080`
-   - `SESSION_PATH=/session` (important for persistent sessions)
+   - `SESSION_PATH=/app/session` (CRITICAL for persistent sessions)
    - `APPS_SCRIPT_URL=https://script.google.com/macros/s/your-script-id/exec`
    - `SECRET_KEY=your_secret_key_here`
    - `ADMIN_NUMBERS=+972123456789` (comma-separated list of admin phone numbers)
    - `MESSAGE_SCHEDULE=0 9-20 * * *` (cron schedule for sending messages)
-5. Deploy the application
-6. **Important**: Visit your Railway deployment URL to scan the QR code with WhatsApp
+5. Configure a persistent volume on Railway:
+   - Go to your Railway project
+   - Select your service and click on the "Variables" tab
+   - Look for the "Volumes" section and create a volume mounted at `/app/session`
+   - This is CRITICAL for your WhatsApp session to persist between deployments
+6. Deploy the application
+7. **Important**: Visit your Railway deployment URL to scan the QR code with WhatsApp
    - Go to `https://your-railway-url.railway.app/qr`
    - Scan with your WhatsApp app (Settings > Linked Devices > Link a Device)
+   - You only need to do this once if the volume is properly configured
+
+#### Railway Deployment Scripts
+
+Use these scripts to manage and preserve your WhatsApp sessions on Railway:
+
+1. **Deploy to Railway with session preservation**:
+   ```bash
+   ./deploy-to-railway.sh ea-bot v1.0.0
+   ```
+   This will back up your session before deploying and provide instructions to restore if needed.
+
+2. **Backup sessions from Railway**:
+   ```bash
+   ./backup-railway-sessions.sh ea-bot
+   ```
+   This creates a local backup of your WhatsApp session files.
+
+3. **Restore sessions to Railway**:
+   ```bash
+   ./restore-railway-sessions.sh backup-sessions/railway_20230615_120000 ea-bot
+   ```
+   Use this to restore your sessions after a deployment or if sessions are lost.
 
 ### Docker Deployment
 
@@ -103,27 +131,73 @@ You can run the bot using Docker for easier deployment and maintenance:
    - The bot includes a health endpoint at `http://your-server-ip:3000/health`
    - Docker will automatically monitor this endpoint and restart the container if needed
 
+### Session Backup & Recovery
 
-2. Install dependencies:
-npm install
+The WhatsApp session data is the most critical component to back up before upgrades or redeployments. Without this data, you'll need to re-scan the QR code each time.
 
+#### Backing Up Session Data
 
-3. Create a `.env` file in the project root with the following variables:
-Environment
+1. **For Railway.app deployments:**
+   ```bash
+   # Using Railway CLI
+   railway service volumes download --service your-service-name --output ~/whatsapp-backups
 
-NODE_ENV=production PORT=3000
-WhatsApp Configuration
+   # Or use the Railway dashboard:
+   # 1. Go to your project and select the service
+   # 2. Click on "Volumes"
+   # 3. Click "Download" to get your session data
+   ```
 
-ADMIN_NUMBERS=+972526901876,+972XXXXXXXXX
-Google Apps Script
+2. **For Docker deployments:**
+   ```bash
+   # Copy the entire session directory to a backup location
+   cp -r /path/to/session ~/whatsapp-backups/session-$(date +%Y%m%d)
+   
+   # Or create a compressed archive
+   tar -czf ~/whatsapp-backups/session-$(date +%Y%m%d).tar.gz /path/to/session
+   ```
 
-APPS_SCRIPT_URL=https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec SECRET_KEY=your_secret_key
-Message Configuration
+#### Restoring Session Data
 
-MESSAGE_SCHEDULE=0 9-20 * * * MESSAGE_BATCH_SIZE=10 MESSAGE_DELAY=8000
+1. **For Railway.app deployments:**
+   ```bash
+   # Using Railway CLI
+   railway service volumes upload --service your-service-name --path ~/whatsapp-backups
+   
+   # Or use the Railway dashboard:
+   # 1. Go to your project and select the service
+   # 2. Click on "Volumes"
+   # 3. Click "Upload" to restore your session data
+   ```
 
+2. **For Docker deployments:**
+   ```bash
+   # Stop the container first
+   docker stop ea-bot
+   
+   # Restore the session files
+   cp -r ~/whatsapp-backups/session-backup/* /path/to/session/
+   
+   # Restart the container
+   docker start ea-bot
+   ```
 
-## Setup
+#### Volumes Configuration
+
+Make sure your volume is mounted to the path specified in the Dockerfile:
+
+- **Railway.app**: The mount path should be `/app/session` to match the `SESSION_PATH` environment variable
+- **Docker**: Your volume mount should match the path in `docker-compose.yml` or your `docker run` command
+
+#### Verifying Mount Path
+
+If you're experiencing issues with persistent connections, verify that:
+
+1. The volume is mounted correctly
+2. The volume path matches the `SESSION_PATH` environment variable
+3. The session files include `creds.json` and various key files
+
+## Configuration
 
 ### 1. Google Sheets and Apps Script
 

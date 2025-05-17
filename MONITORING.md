@@ -53,6 +53,103 @@ If you notice consistent connection problems:
 2. Use the admin commands `!status` or `!debugapi` to verify the bot's internal state
 3. Try manually restarting the service if needed
 
+## Protecting WhatsApp Session Data
+
+### Before Taking Any Action
+
+**Always back up your session data before performing any maintenance:**
+
+```bash
+# For Railway.app:
+railway service volumes download --service your-bot-service --output ~/session-backup
+
+# For local Docker:
+docker cp ea-bot:/app/session ~/session-backup
+```
+
+### Critical Files to Protect
+
+The most important files in your session directory are:
+- `creds.json` - Contains the WhatsApp authentication credentials
+- `app-state-sync-*.json` - Contains WhatsApp state information
+- `session-*.json` - Contains session information for each chat
+
+Losing these files will require re-scanning the QR code to reconnect.
+
+### Volume Configuration
+
+Make sure your session data is correctly persisted:
+
+1. **In Railway.app:**
+   - Mount path should be set to `/app/session`
+   - This must match the `SESSION_PATH` environment variable (set to `/app/session`)
+   - Create the volume through the Railway dashboard:
+     - Go to your project
+     - Select your service
+     - Click on the "Variables" tab
+     - Find the "Volumes" section
+     - Create a volume mounted at `/app/session`
+   - You can verify the volume is working by checking if files persist after a restart:
+     ```bash
+     # List files in the session directory
+     railway run --service ea-bot "ls -la /app/session"
+     
+     # Restart the service
+     railway service restart --service ea-bot
+     
+     # Verify files still exist
+     railway run --service ea-bot "ls -la /app/session"
+     ```
+
+### Session Management with Railway
+
+When deploying to Railway, follow these best practices to ensure session persistence:
+
+1. **Before updating your bot:**
+   - Always back up the session using the provided scripts:
+     ```bash
+     ./backup-railway-sessions.sh ea-bot
+     ```
+
+2. **To deploy a new version:**
+   - Use the deployment script that includes session backup:
+     ```bash
+     ./deploy-to-railway.sh ea-bot latest
+     ```
+   - This will back up your session before deploying the new version
+
+3. **If WhatsApp disconnects after deployment:**
+   - Restore your most recent backup:
+     ```bash
+     # List your backups
+     ls -la backup-sessions/
+     
+     # Restore the most recent backup
+     ./restore-railway-sessions.sh backup-sessions/railway_YYYYMMDD_HHMMSS ea-bot
+     ```
+
+4. **Regular Preventative Backups:**
+   - Schedule regular backups of your session data
+   - Keep these backups in a secure location
+   - Consider automating the backup process with a cron job
+
+2. **In Docker:**
+   - Your volume mounts should match your Docker configuration
+   - Ensure write permissions on the mounted directory
+
+### Restoring From Backup
+
+If you need to restore session data:
+
+```bash
+# For Railway.app:
+railway service volumes upload --service your-bot-service --path ~/session-backup
+
+# For local Docker:
+docker cp ~/session-backup/. ea-bot:/app/session/
+docker restart ea-bot
+```
+
 ## Common Issues and Solutions
 
 ### "waClient is not defined"

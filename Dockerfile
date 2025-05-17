@@ -29,23 +29,23 @@ RUN npm install --no-fund --production --omit=dev --force
 COPY . .
 RUN find . -type f -name "*.js" -exec sed -i 's|@nstar/baileys|baileys|g' {} \;
 
-# Create persistent directories
-RUN mkdir -p /app/session /app/logs /session
+# Create persistent directories 
+RUN mkdir -p /app/session /app/logs
 
 # Set environment variables
 ENV NODE_ENV=production
-ENV SESSION_PATH=/session
+ENV SESSION_PATH=/app/session
 ENV PORT=8080
 
 # Create volume mounts for persistence
-VOLUME ["/session", "/app/logs"]
+VOLUME ["/app/session", "/app/logs"]
 
 # Expose the port the app runs on
 EXPOSE 3000
 
 # Add Docker healthcheck
 HEALTHCHECK --interval=60s --timeout=10s --start-period=30s --retries=3 \
-  CMD node auto-restart.js || exit 1
+  CMD node health-check.js || exit 1
 
 # Make the health and monitor scripts executable
 RUN chmod +x check-deps.sh

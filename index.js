@@ -411,8 +411,21 @@ const SESSION_PATH = process.env.SESSION_PATH ||
       fs.mkdirSync(SESSION_PATH, { recursive: true });
       console.log(`Created session directory at: ${SESSION_PATH}`);
     }
+    
+    // Check if session reset is requested
+    if (process.env.RESET_SESSION === 'true') {
+      console.log('RESET_SESSION is set to true, clearing existing session files...');
+      // Remove all files in the session directory except .gitkeep
+      const files = fs.readdirSync(SESSION_PATH);
+      for (const file of files) {
+        if (file !== '.gitkeep') {
+          fs.unlinkSync(path.join(SESSION_PATH, file));
+        }
+      }
+      console.log('Session files cleared successfully');
+    }
   } catch (err) {
-    console.error(`Failed to create session directory: ${err.message}`);
+    console.error(`Failed to create session directory or clear session: ${err.message}`);
   }
 
   // Auth state
@@ -1507,13 +1520,58 @@ const SESSION_PATH = process.env.SESSION_PATH ||
           
           if (statusCode === DisconnectReason.loggedOut) {
             log.error('Device logged out, please scan the QR code again');
+            // Reset lastQR to force new QR generation
+            lastQR = null;
+            // Clear session data on logout to force a fresh connection
+            try {
+              if (fs.existsSync(SESSION_PATH)) {
+                const files = fs.readdirSync(SESSION_PATH);
+                for (const file of files) {
+                  if (file !== '.gitkeep') {
+                    fs.unlinkSync(path.join(SESSION_PATH, file));
+                  }
+                }
+                log.info('Cleared session files after logout');
+              }
+            } catch (clearErr) {
+              log.error('Failed to clear session files:', clearErr);
+            }
+            shouldReconnect = true; // Changed to true to try reconnecting with fresh state
+          } else if (statusCode === DisconnectReason.connectionReplaced) {
+            log.warn('Connection replaced by another session');
             shouldReconnect = false;
+          } else if (statusCode === DisconnectReason.connectionClosed) {
+            log.info('Connection closed by server, reconnecting...');
+            shouldReconnect = true;
+          } else if (statusCode === DisconnectReason.connectionLost) {
+            log.info('Connection lost to server, reconnecting...');
+            shouldReconnect = true;
+          } else if (statusCode === DisconnectReason.badSession) {
+            log.error('Bad session detected, clearing session files and reconnecting');
+            // Clear session data on bad session
+            try {
+              if (fs.existsSync(SESSION_PATH)) {
+                const files = fs.readdirSync(SESSION_PATH);
+                for (const file of files) {
+                  if (file !== '.gitkeep') {
+                    fs.unlinkSync(path.join(SESSION_PATH, file));
+                  }
+                }
+                log.info('Cleared session files after bad session');
+              }
+            } catch (clearErr) {
+              log.error('Failed to clear session files:', clearErr);
+            }
+            shouldReconnect = true;
           }
         }
         
         if (shouldReconnect) {
           log.info('Reconnecting...');
-          return clientstart(); // Try to reconnect
+          setTimeout(() => {
+            // Small delay before reconnecting to avoid fast reconnect loop
+            return clientstart(); // Try to reconnect
+          }, 3000);
         }
       }
     });
@@ -1559,6 +1617,19 @@ const SESSION_PATH = process.env.SESSION_PATH ||
 
 // Add route for QR code
 app.get('/qr', (req, res) => {
+  // Check if force reset is requested via query parameter
+  if (req.query.reset === 'true') {
+    log.info('QR reset requested via URL parameter');
+    // Force logout to generate a new QR code
+    if (client) {
+      log.info('Attempting to logout current session to force new QR code');
+      // Set a flag to ignore the current session and generate a new QR
+      process.env.RESET_SESSION = 'true';
+      // Redirect back to the QR page without the reset parameter
+      return res.redirect('/qr');
+    }
+  }
+  
   if (lastQR) {
     // Generate QR image and serve it
     qrcode.toDataURL(lastQR, (err, url) => {
@@ -1618,7 +1689,66 @@ app.get('/qr', (req, res) => {
       res.send(html);
     });
   } else {
-    res.send('No QR code available yet. Please try again in a few moments.');
+    // Provide a page that explains there's no QR code and offers a reset option
+    const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WhatsApp Connection</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="15">
+  <style>
+    body { 
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f2f5;
+    }
+    .container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 500px;
+    }
+    h1 { color: #128C7E; }
+    p { margin: 15px 0; line-height: 1.5; }
+    .btn {
+      display: inline-block;
+      background-color: #128C7E;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 4px;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    .status { color: #e74c3c; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>WhatsApp Connection</h1>
+    <p class="status">No QR code is available yet.</p>
+    <p>This could be because:</p>
+    <ul style="text-align:left">
+      <li>The bot is still starting up</li>
+      <li>The bot thinks it's already connected (but isn't)</li>
+      <li>There was an error generating the QR code</li>
+    </ul>
+    <p>This page will refresh automatically every 15 seconds.</p>
+    <p>Or you can try to force a new connection:</p>
+    <a href="/qr?reset=true" class="btn">Reset Connection & Generate New QR</a>
+  </div>
+</body>
+</html>`;
+
+    res.send(html);
   }
 });
 
