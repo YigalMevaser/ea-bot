@@ -44,13 +44,20 @@ import { validateJsonFile } from './fixDataAccess.js'; // Import the file valida
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Check for Railway single volume configuration
+const persistentBase = '/app/persistent';
+const isRailwaySingleVolume = fs.existsSync(persistentBase);
+
 // Define the path for storing credentials
-const credentialsDir = path.join(__dirname, '..', 'data');
+const credentialsDir = isRailwaySingleVolume ? path.join(persistentBase, 'data') : path.join(__dirname, '..', 'data');
 const credentialsFile = path.join(credentialsDir, 'credentials.json');
+
+// Log the credentials directory being used
+console.log(`CredentialsManager using directory: ${credentialsDir} (${isRailwaySingleVolume ? 'single volume' : 'standard'} configuration)`);
 
 // Create data directory if it doesn't exist
 if (!fs.existsSync(credentialsDir)) {
-  fs.mkdirSync(credentialsDir, { recursive: true });
+  fs.mkdirSync(credentialsDir, { recursive: true, mode: 0o777 });
 }
 
 // Initialize credentials data with encryption using our validation utility

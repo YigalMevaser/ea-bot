@@ -16,10 +16,16 @@ const __dirname = path.dirname(__filename);
 export function ensureDataAccess() {
   console.log('Checking data directory access...');
   
-  // Define paths
-  const dataDir = path.join(__dirname, '..', 'data');
+  // Check for Railway single volume configuration
+  const persistentBase = '/app/persistent';
+  const isRailwaySingleVolume = fs.existsSync(persistentBase);
+  
+  // Define paths based on volume configuration
+  const dataDir = isRailwaySingleVolume ? path.join(persistentBase, 'data') : path.join(__dirname, '..', 'data');
   const customersFile = path.join(dataDir, 'customers.json');
   const credentialsFile = path.join(dataDir, 'credentials.json');
+  
+  console.log(`Using data directory: ${dataDir} (${isRailwaySingleVolume ? 'single volume' : 'standard'} configuration)`);
   
   // Ensure data directory exists with proper permissions
   try {

@@ -12,9 +12,16 @@ import { ensureDataAccess, validateJsonFile } from './fixDataAccess.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Check for Railway single volume configuration
+const persistentBase = '/app/persistent';
+const isRailwaySingleVolume = fs.existsSync(persistentBase);
+
 // Define the path for storing customer data
-const dataDir = path.join(__dirname, '..', 'data');
+const dataDir = isRailwaySingleVolume ? path.join(persistentBase, 'data') : path.join(__dirname, '..', 'data');
 const customersFile = path.join(dataDir, 'customers.json');
+
+// Log the data directory being used
+console.log(`CustomerManager using data directory: ${dataDir} (${isRailwaySingleVolume ? 'single volume' : 'standard'} configuration)`);
 
 // Ensure data directory and permissions are set up correctly
 ensureDataAccess();

@@ -216,9 +216,15 @@ router.get('/api/admin/customers', adminAuthMiddleware, (req, res) => {
     
     // Check if customers.json has data
     try {
-      // Check actual file contents for debugging
-      const customersFile = path.join(__dirname, '..', 'data', 'customers.json');
-      console.log(`[${timestamp}] Customers file path: ${customersFile}`);
+      // Check for Railway single volume configuration
+      const persistentBase = '/app/persistent';
+      const isRailwaySingleVolume = fs.existsSync(persistentBase);
+      
+      // Define the path based on the volume configuration
+      const dataDir = isRailwaySingleVolume ? path.join(persistentBase, 'data') : path.join(__dirname, '..', 'data');
+      const customersFile = path.join(dataDir, 'customers.json');
+      
+      console.log(`[${timestamp}] Customers file path: ${customersFile} (${isRailwaySingleVolume ? 'single volume' : 'standard'} configuration)`);
       
       if (fs.existsSync(customersFile)) {
         const fileContents = fs.readFileSync(customersFile, 'utf8');
@@ -262,7 +268,14 @@ router.get('/api/admin/customers', adminAuthMiddleware, (req, res) => {
       console.log(`[${timestamp}] No customers found to return`);
       // Double check if we can load customers directly from file as a fallback
       try {
-        const customersFile = path.join(__dirname, '..', 'data', 'customers.json');
+        // Check for Railway single volume configuration
+        const persistentBase = '/app/persistent';
+        const isRailwaySingleVolume = fs.existsSync(persistentBase);
+        
+        // Define the path based on the volume configuration
+        const dataDir = isRailwaySingleVolume ? path.join(persistentBase, 'data') : path.join(__dirname, '..', 'data');
+        const customersFile = path.join(dataDir, 'customers.json');
+        
         if (fs.existsSync(customersFile)) {
           const fileData = JSON.parse(fs.readFileSync(customersFile, 'utf8'));
           if (Array.isArray(fileData) && fileData.length > 0) {

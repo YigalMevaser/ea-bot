@@ -41,7 +41,7 @@ RUN mkdir -p /app/session /app/logs /app/data && \
 
 # Set environment variables
 ENV NODE_ENV=production
-ENV SESSION_PATH=/app/session
+ENV SESSION_PATH=/app/persistent/session
 ENV PORT=8080
 ENV DASHBOARD_PASSWORD=1234
 
@@ -67,5 +67,27 @@ RUN chmod +x check-deps.sh
 # We're not using a non-root user to avoid permission issues on Railway
 # This simplifies deployment but note that running as root is less secure
 
-# Start the bot with proper entrypoint
-ENTRYPOINT ["node", "start.js"]
+# Make the fix-railway-volume script executable
+RUN chmod +x fix-railway-volume.sh
+
+# Create a startup wrapper script
+RUN echo '#!/bin/bash\n\
+echo "Checking for Railway single volume setup..."\n\
+if [ -d "/app/persistent" ] || [ "$RAILWAY_VOLUME_MOUNT" = "true" ]; then\n\
+  echo "Setting up single volume directory structure..."\n\
+  bash /app/fix-railway-volume.sh\n\
+  \n\
+  # Ensure SESSION_PATH points to the persistent volume path\n\
+  export SESSION_PATH=/app/persistent/session\n\
+  echo "Using SESSION_PATH=$SESSION_PATH (single volume configuration)"\n\
+else\n\
+  echo "Using standard directory structure"\n\
+  echo "Using SESSION_PATH=$SESSION_PATH (standard configuration)"\n\
+fi\n\
+\n\
+echo "Starting WhatsApp RSVP Bot..."\n\
+node /app/start.js\n\
+' > /app/docker-entrypoint.sh && chmod +x /app/docker-entrypoint.sh
+
+# Start the bot with our custom entrypoint
+ENTRYPOINT ["/app/docker-entrypoint.sh"]

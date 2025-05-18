@@ -14,11 +14,32 @@ console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 
 // Fix permissions and create directories
 try {
-  const sessionPath = process.env.SESSION_PATH || path.join(__dirname, 'session');
-  const dataPath = path.join(__dirname, 'data');
-  const logsPath = path.join(__dirname, 'logs');
+  // Check for Railway single volume configuration
+  const persistentBase = '/app/persistent';
+  const isRailwaySingleVolume = fs.existsSync(persistentBase);
+  
+  // Define paths based on whether we're using the single volume setup
+  let sessionPath;
+  if (process.env.SESSION_PATH) {
+    // If SESSION_PATH is explicitly set, use it (for backwards compatibility)
+    sessionPath = process.env.SESSION_PATH;
+    console.log(`Using explicitly set SESSION_PATH: ${sessionPath}`);
+  } else if (isRailwaySingleVolume) {
+    // If using single volume and SESSION_PATH not set, use the persistent session directory
+    sessionPath = path.join(persistentBase, 'session');
+    console.log(`Using Railway single volume SESSION_PATH: ${sessionPath}`);
+  } else {
+    // Default case - local development
+    sessionPath = path.join(__dirname, 'session');
+    console.log(`Using default SESSION_PATH: ${sessionPath}`);
+  }
+  
+  // Set data and logs paths
+  const dataPath = isRailwaySingleVolume ? path.join(persistentBase, 'data') : path.join(__dirname, 'data');
+  const logsPath = isRailwaySingleVolume ? path.join(persistentBase, 'logs') : path.join(__dirname, 'logs');
   
   console.log('Setting up critical directories with proper permissions...');
+  console.log(`Using ${isRailwaySingleVolume ? 'single Railway volume configuration' : 'standard directory configuration'}`);
   
   // Create directories if they don't exist and set permissions
   for (const dir of [sessionPath, dataPath, logsPath]) {
