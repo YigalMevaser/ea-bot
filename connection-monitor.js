@@ -30,22 +30,26 @@ const logStream = fs.createWriteStream(logFile, { flags: 'a' });
 // Custom console logger that writes to file as well
 const log = {
   info: (message) => {
-    const timestamp = new Date().toISOString();
+    // Format date in local timezone (Israel - UTC+3)
+    const date = new Date();
+    const timestamp = new Date(date.getTime() + (3 * 60 * 60 * 1000)).toISOString().replace('Z', ' +03:00');
     const logMessage = `[${timestamp}] [INFO] ${message}\n`;
-    console.log(message);
+    console.log(`[${timestamp}] [INFO] ${message}`);
     logStream.write(logMessage);
   },
   error: (message, error) => {
-    const timestamp = new Date().toISOString();
+    const date = new Date();
+    const timestamp = new Date(date.getTime() + (3 * 60 * 60 * 1000)).toISOString().replace('Z', ' +03:00');
     const errorStack = error?.stack || error || 'No stack trace';
     const logMessage = `[${timestamp}] [ERROR] ${message}\n${errorStack}\n`;
-    console.error(message);
+    console.error(`[${timestamp}] [ERROR] ${message}`, error);
     logStream.write(logMessage);
   },
   warn: (message) => {
-    const timestamp = new Date().toISOString();
+    const date = new Date();
+    const timestamp = new Date(date.getTime() + (3 * 60 * 60 * 1000)).toISOString().replace('Z', ' +03:00');
     const logMessage = `[${timestamp}] [WARN] ${message}\n`;
-    console.warn(message);
+    console.warn(`[${timestamp}] [WARN] ${message}`);
     logStream.write(logMessage);
   }
 };

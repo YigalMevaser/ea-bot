@@ -24,9 +24,12 @@ const isRailway = process.env.RAILWAY_STATIC_URL ? true : false;
 const SERVER_HOST = isRailway ? process.env.RAILWAY_STATIC_URL.replace('https://', '') : 'localhost';
 const SERVER_PORT = process.env.PORT || 3000;
 const useHttps = isRailway || SERVER_HOST !== 'localhost';
+// Format date in local timezone (Israel - UTC+3)
+const date = new Date();
+const timestamp = new Date(date.getTime() + (3 * 60 * 60 * 1000)).toISOString().replace('Z', ' +03:00');
 
-console.log(`Starting auto-restart check for ${useHttps ? 'https://' : 'http://'}${SERVER_HOST}:${SERVER_PORT}`);
-console.log(`Running in ${isRailway ? 'Railway.app' : 'local'} environment`);
+console.log(`[${timestamp}] Starting auto-restart check for ${useHttps ? 'https://' : 'http://'}${SERVER_HOST}:${SERVER_PORT}`);
+console.log(`[${timestamp}] Running in ${isRailway ? 'Railway.app' : 'local'} environment`);
 
 // Function to check if the bot is responsive
 function checkBotHealth() {
@@ -84,50 +87,55 @@ function checkBotHealth() {
 // Main function - checks health and takes action if needed
 async function main() {
   try {
-    console.log('Checking bot health...');
+    // Format date in local timezone (Israel - UTC+3)
+    const date = new Date();
+    const checkTimestamp = new Date(date.getTime() + (3 * 60 * 60 * 1000)).toISOString().replace('Z', ' +03:00');
+    console.log(`[${checkTimestamp}] Checking bot health...`);
     const health = await checkBotHealth();
     
     if (health.healthy) {
-      console.log('Bot is healthy!');
+      console.log(`[${checkTimestamp}] Bot is healthy!`);
       process.exit(0);
     }
     
-    console.warn('Bot health check failed:', health.error || 'Unknown reason');
+    console.warn(`[${checkTimestamp}] Bot health check failed:`, health.error || 'Unknown reason');
     
     // For Railway, we can't restart directly, but we can log this for monitoring
     if (isRailway) {
-      console.error('BOT_NEEDS_RESTART: Health check failed on Railway deployment');
+      console.error(`[${checkTimestamp}] BOT_NEEDS_RESTART: Health check failed on Railway deployment`);
       // Railway will see this error in logs and can be configured to restart
       process.exit(1);
     }
     
     // For local deployment, attempt to restart the bot
-    console.log('Attempting to restart the bot...');
+    console.log(`[${checkTimestamp}] Attempting to restart the bot...`);
     
     exec('npm restart', (error, stdout, stderr) => {
       if (error) {
-        console.error('Failed to restart bot:', error);
+        console.error(`[${checkTimestamp}] Failed to restart bot:`, error);
         process.exit(1);
       }
       
-      console.log('Bot restart initiated successfully');
-      console.log(stdout);
+      console.log(`[${checkTimestamp}] Bot restart initiated successfully`);
+      console.log(`[${checkTimestamp}] ${stdout}`);
       
       if (stderr) {
-        console.error('Restart stderr:', stderr);
+        console.error(`[${checkTimestamp}] Restart stderr:`, stderr);
       }
       
       process.exit(0);
     });
     
   } catch (error) {
-    console.error('Error in auto-restart check:', error);
+    const errorTimestamp = new Date().toISOString();
+    console.error(`[${errorTimestamp}] Error in auto-restart check:`, error);
     process.exit(1);
   }
 }
 
 // Run the main function
 main().catch(err => {
-  console.error('Fatal error:', err);
+  const fatalTimestamp = new Date().toISOString();
+  console.error(`[${fatalTimestamp}] Fatal error:`, err);
   process.exit(1);
 });

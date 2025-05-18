@@ -131,25 +131,32 @@ if (!fs.existsSync(logDir)) {
 const logFile = path.join(logDir, `bot-${new Date().toISOString().slice(0,10)}.log`);
 const logStream = fs.createWriteStream(logFile, { flags: 'a' });
 
-// Custom console logger that writes to file as well
+// Custom console logger that writes to file as well with timestamps (Israel timezone UTC+3)
 const log = {
   info: (message) => {
-    const timestamp = new Date().toISOString();
+    // Format date in local timezone (Israel - UTC+3)
+    const date = new Date();
+    const timestamp = new Date(date.getTime() + (3 * 60 * 60 * 1000)).toISOString().replace('Z', ' +03:00');
     const logMessage = `[${timestamp}] [INFO] ${message}\n`;
-    console.log(message);
+    // Include timestamp in console output as well
+    console.log(`[${timestamp}] [INFO] ${message}`);
     logStream.write(logMessage);
   },
   error: (message, error) => {
-    const timestamp = new Date().toISOString();
+    const date = new Date();
+    const timestamp = new Date(date.getTime() + (3 * 60 * 60 * 1000)).toISOString().replace('Z', ' +03:00');
     const errorStack = error?.stack || error || 'No stack trace';
     const logMessage = `[${timestamp}] [ERROR] ${message}\n${errorStack}\n`;
-    console.error(message, error);
+    // Include timestamp in console output as well
+    console.error(`[${timestamp}] [ERROR] ${message}`, error);
     logStream.write(logMessage);
   },
   warn: (message) => {
-    const timestamp = new Date().toISOString();
+    const date = new Date();
+    const timestamp = new Date(date.getTime() + (3 * 60 * 60 * 1000)).toISOString().replace('Z', ' +03:00');
     const logMessage = `[${timestamp}] [WARN] ${message}\n`;
-    console.warn(message);
+    // Include timestamp in console output as well
+    console.warn(`[${timestamp}] [WARN] ${message}`);
     logStream.write(logMessage);
   }
 };
@@ -1812,8 +1819,26 @@ app.use(express.static(__dirname));
 // API endpoint for guest list
 app.get('/api/guests', dashboardAuth, async (req, res) => {
   try {
-    const guests = await appScriptManager.fetchGuestList();
-    res.json({ success: true, guests });
+    const guestsList = await appScriptManager.fetchGuestList();
+    
+    // Ensure all guests have both lowercase and uppercase property names for compatibility
+    const formattedGuests = guestsList.map(guest => {
+      return {
+        // Original properties
+        ...guest,
+        // Add uppercase properties for dashboard compatibility
+        Name: guest.name || '',
+        Phone: guest.phone || '',
+        Email: guest.email || '',
+        Status: guest.status || 'Pending',
+        GuestCount: guest.count || '0',
+        Notes: guest.notes || '',
+        LastContacted: guest.lastContacted || '',
+      };
+    });
+    
+    log.info(`Sending ${formattedGuests.length} guests to dashboard`);
+    res.json({ success: true, guests: formattedGuests });
   } catch (error) {
     log.error('Error fetching guests for dashboard:', error);
     res.status(500).json({ success: false, error: error.message });
@@ -1824,7 +1849,36 @@ app.get('/api/guests', dashboardAuth, async (req, res) => {
 app.get('/api/event-details', dashboardAuth, async (req, res) => {
   try {
     const eventDetails = await appScriptManager.getEventDetails();
-    res.json({ success: true, details: eventDetails });
+    
+    // Ensure date is in DD.MM.YYYY format for Hebrew locale
+    let formattedDate = eventDetails.date;
+    
+    // If date is in YYYY-MM-DD format, convert to DD.MM.YYYY
+    if (formattedDate && formattedDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
+      const dateParts = formattedDate.split('-');
+      formattedDate = `${dateParts[2]}.${dateParts[1]}.${dateParts[0]}`;
+      log.info(`Converted date format from ${eventDetails.date} to ${formattedDate}`);
+    }
+    
+    // Ensure we have both lowercase and uppercase property names for compatibility
+    const formattedDetails = {
+      // Original lowercase properties from getEventDetails with formatted date
+      name: eventDetails.name,
+      date: formattedDate,
+      time: eventDetails.time,
+      location: eventDetails.location,
+      description: eventDetails.description,
+      
+      // Add uppercase properties for dashboard compatibility with formatted date
+      Name: eventDetails.name,
+      Date: formattedDate,
+      Time: eventDetails.time,
+      Location: eventDetails.location,
+      Description: eventDetails.description
+    };
+    
+    log.info(`Sending event details to dashboard: ${JSON.stringify(formattedDetails)}`);
+    res.json({ success: true, details: formattedDetails });
   } catch (error) {
     log.error('Error fetching event details for dashboard:', error);
     res.status(500).json({ success: false, error: error.message });

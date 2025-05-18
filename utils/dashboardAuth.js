@@ -9,16 +9,23 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Simple logger for authentication events
+// Simple logger for authentication events with timestamps (Israel timezone UTC+3)
 const logger = {
   warn: (message) => {
-    console.warn(`[AUTH] ${message}`);
+    // Format date in local timezone (Israel - UTC+3)
+    const date = new Date();
+    const timestamp = new Date(date.getTime() + (3 * 60 * 60 * 1000)).toISOString().replace('Z', ' +03:00');
+    console.warn(`[${timestamp}] [AUTH] ${message}`);
   },
   info: (message) => {
-    console.info(`[AUTH] ${message}`);
+    const date = new Date();
+    const timestamp = new Date(date.getTime() + (3 * 60 * 60 * 1000)).toISOString().replace('Z', ' +03:00');
+    console.info(`[${timestamp}] [AUTH] ${message}`);
   },
   error: (message, error) => {
-    console.error(`[AUTH] ${message}`, error);
+    const date = new Date();
+    const timestamp = new Date(date.getTime() + (3 * 60 * 60 * 1000)).toISOString().replace('Z', ' +03:00');
+    console.error(`[${timestamp}] [AUTH] ${message}`, error);
   }
 };
 

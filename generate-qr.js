@@ -11,10 +11,13 @@ QRCode.toFile('whatsapp-qr.png', qrData, {
   width: 500,
   margin: 1
 }, function(err) {
+  // Format date in local timezone (Israel - UTC+3)
+  const date = new Date();
+  const timestamp = new Date(date.getTime() + (3 * 60 * 60 * 1000)).toISOString().replace('Z', ' +03:00');
   if (err) {
-    console.error('Error generating QR code:', err);
+    console.error(`[${timestamp}] Error generating QR code:`, err);
   } else {
-    console.log('QR code generated successfully: whatsapp-qr.png');
+    console.log(`[${timestamp}] QR code generated successfully: whatsapp-qr.png`);
   }
 });
 
