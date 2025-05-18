@@ -1,0 +1,113 @@
+/* Custom CSS for Dashboard */
+:root {
+    --primary-color: #128C7E;
+    --secondary-color: #25D366;
+    --accent-color: #075E54;
+    --light-bg: #f0f2f5;
+}
+
+/* Print styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    body {
+        background-color: white !important;
+    }
+    
+    .dashboard-container {
+        padding: 0 !important;
+    }
+    
+    .table-container, .stats-card, .header, .event-details {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+    body.dark-mode {
+        background-color: #121212;
+        color: #f0f0f0;
+    }
+    
+    body.dark-mode .header {
+        background-color: #075E54;
+    }
+    
+    body.dark-mode .stats-card, 
+    body.dark-mode .table-container,
+    body.dark-mode .event-details {
+        background-color: #1e1e1e;
+        color: #f0f0f0;
+    }
+    
+    body.dark-mode .status-confirmed {
+        background-color: #1e5228;
+        color: #d4edda;
+    }
+    
+    body.dark-mode .status-declined {
+        background-color: #541e1e;
+        color: #f8d7da;
+    }
+    
+    body.dark-mode .status-pending {
+        background-color: #5e4b01;
+        color: #fff3cd;
+    }
+    
+    body.dark-mode .status-maybe {
+        background-color: #0c394d;
+        color: #d1ecf1;
+    }
+    
+    body.dark-mode .table {
+        color: #f0f0f0;
+    }
+    
+    body.dark-mode .text-muted {
+        color: #aaaaaa !important;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.stats-card, .table-container, .event-details {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.stats-card:nth-child(1) { animation-delay: 0.1s; }
+.stats-card:nth-child(2) { animation-delay: 0.2s; }
+.stats-card:nth-child(3) { animation-delay: 0.3s; }
+.stats-card:nth-child(4) { animation-delay: 0.4s; }
+
+/* Responsive improvements */
+@media (max-width: 576px) {
+    .header {
+        padding: 15px 10px;
+    }
+    
+    .dashboard-container {
+        padding: 10px;
+    }
+    
+    .event-details, .stats-card, .table-container {
+        padding: 15px;
+    }
+    
+    .table-container {
+        overflow-x: auto;
+    }
+    
+    .status-badge {
+        padding: 3px 6px;
+        font-size: 0.8rem;
+    }
+}

@@ -1712,7 +1712,7 @@ app.get('/qr', (req, res) => {
       background-color: white;
       padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
       text-align: center;
       max-width: 500px;
     }
@@ -1752,8 +1752,250 @@ app.get('/qr', (req, res) => {
   }
 });
 
+// Create a public directory for static files
+const publicDir = path.join(__dirname, 'public');
+if (!fs.existsSync(publicDir)) {
+  fs.mkdirSync(publicDir, { recursive: true });
+}
+
+// Create css directory in public
+const cssDir = path.join(publicDir, 'css');
+if (!fs.existsSync(cssDir)) {
+  fs.mkdirSync(cssDir, { recursive: true });
+}
+
+// Copy the dashboard CSS file if it doesn't exist
+const dashboardCssPath = path.join(cssDir, 'dashboard.css');
+if (!fs.existsSync(dashboardCssPath)) {
+  try {
+    const defaultCss = `/* Dashboard CSS */
+:root {
+    --primary-color: #128C7E;
+    --secondary-color: #25D366;
+    --accent-color: #075E54;
+    --light-bg: #f0f2f5;
+}
+body { 
+    font-family: Arial, sans-serif;
+    background-color: var(--light-bg);
+    direction: rtl;
+}
+.stats-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    text-align: center;
+}`;
+    fs.writeFileSync(dashboardCssPath, defaultCss);
+    log.info(`Created default dashboard CSS at ${dashboardCssPath}`);
+  } catch (err) {
+    log.error(`Failed to create dashboard CSS file: ${err.message}`);
+  }
+}
+
+// Import authentication middleware
+import dashboardAuth from './utils/dashboardAuth.js';
+import cookieParser from 'cookie-parser';
+
+// Parse cookies and request body for authentication
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(cookieParser());
+
 // Serve static files
+app.use(express.static(publicDir));
 app.use(express.static(__dirname));
+
+// API endpoint for guest list
+app.get('/api/guests', dashboardAuth, async (req, res) => {
+  try {
+    const guests = await appScriptManager.fetchGuestList();
+    res.json({ success: true, guests });
+  } catch (error) {
+    log.error('Error fetching guests for dashboard:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// API endpoint for event details
+app.get('/api/event-details', dashboardAuth, async (req, res) => {
+  try {
+    const eventDetails = await appScriptManager.getEventDetails();
+    res.json({ success: true, details: eventDetails });
+  } catch (error) {
+    log.error('Error fetching event details for dashboard:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Dashboard routes
+app.get('/dashboard', dashboardAuth, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
+});
+
+// Dashboard login page - GET handler
+app.get('/dashboard/login', (req, res) => {
+  // Check if user is already authenticated via cookie
+  if (req.cookies?.dashboard_token) {
+    return res.redirect('/dashboard');
+  }
+  
+  // Display login form
+  res.status(200).send(`
+    <!DOCTYPE html>
+    <html lang="en" dir="rtl">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard Login</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+        <style>
+            body {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                background-color: #f0f2f5;
+                font-family: Arial, sans-serif;
+            }
+            .login-container {
+                background-color: white;
+                border-radius: 10px;
+                padding: 30px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                width: 100%;
+                max-width: 400px;
+                text-align: center;
+            }
+            .logo {
+                color: #128C7E;
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
+            .form-control {
+                margin-bottom: 15px;
+                padding: 10px;
+            }
+            .btn-primary {
+                background-color: #128C7E;
+                border-color: #128C7E;
+                padding: 10px;
+                width: 100%;
+            }
+            .btn-primary:hover {
+                background-color: #075E54;
+                border-color: #075E54;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="login-container">
+            <div class="logo">אירוע RSVP - כניסה למנהלים</div>
+            <form method="POST" action="/dashboard/login">
+                <div class="mb-3">
+                    <input type="password" name="password" class="form-control" placeholder="סיסמת גישה" required>
+                </div>
+                <button type="submit" class="btn btn-primary">כניסה</button>
+            </form>
+            <p class="mt-3 text-muted">גישה מיועדת למנהלי האירוע בלבד</p>
+        </div>
+    </body>
+    </html>
+  `);
+});
+
+// Dashboard login processing
+app.post('/dashboard/login', (req, res) => {
+  try {
+    log.info(`Dashboard login attempt from IP: ${req.ip}`);
+    
+    // Check if password is provided in the request body
+    if (!req.body || !req.body.password) {
+      log.warn(`Dashboard login failed: No password provided`);
+      return res.status(400).send('Password is required');
+    }
+    
+    // Forward to the auth middleware which will handle the login
+    dashboardAuth(req, res, () => {
+      log.info(`Dashboard login successful for IP: ${req.ip}`);
+      res.redirect('/dashboard');
+    });
+  } catch (error) {
+    log.error(`Dashboard login error: ${error.message}`);
+    res.status(500).send('An error occurred during login');
+  }
+});
+
+// Dashboard logout endpoint
+app.get('/dashboard/logout', (req, res) => {
+  log.info(`Dashboard logout for IP: ${req.ip}`);
+  
+  // Clear the cookie with all possible options to ensure it's removed
+  res.clearCookie('dashboard_token'); // Simple clear
+  
+  // Also try with specific options
+  res.clearCookie('dashboard_token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    path: '/'
+  });
+  
+  // Add debug header to confirm cookie was cleared
+  res.setHeader('X-Cookie-Cleared', 'true');
+  
+  // Check if this is an API call or direct browser request
+  const isApiCall = req.headers.accept && req.headers.accept.includes('application/json');
+  
+  if (isApiCall) {
+    // If API call, return JSON response
+    res.json({ success: true, message: 'Logged out successfully' });
+  } else {
+    // If direct browser access, redirect to login page
+    res.redirect('/dashboard');
+  }
+});
+
+// API endpoint to send message from dashboard
+app.post('/api/send-message', dashboardAuth, express.json(), async (req, res) => {
+  try {
+    const { phone, message } = req.body;
+    
+    if (!phone || !message) {
+      return res.status(400).json({ success: false, error: 'Missing phone or message' });
+    }
+    
+    // Normalize phone number - ensure it has country code
+    let normalizedPhone = phone.trim();
+    if (!normalizedPhone.startsWith('+')) {
+      // Add Israel country code if not present
+      if (normalizedPhone.startsWith('0')) {
+        normalizedPhone = '+972' + normalizedPhone.substring(1);
+      } else {
+        normalizedPhone = '+972' + normalizedPhone;
+      }
+    }
+    
+    // Send the message using WhatsApp client
+    if (conn) {
+      // Send message
+      await conn.sendMessage(normalizedPhone + '@s.whatsapp.net', { text: message });
+      
+      log.info(`Dashboard: Message sent to ${normalizedPhone} via WhatsApp`);
+      res.json({ success: true, message: 'Message sent successfully' });
+    } else {
+      log.error('Dashboard: WhatsApp client not connected');
+      res.status(500).json({ success: false, error: 'WhatsApp client not connected' });
+    }
+  } catch (error) {
+    log.error('Error sending message from dashboard:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
 
 // Health check endpoint for Docker
 app.get('/health', (req, res) => {
@@ -1855,6 +2097,18 @@ app.get('/', (req, res) => {
           <li>Once connected, you can use the admin commands</li>
         </ul>
         ${!client ? `<a href="/qr" class="button">Open QR Code Scanner</a>` : ''}
+      </div>
+      
+      <div class="card">
+        <h2>Guest Dashboard</h2>
+        <p>View real-time information about your event guests:</p>
+        <ul>
+          <li>See confirmed, declined, and pending guests</li>
+          <li>View total expected attendees</li>
+          <li>Track response rates</li>
+          <li>Search and filter the guest list</li>
+        </ul>
+        <a href="/dashboard" class="button">Open Guest Dashboard</a>
       </div>
       
       <div class="card">

@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #128C7E;
+            --secondary-color: #25D366;
+            --accent-color: #075E54;
+            --light-bg: #f0f2f5;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            direction: rtl;
+        }
+        
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .stats-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stats-card .number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .stats-card .label {
+            font-size: 1rem;
+            color: #666;
+        }
+        
+        .table-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        .status-confirmed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-declined {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-maybe {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+        
+        .event-details {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .event-details h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .event-details p {
+            margin-bottom: 10px;
+        }
+        
+        .event-icon {
+            margin-left: 10px;
+            color: var(--primary-color);
+        }
+        
+        .search-controls {
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 10px;
+            }
+            
+            .stats-row {
+                flex-direction: column;
+            }
+            
+            .stats-card {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header text-center">
+            <h1 id="event-name">טעינת פרטי אירוע...</h1>
+            <p id="event-date" class="mb-0"></p>
+        </div>
+        
+        <div class="event-details mb-4">
+            <h3>פרטי האירוע</h3>
+            <div class="row">
+                <div class="col-md-4">
+                    <p><i class="bi bi-calendar-event event-icon"></i><strong>תאריך:</strong> <span id="event-date-detail"></span></p>
+                </div>
+                <div class="col-md-4">
+                    <p><i class="bi bi-clock event-icon"></i><strong>שעה:</strong> <span id="event-time"></span></p>
+                </div>
+                <div class="col-md-4">
+                    <p><i class="bi bi-geo-alt event-icon"></i><strong>מיקום:</strong> <span id="event-location"></span></p>
+                </div>
+            </div>
+            <p><i class="bi bi-info-circle event-icon"></i><strong>תיאור:</strong> <span id="event-description"></span></p>
+            <p><i class="bi bi-calendar-check event-icon"></i><strong>ימים שנותרו:</strong> <span id="days-remaining" class="fw-bold"></span></p>
+        </div>
+        
+        <div class="row stats-row">
+            <div class="col-md-3 mb-4">
+                <div class="stats-card">
+                    <div class="number" id="total-guests">0</div>
+                    <div class="label">סך הכל מוזמנים</div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stats-card">
+                    <div class="number" id="confirmed-guests">0</div>
+                    <div class="label">אישרו הגעה</div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stats-card">
+                    <div class="number" id="declined-guests">0</div>
+                    <div class="label">לא מגיעים</div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stats-card">
+                    <div class="number" id="pending-guests">0</div>
+                    <div class="label">טרם השיבו</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="stats-card">
+                    <div class="number" id="expected-attendees">0</div>
+                    <div class="label">צפי מספר אורחים</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="stats-card">
+                    <div class="number" id="response-rate">0%</div>
+                    <div class="label">שיעור תגובה</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="table-container">
+            <div class="search-controls mb-3">
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <input type="text" class="form-control" id="search-input" placeholder="חיפוש אורח...">
+                    </div>
+                    <div class="col-md-6">
+                        <select class="form-select" id="status-filter">
+                            <option value="all">כל הסטטוסים</option>
+                            <option value="Confirmed">אישרו הגעה</option>
+                            <option value="Declined">לא מגיעים</option>
+                            <option value="Pending">טרם השיבו</option>
+                            <option value="Maybe">אולי</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <h3 class="mb-4">רשימת מוזמנים</h3>
+            
+            <div id="loading-indicator" class="loading">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">טוען...</span>
+                </div>
+            </div>
+            
+            <div id="guests-table-container" style="display: none;">
+                <table class="table table-hover" id="guests-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>שם</th>
+                            <th>טלפון</th>
+                            <th>סטטוס</th>
+                            <th>מס' אורחים</th>
+                            <th>תאריך עדכון אחרון</th>
+                            <th>הערות</th>
+                            <th>פעולות</th>
+                        </tr>
+                    </thead>
+                    <tbody id="guests-list">
+                        <!-- Guest rows will be added here dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="mt-4 text-center">
+            <p class="text-muted">נתונים מתעדכנים אוטומטית כל דקה</p>
+            <div class="btn-group" role="group" aria-label="Dashboard Actions">
+                <button id="refresh-btn" class="btn btn-primary">
+                    <i class="bi bi-arrow-clockwise"></i> רענן נתונים
+                </button>
+                <button id="export-csv-btn" class="btn btn-success">
+                    <i class="bi bi-file-earmark-spreadsheet"></i> ייצוא ל-CSV
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Notification area -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="notification-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto" id="toast-title">הודעה</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="toast-message"></div>
+        </div>
+    </div>
+    
+    <!-- Message Modal -->
+    <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="messageModalLabel">שליחת הודעה</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="message-form">
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">שם הנמען:</label>
+                            <input type="text" class="form-control" id="recipient-name" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="recipient-phone" class="col-form-label">מספר טלפון:</label>
+                            <input type="text" class="form-control" id="recipient-phone" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message-text" class="col-form-label">הודעה:</label>
+                            <textarea class="form-control" id="message-text" rows="5" required></textarea>
+                            <div class="form-text">ההודעה תישלח באמצעות הבוט</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ביטול</button>
+                    <button type="button" class="btn btn-primary" id="send-message-btn">שליחה</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Handle dashboard logout
+        function logout() {
+            console.log('Logout function called');
+            
+            // Show notification
+            showNotification('מתנתק מהמערכת...');
+            
+            // First try to clear the cookie manually
+            document.cookie = "dashboard_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            console.log('Cookie cleared by JS:', document.cookie);
+            
+            // Then use the logout API endpoint for server-side cookie clearing
+            fetch('/dashboard/logout', { method: 'GET' })
+                .then(() => {
+                    console.log('Logout API call successful');
+                    window.location.href = '/dashboard';
+                })
+                .catch((error) => {
+                    console.error('Error during logout API call:', error);
+                    // Just redirect anyway
+                    window.location.href = '/dashboard';
+                });
+        }
+        
+        // Notification function
+        function showNotification(message, isError = false) {
+            const toastEl = document.getElementById('notification-toast');
+            const toast = new bootstrap.Toast(toastEl);
+            document.getElementById('toast-title').textContent = isError ? 'שגיאה' : 'הודעה';
+            document.getElementById('toast-message').textContent = message;
+            
+            toastEl.className = isError ? 
+                'toast border-danger text-danger' : 
+                'toast border-success';
+                
+            toast.show();
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Log authentication status (for debugging)
+            console.log('Authentication status:', document.cookie.includes('dashboard_token') ? 'Logged in' : 'Not logged in');
+            
+            // Add logout button to header
+            const header = document.querySelector('.header');
+            if (header) {
+                const logoutBtnContainer = document.createElement('div');
+                logoutBtnContainer.className = 'position-absolute top-0 end-0 m-3';
+                
+                // Create the button
+                const logoutBtn = document.createElement('button');
+                logoutBtn.className = 'btn btn-danger';
+                logoutBtn.innerHTML = '<i class="bi bi-box-arrow-right"></i> התנתקות';
+                logoutBtn.style.fontWeight = 'bold';
+                logoutBtn.style.padding = '8px 16px';
+                logoutBtn.onclick = logout;
+                
+                // Create a direct link as fallback
+                const logoutLink = document.createElement('a');
+                logoutLink.href = '/dashboard/logout';
+                logoutLink.className = 'btn btn-sm btn-outline-light mt-2';
+                logoutLink.innerHTML = 'קישור להתנתקות';
+                logoutLink.style.fontSize = '12px';
+                
+                logoutBtnContainer.appendChild(logoutBtn);
+                logoutBtnContainer.appendChild(document.createElement('br'));
+                logoutBtnContainer.appendChild(logoutLink);
+                
+                header.style.position = 'relative';
+                header.appendChild(logoutBtnContainer);
+                
+                // Log that logout button was added
+                console.log('Logout button added to header');
+            }
+            
+            // Function to format date
+            function formatDate(dateStr) {
+                if (!dateStr) return '';
+                
+                try {
+                    if (dateStr.includes('T')) {
+                        // ISO format date
+                        const date = new Date(dateStr);
+                        return date.toLocaleDateString('he-IL') + ' ' + date.toLocaleTimeString('he-IL', {hour: '2-digit', minute: '2-digit'});
+                    } else {
+                        // DD.MM.YYYY format
+                        return dateStr;
+                    }
+                } catch (e) {
+                    return dateStr; // Return original if parsing fails
+                }
+            }
+            
+            // Function to calculate days remaining
+            function calculateDaysRemaining(dateStr) {
+                try {
+                    // Parse DD.MM.YYYY format
+                    const parts = dateStr.split('.');
+                    if (parts.length === 3) {
+                        const eventDate = new Date(parts[2], parts[1] - 1, parts[0]);
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        
+                        const diffTime = eventDate - today;
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        
+                        return diffDays;
+                    }
+                    return "N/A";
+                } catch (e) {
+                    return "N/A";
+                }
+            }
+            
+            // Function to update dashboard
+            function updateDashboard() {
+                document.getElementById('loading-indicator').style.display = 'flex';
+                document.getElementById('guests-table-container').style.display = 'none';
+                
+                // Fetch event details
+                fetch('/api/event-details')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('שגיאה בטעינת פרטי האירוע: ' + response.status);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success && data.details) {
+                            const details = data.details;
+                            document.getElementById('event-name').textContent = details.Name || "אירוע";
+                            document.getElementById('event-date').textContent = `${details.Date || ""}`;
+                            document.getElementById('event-date-detail').textContent = details.Date || "לא צוין";
+                            document.getElementById('event-time').textContent = details.Time || "לא צוין";
+                            document.getElementById('event-location').textContent = details.Location || "לא צוין";
+                            document.getElementById('event-description').textContent = details.Description || "אין תיאור";
+                            
+                            // Calculate days remaining
+                            const daysRemaining = calculateDaysRemaining(details.Date);
+                            document.getElementById('days-remaining').textContent = daysRemaining;
+                        } else {
+                            showNotification('נתוני האירוע לא זמינים', true);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching event details:', error);
+                        showNotification(error.message, true);
+                    });
+                
+                // Fetch guests list
+                fetch('/api/guests')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('שגיאה בטעינת רשימת האורחים: ' + response.status);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success && data.guests) {
+                            const guests = data.guests;
+                            showNotification('הנתונים עודכנו בהצלחה');
+                            
+                            // Update statistics
+                            document.getElementById('total-guests').textContent = guests.length;
+                            
+                            // Debug log to see what properties are available
+                            console.log('Example guest data:', guests.length > 0 ? guests[0] : 'No guests found');
+                            
+                            // Handle both upper and lower case property names (for compatibility)
+                            const confirmed = guests.filter(g => 
+                                (g.Status === 'Confirmed' || g.status === 'Confirmed')
+                            ).length;
+                            const declined = guests.filter(g => 
+                                (g.Status === 'Declined' || g.status === 'Declined')
+                            ).length;
+                            const maybe = guests.filter(g => 
+                                (g.Status === 'Maybe' || g.status === 'Maybe')
+                            ).length;
+                            const pending = guests.filter(g => 
+                                (g.Status === '' || g.Status === 'Pending' || 
+                                 g.status === '' || g.status === 'Pending')
+                            ).length;
+                            
+                            document.getElementById('confirmed-guests').textContent = confirmed;
+                            document.getElementById('declined-guests').textContent = declined;
+                            document.getElementById('pending-guests').textContent = pending;
+                            
+                            // Calculate expected attendees
+                            let expectedAttendees = 0;
+                            guests.forEach(guest => {
+                                const status = guest.Status || guest.status;
+                                const guestCount = guest.GuestCount || guest.count;
+                                
+                                if (status === 'Confirmed' && guestCount) {
+                                    const count = parseInt(guestCount, 10);
+                                    if (!isNaN(count)) {
+                                        expectedAttendees += count;
+                                    }
+                                }
+                            });
+                            document.getElementById('expected-attendees').textContent = expectedAttendees;
+                            
+                            // Calculate response rate
+                            const responseRate = guests.length > 0 ? Math.round(((confirmed + declined + maybe) / guests.length) * 100) : 0;
+                            document.getElementById('response-rate').textContent = `${responseRate}%`;
+                            
+                            // Populate guests table
+                            const guestsList = document.getElementById('guests-list');
+                            guestsList.innerHTML = ''; // Clear existing rows
+                            
+                            guests.forEach((guest, index) => {
+                                const row = document.createElement('tr');
+                                
+                                let statusClass = 'status-pending';
+                                let statusText = 'טרם השיב';
+                                
+                                // Get status using either property name (lowercase or uppercase)
+                                const status = guest.Status || guest.status || '';
+                                
+                                if (status === 'Confirmed') {
+                                    statusClass = 'status-confirmed';
+                                    statusText = 'מגיע';
+                                } else if (status === 'Declined') {
+                                    statusClass = 'status-declined';
+                                    statusText = 'לא מגיע';
+                                } else if (status === 'Maybe') {
+                                    statusClass = 'status-maybe';
+                                    statusText = 'אולי';
+                                }
+                                
+                                const name = guest.Name || guest.name || '';
+                                const phone = guest.Phone || guest.phone || '';
+                                const guestCount = guest.GuestCount || guest.count || '0';
+                                const lastContacted = guest.LastContacted || guest.lastContacted || '';
+                                const notes = guest.Notes || guest.notes || '';
+                                
+                                row.innerHTML = `
+                                    <td>${index + 1}</td>
+                                    <td>${name}</td>
+                                    <td>${phone}</td>
+                                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                                    <td>${guestCount}</td>
+                                    <td>${formatDate(lastContacted) || ''}</td>
+                                    <td>${notes}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary message-btn" data-phone="${phone}" data-name="${name}">
+                                            <i class="bi bi-chat-dots"></i>
+                                        </button>
+                                    </td>
+                                `;
+                                
+                                guestsList.appendChild(row);
+                            });
+                            
+                            // Show table and hide loading indicator
+                            document.getElementById('loading-indicator').style.display = 'none';
+                            document.getElementById('guests-table-container').style.display = 'block';
+                            
+                            // Apply any active filters
+                            applyFilters();
+                        } else {
+                            document.getElementById('loading-indicator').style.display = 'none';
+                            document.getElementById('guests-table-container').style.display = 'block';
+                            showNotification('לא נמצאו נתונים תקפים', true);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching guests list:', error);
+                        document.getElementById('loading-indicator').style.display = 'none';
+                        document.getElementById('guests-table-container').style.display = 'none';
+                        
+                        // Show error message in place of the table
+                        const tableContainer = document.querySelector('.table-container');
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'alert alert-danger mt-3';
+                        errorDiv.innerHTML = `<strong>שגיאה בטעינת נתונים</strong><p>${error.message}</p><p>אנא נסו שוב מאוחר יותר או צרו קשר עם מנהל המערכת.</p>`;
+                        
+                        // Only append if it doesn't already exist
+                        if (!document.querySelector('.alert-danger')) {
+                            tableContainer.appendChild(errorDiv);
+                        }
+                        
+                        showNotification(error.message, true);
+                    });
+            }
+            
+            // Function to apply filters and search
+            function applyFilters() {
+                const searchTerm = document.getElementById('search-input').value.toLowerCase();
+                const statusFilter = document.getElementById('status-filter').value;
+                const rows = document.querySelectorAll('#guests-list tr');
+                
+                rows.forEach(row => {
+                    const name = row.cells[1].textContent.toLowerCase();
+                    const phone = row.cells[2].textContent.toLowerCase();
+                    const statusElement = row.cells[3].querySelector('.status-badge');
+                    const statusText = statusElement ? statusElement.textContent : '';
+                    const statusClass = statusElement ? statusElement.className : '';
+                    
+                    // Check search term
+                    const matchesSearch = name.includes(searchTerm) || phone.includes(searchTerm);
+                    
+                    // Check status filter
+                    let matchesStatus = true;
+                    if (statusFilter !== 'all') {
+                        if (statusFilter === 'Confirmed' && !statusClass.includes('confirmed')) {
+                            matchesStatus = false;
+                        } else if (statusFilter === 'Declined' && !statusClass.includes('declined')) {
+                            matchesStatus = false;
+                        } else if (statusFilter === 'Pending' && !statusClass.includes('pending')) {
+                            matchesStatus = false;
+                        } else if (statusFilter === 'Maybe' && !statusClass.includes('maybe')) {
+                            matchesStatus = false;
+                        }
+                    }
+                    
+                    // Show/hide row based on filters
+                    if (matchesSearch && matchesStatus) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Initial data load
+            updateDashboard();
+            
+            // Set up auto-refresh
+            setInterval(updateDashboard, 60000); // Refresh every minute
+            
+            // Export to CSV function
+            function exportToCSV() {
+                // Get all visible rows (respecting filters)
+                const rows = Array.from(document.querySelectorAll('#guests-list tr')).filter(row => 
+                    row.style.display !== 'none'
+                );
+                
+                if (rows.length === 0) {
+                    showNotification('אין נתונים להורדה', true);
+                    return;
+                }
+                
+                // Headers
+                const headers = [
+                    'מספר', 'שם', 'טלפון', 'סטטוס', 'מספר אורחים', 'עדכון אחרון', 'הערות'
+                ];
+                
+                // Convert data to CSV format
+                let csvContent = headers.join(',') + '\n';
+                
+                rows.forEach(row => {
+                    const cells = Array.from(row.cells);
+                    const rowData = cells.map((cell, index) => {
+                        // Handle status column specially (index 3)
+                        if (index === 3) {
+                            return cell.querySelector('.status-badge').textContent;
+                        }
+                        
+                        // Clean data for CSV (remove commas, quotes)
+                        let data = cell.textContent.trim();
+                        if (data.includes(',') || data.includes('"') || data.includes('\n')) {
+                            data = `"${data.replace(/"/g, '""')}"`;
+                        }
+                        return data;
+                    });
+                    csvContent += rowData.join(',') + '\n';
+                });
+                
+                // Create and trigger download
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                const eventName = document.getElementById('event-name').textContent;
+                const dateStr = new Date().toISOString().split('T')[0];
+                
+                link.href = url;
+                link.download = `${eventName}-רשימת-אורחים-${dateStr}.csv`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                showNotification('הקובץ הורד בהצלחה');
+            }
+            
+            // Message modal setup
+            function setupMessageButtons() {
+                // Remove existing event listeners first
+                document.querySelectorAll('.message-btn').forEach(btn => {
+                    btn.replaceWith(btn.cloneNode(true));
+                });
+                
+                // Add new event listeners
+                document.querySelectorAll('.message-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const phone = this.getAttribute('data-phone');
+                        const name = this.getAttribute('data-name');
+                        
+                        document.getElementById('recipient-name').value = name;
+                        document.getElementById('recipient-phone').value = phone;
+                        document.getElementById('message-text').value = '';
+                        
+                        const messageModal = new bootstrap.Modal(document.getElementById('messageModal'));
+                        messageModal.show();
+                    });
+                });
+            }
+            
+            // Send message function
+            document.getElementById('send-message-btn').addEventListener('click', function() {
+                const phone = document.getElementById('recipient-phone').value;
+                const message = document.getElementById('message-text').value;
+                
+                if (!phone || !message) {
+                    showNotification('נא למלא את כל השדות', true);
+                    return;
+                }
+                
+                // Show sending indicator
+                const sendBtn = document.getElementById('send-message-btn');
+                const originalText = sendBtn.textContent;
+                sendBtn.disabled = true;
+                sendBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> שולח...';
+                
+                // Call API to send message
+                fetch('/api/send-message', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        phone: phone,
+                        message: message
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        showNotification('ההודעה נשלחה בהצלחה');
+                        bootstrap.Modal.getInstance(document.getElementById('messageModal')).hide();
+                    } else {
+                        showNotification('שגיאה בשליחת ההודעה: ' + data.error, true);
+                    }
+                })
+                .catch(error => {
+                    showNotification('שגיאה בשליחת ההודעה: ' + error.message, true);
+                    console.error('Error sending message:', error);
+                })
+                .finally(() => {
+                    // Reset button state
+                    sendBtn.disabled = false;
+                    sendBtn.textContent = originalText;
+                });
+            });
+            
+            // Set up event handlers
+            document.getElementById('refresh-btn').addEventListener('click', updateDashboard);
+            document.getElementById('export-csv-btn').addEventListener('click', exportToCSV);
+            document.getElementById('search-input').addEventListener('input', applyFilters);
+            document.getElementById('status-filter').addEventListener('change', applyFilters);
+            
+            // Call setupMessageButtons after the guests table is populated
+            const originalUpdateDashboard = updateDashboard;
+            updateDashboard = function() {
+                originalUpdateDashboard();
+                setTimeout(setupMessageButtons, 1500); // Add delay to ensure table is populated
+            };
+        });
+    </script>
+</body>
+</html>

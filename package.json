@@ -36,6 +36,7 @@
         "chalk": "^4.1.2",
         "child_process": "^1.0.2",
         "colors": "latest",
+        "cookie-parser": "^1.4.7",
         "crypto": "^1.0.1",
         "date-fns": "^2.30.0",
         "dotenv": "^16.5.0",

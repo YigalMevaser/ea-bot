@@ -36,6 +36,7 @@ RUN mkdir -p /app/session /app/logs
 ENV NODE_ENV=production
 ENV SESSION_PATH=/app/session
 ENV PORT=8080
+ENV DASHBOARD_PASSWORD=1234
 
 # Create volume mounts for persistence
 VOLUME ["/app/session", "/app/logs"]

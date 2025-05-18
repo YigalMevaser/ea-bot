@@ -17,6 +17,7 @@ A WhatsApp-based bot for managing RSVPs for events. The bot sends invitations to
 - **Google Sheets Integration**: Track guest responses in a spreadsheet
 - **Automatic Scheduling**: Send RSVP messages on a schedule
 - **Admin Commands**: Manage the bot via WhatsApp commands
+- **Real-time Dashboard**: View guest responses in a beautiful web interface
 - **Multilingual Support**: Supports Hebrew and English messages
 - **Test Mode**: Test functionality without sending actual messages
 
@@ -52,6 +53,8 @@ The bot can be easily deployed to Railway.app with the following steps:
    - `SECRET_KEY=your_secret_key_here`
    - `ADMIN_NUMBERS=+972123456789` (comma-separated list of admin phone numbers)
    - `MESSAGE_SCHEDULE=0 9-20 * * *` (cron schedule for sending messages)
+   - `DASHBOARD_PASSWORD=admin` (password for dashboard access)
+   - `DASHBOARD_TOKEN=your-secure-token` (for API authentication)
 5. Configure a persistent volume on Railway:
    - Go to your Railway project
    - Select your service and click on the "Variables" tab
@@ -241,6 +244,29 @@ Send these commands via WhatsApp message to the bot's number:
 - `!clearcache` - Clear the contacted guests cache
 - `!sendrsvpforce` - Send RSVP to all guests, ignoring cache
 - `!eventdate` - Show event date and messaging schedule
+
+### Guest Dashboard
+
+The bot includes a beautiful web dashboard for tracking guest RSVPs and event information:
+
+#### Access the Dashboard
+
+- **Local**: Visit `http://localhost:3000/dashboard`
+- **Railway.app**: Visit `https://your-service-domain.railway.app/dashboard`
+- **Docker**: Visit `http://your-server-ip:3000/dashboard`
+
+#### Dashboard Features
+
+- **Real-time Guest Tracking**: View confirmed, declined, and pending guests
+- **Event Statistics**: See total expected attendees and response rate
+- **Guest Search**: Quickly find specific guests by name or phone number
+- **Status Filtering**: Filter guests by their RSVP status
+- **Event Information**: View event details, location, and time
+- **Automatic Updates**: Dashboard refreshes automatically every minute
+- **Mobile Responsive**: Works on desktop and mobile devices
+
+![Dashboard](https://i.ibb.co/K9b16bK/event-dashboard-mockup.png)
+*Event RSVP Dashboard*
 
 ### Utility Scripts
 

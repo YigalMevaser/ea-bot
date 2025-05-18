@@ -4,7 +4,7 @@
 <head>
   <title>WhatsApp QR Code</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.0/build/qrcode.min.js"></script>
+  <meta http-equiv="refresh" content="60">
   <style>
     body { 
       font-family: Arial, sans-serif;
@@ -14,31 +14,34 @@
       justify-content: center;
       height: 100vh;
       margin: 0;
+      background-color: #f0f2f5;
     }
-    #qrcode { 
-      margin: 20px;
+    .container {
+      background-color: white;
       padding: 20px;
-      background: white;
       border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 500px;
     }
-    h1 { color: #333; }
+    h1 { color: #128C7E; }
+    .qr-container { margin: 20px 0; }
+    img { max-width: 100%; height: auto; }
+    p { margin: 10px 0; line-height: 1.5; }
+    .refresh { margin-top: 20px; color: #777; }
   </style>
 </head>
 <body>
-  <h1>Scan With WhatsApp</h1>
-  <div id="qrcode"></div>
-  <p>Scan this QR code with WhatsApp to connect your bot</p>
-  
-  <script>
-    // Create a clean QR code with proper sizing
-    QRCode.toCanvas(document.getElementById('qrcode'), '2@WjRK/4+0IUv/fc64DXtP27YS9v5uyUtNPwKnNEXWdrpZUyV8BrACDEPmVjCCsJuNebMOUT2h8+sLnAK6QmDPlufQY2qxrwgePho=,4UP7+fptzOdrrfCQkxCzbs/URZNqDh4IGy6O22kwllA=,29WrqRgGqFzsUdPolVyE5lDr9q6ljaa7TeG9t9dvxFE=,JfC+jjbMAxyOOVBlzB4GlDR3PMukAhdPRSjh0gwXT3k=', {
-      width: 300,
-      margin: 2,
-      color: {
-        dark: '#000000',
-        light: '#FFFFFF'
-      }
-    });
-  </script>
+  <div class="container">
+    <h1>WhatsApp QR Code</h1>
+    <div class="qr-container">
+      <img src="data:image/png;base64,MkBDUVZpTTZObE8xZHloUW1XSThxSjFWbFFMb1VtTktuT1VUQ2ZQQjgxOTlncVFGVEJ0RVlINklVUmZWZ1JwdmZRTUFzdk9vVldRNk1FNHFIUzgxUmhTNG01V2FHYjNiR0tXSXM9LE5oWm9udWY0eXdLUlAzUnllN2N3d041dDd2OGRiOXhvdkhsU3ZWeUswM3c9LEd3YmZ0bE9MRERrQzA1SE9HaUZKb1BFV2pnWHpUNXgxZnE1dmpob1lGMWs9LGxqcldrZ2kvWmtWMGEwdnFOUkRKMGg0am9YUERnMzZVTE1QZks0aDdzQXM9" alt="WhatsApp QR Code">
+    </div>
+    <p>1. Open WhatsApp on your phone</p>
+    <p>2. Tap Menu or Settings and select <strong>Linked Devices</strong></p>
+    <p>3. Tap on <strong>Link a Device</strong></p>
+    <p>4. Scan this QR code with your phone's camera</p>
+    <p class="refresh">This page will refresh automatically every 60 seconds</p>
+  </div>
 </body>
 </html>

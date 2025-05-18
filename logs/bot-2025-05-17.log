@@ -22,3 +22,40 @@ No stack trace
 [2025-05-17T20:44:09.672Z] [WARN] Disconnected with status code: 401
 [2025-05-17T20:44:09.673Z] [ERROR] Device logged out, please scan the QR code again
 No stack trace
+[2025-05-17T22:21:48.954Z] [INFO] Loading invitation image from: /Users/yigalm/MyProjects/github/ea-bot/invitation.jpeg
+[2025-05-17T22:21:48.958Z] [INFO] Invitation image loaded successfully
+[2025-05-17T22:21:48.962Z] [INFO] Initializing WhatsApp connection...
+[2025-05-17T22:21:49.011Z] [INFO] Setting up RSVP message schedule: */5 * * * *
+[2025-05-17T22:21:49.014Z] [INFO] Setting up follow-up checker to run every hour
+[2025-05-17T22:21:49.016Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-17T22:21:49.016Z] [INFO] Web server running on port 3000
+[2025-05-17T22:21:52.747Z] [INFO] Connection update: {"connection":"close","lastDisconnect":{"error":{"data":{"reason":"401","location":"cln"},"isBoom":true,"isServer":false,"output":{"statusCode":401,"payload":{"statusCode":401,"error":"Unauthorized","message":"Connection Failure"},"headers":{}}},"date":"2025-05-17T22:21:52.747Z"}}
+[2025-05-17T22:21:52.748Z] [INFO] Connection closed. Attempting to reconnect...
+[2025-05-17T22:21:52.749Z] [WARN] Disconnected with status code: 401
+[2025-05-17T22:21:52.750Z] [ERROR] Device logged out, please scan the QR code again
+No stack trace
+[2025-05-17T22:21:52.774Z] [INFO] Cleared session files after logout
+[2025-05-17T22:21:52.774Z] [INFO] Reconnecting...
+[2025-05-17T22:21:55.775Z] [INFO] Initializing WhatsApp connection...
+[2025-05-17T22:21:55.812Z] [INFO] Setting up RSVP message schedule: */5 * * * *
+[2025-05-17T22:21:55.813Z] [INFO] Setting up follow-up checker to run every hour
+[2025-05-17T22:21:55.813Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-17T22:51:38.588Z] [INFO] Loading invitation image from: /Users/yigalm/MyProjects/github/ea-bot/invitation.jpeg
+[2025-05-17T22:51:38.590Z] [INFO] Invitation image loaded successfully
+[2025-05-17T22:52:15.562Z] [INFO] Loading invitation image from: /Users/yigalm/MyProjects/github/ea-bot/invitation.jpeg
+[2025-05-17T22:52:15.562Z] [INFO] Invitation image loaded successfully
+[2025-05-17T22:54:21.054Z] [INFO] Loading invitation image from: /Users/yigalm/MyProjects/github/ea-bot/invitation.jpeg
+[2025-05-17T22:54:21.057Z] [INFO] Invitation image loaded successfully
+[2025-05-17T22:54:21.078Z] [INFO] Initializing WhatsApp connection...
+[2025-05-17T22:54:21.148Z] [INFO] Setting up RSVP message schedule: */5 * * * *
+[2025-05-17T22:54:21.151Z] [INFO] Setting up follow-up checker to run every hour
+[2025-05-17T22:54:21.153Z] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-17T22:54:21.153Z] [INFO] Web server running on port 3000
+[2025-05-17T22:54:21.908Z] [INFO] Connection update: {"qr":"2@CQViM6NlO1dyhQmWI8qJ1VlQLoUmNKnOUTCfPB8199gqQFTBtEYH6IURfVgRpvfQMAsvOoVWQ6ME4qHS81RhS4m5WaGb3bGKWIs=,NhZonuf4ywKRP3Rye7cwwN5t7v8db9xovHlSvVyK03w=,GwbftlOLDDkC05HOGiFJoPEWjgXzT5x1fq5vjhoYF1k=,ljrWkgi/ZkV0a0vqNRDJ0h4joXPDg36ULMPfK4h7sAs="}
+[2025-05-17T22:54:21.947Z] [INFO] 
+
+==== WHATSAPP QR CODE (SCAN WITH PHONE) ====
+[2025-05-17T22:54:21.947Z] [INFO] ============================================
+[2025-05-17T22:54:21.947Z] [INFO] Scan this QR code with WhatsApp to connect your bot
+[2025-05-17T22:54:21.948Z] [INFO] Or visit http://localhost:3000/qr or your Railway.app URL to scan it
+[2025-05-17T22:54:21.965Z] [INFO] QR code saved as HTML and PNG files
