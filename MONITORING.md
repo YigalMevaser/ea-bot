@@ -171,6 +171,29 @@ If the bot frequently disconnects from WhatsApp:
 2. Check for any WhatsApp service disruptions
 3. Consider adding a delay between messages if sending in high volume
 
+### Data Persistence Issues
+
+If customers are not showing up in the admin dashboard but appear to be created correctly:
+
+1. Use the new `!diagnose` command in WhatsApp to check system health
+2. Verify the data directory has the correct permissions (should be 777)
+3. Check that the customers.json and credentials.json files are both valid and readable
+4. Ensure the bot has write access to the data directory
+5. If needed, restart the bot after fixing permissions
+
+#### Using the !diagnose Command
+
+The `!diagnose` command is a powerful troubleshooting tool that can:
+
+- Check the file system status (directories and files)
+- Validate the data files structure
+- Fix permissions automatically when possible
+- Report on customer data status
+- Test file system write access
+- Show active customers count
+
+When experiencing data issues, send `!diagnose` to the bot from an admin number. The command will run a full diagnostic scan and attempt to fix common issues automatically.
+
 ## Monitoring Command Reference
 
 ```bash

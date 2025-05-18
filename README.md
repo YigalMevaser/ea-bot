@@ -288,14 +288,6 @@ The bot includes several utility scripts for monitoring and maintenance:
   - Run with: `npm run check`
   - Automatically installed before the bot starts
 
-### Guest Interaction
-
-Guests will receive a message with buttons to respond:
-1. "Yes, I'll attend" / "כן, אני מגיע/ה"
-2. "No, I can't attend" / "לא אוכל להגיע"
-
-If they respond "Yes", they'll be asked how many people will attend.
-
 ## Automatic Scheduling
 
 - The bot sends messages hourly between 9 AM and 8 PM (configurable)
@@ -321,146 +313,21 @@ Change the `MESSAGE_SCHEDULE` environment variable using cron syntax to modify w
 1. **Connection Problems**: If the bot disconnects, restart it and scan the QR code again
 2. **Message Not Sending**: Use `!clearcache` to reset the contacted guests list
 3. **API Errors**: Check your Google Apps Script deployment settings and permissions
+4. **Customers Not Showing in Admin Dashboard**: Use `!diagnose` command to check data directory permissions and file access
+
+### Diagnostic Tools
+
+The bot now includes advanced diagnostic features to help troubleshoot common issues:
+
+- **WhatsApp Diagnostics Command**: Send `!diagnose` from an admin number to check system health
+- **Fix Data Directory Script**: Run `./fix-data-directory.sh` to repair file permissions and validate data
+- **Enhanced Error Logging**: More detailed logs with data access information
+
+For more information, see the [Diagnostics Guide](./docs/diagnostics-guide.md).
 
 ### Debug Commands
 
 - `!debugapi`: Test the connection to Google Sheets API
 - `!debug`: Show your current user information and check if you're in the guest list
-
-Basic Command: npm run start
-
-This command simply starts your WhatsApp RSVP bot normally:
-
-    Initializes the WhatsApp connection
-    Sets up the scheduled messaging system
-    Starts the web server
-    Waits for admin commands via WhatsApp
-
-When you run this command, the bot will start and wait for you to scan the QR code to connect your WhatsApp account. It will not automatically send any messages until:
-
-    The scheduled time occurs (based on your cron settings)
-    You manually send an admin command like !sendrsvp
-
-With Test Flag: npm run start -- --test-message
-
-This command starts your bot with an additional flag --test-message which triggers special behavior:
-JavaScript
-
-const shouldSendTestMessage = args.includes('--test-message');
-
-When this flag is detected, your bot will:
-
-    Start normally with all the regular functionality
-    ADDITIONALLY, after a 5-second delay, automatically send a test RSVP message to the admin number specified in your environment variables
-
-The test message is sent here (starting at line ~1345):
-JavaScript
-
-// Send test message if requested via command line
-if (shouldSendTestMessage && waClient.user) {
-  log.info('Command line flag detected: Sending test RSVP message...');
-  setTimeout(async () => {
-    try {
-      // Get admin number
-      const adminPhone = process.env.ADMIN_NUMBERS?.split(',')[0];
-      if (!adminPhone) {
-        log.warn('No admin phone number found in .env file to send test message');
-        return;
-      }
-      
-      // Get event details
-      const eventDetails = await appScriptManager.getEventDetails();
-      
-      // Send a test RSVP message to admin
-      // ...send message code...
-      
-      log.info(`Sent test RSVP message to admin (${adminPhone})`);
-    } catch (error) {
-      log.error('Error sending test message:', error);
-    }
-  }, 5000); // Wait 5 seconds for connection to establish
-}
-
-When to Use Each Command
-
-    Use npm run start for normal, day-to-day operation of your bot
-    Use npm run start -- --test-message when:
-        Setting up the bot for the first time to verify connections work
-        After making changes, to test if the message formatting is correct
-        When troubleshooting to confirm the bot can properly send messages
-
-The --test-message flag is especially useful for quickly testing your setup without having to manually send the !test command via WhatsApp after the bot starts.
-
-
-Event Message Reminder Strategy
-Your WhatsApp RSVP bot uses a time-based event proximity strategy to determine when to send messages to guests. The bot sends different types of reminders at specific time intervals before the event. Here's how the strategy works:
-
-Message Schedule Timeline
-The bot sends messages at these key intervals:
-
-Initial Invitation (28-30 days before)
-
-First announcement about the event
-Sent to all guests with pending status
-Contains full event details and RSVP request
-First Reminder (14 days before)
-
-Sent exactly 2 weeks before the event
-Only sent to non-respondents (guests who haven't confirmed or declined)
-Gentle reminder about the upcoming event
-Second Reminder (7 days before)
-
-Sent exactly 1 week before the event
-More urgent tone for non-respondents
-Emphasizes the event is approaching soon
-Final Reminder (2-3 days before)
-
-Last reminder sent 2-3 days before the event
-Sent to both confirmed guests (as a courtesy) and non-respondents
-Most urgent tone, final chance to respond
-Implementation Details
-The scheduling logic is implemented in eventScheduler.js with these key functions:
-
-calculateDaysRemaining() - Calculates days until the event
-shouldSendMessagesToday() - Determines if messages should be sent based on event proximity
-filterGuestsByEventProximity() - Filters guest list based on event date
-getMessageByProximity() - Provides customized messages based on days remaining
-The behavior is controlled by the EVENT_DATE parameter in your .env file:
-EVENT_DATE=2025-06-15
-
-How to Check Current Status
-You can use the !eventdate admin command in WhatsApp to check:
-
-The current event date
-Days remaining until the event
-Which messaging phase you're currently in
-The full scheduling strategy
-Custom Message Content
-Each phase has customized message content in Hebrew:
-
-Initial Invitation: "אתם מוזמנים ל[event name]!"
-First Reminder: "אנו מזכירים לכם את ההזמנה ל[event name]"
-Second Reminder: "בעוד שבוע יתקיים [event name]"
-Final Reminder: "בעוד [X] ימים יתקיים [event name]. זוהי תזכורת אחרונה"
-Since today's date is May 17, 2025, and your event is on June 15, 2025 (29 days away), you're currently in the "Initial invitation" phase.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgments
-
-- Uses [Baileys](https://github.com/adiwajshing/Baileys) for WhatsApp integration
-- Built with Node.js and Express
-
-This README provides comprehensive documentation for your WhatsApp Event RSVP Bot. It includes:
-
-    Overview and features
-    Installation instructions
-    Setup steps for Google Sheets integration
-    Usage instructions with admin commands
-    Guest interaction workflow
-    Automatic scheduling explanation
-    Customization options, especially for languages
-    Troubleshooting tips
+- `!diagnose`: Check system health and fix data issues automatically
 

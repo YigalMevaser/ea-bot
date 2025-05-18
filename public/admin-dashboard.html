@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Customer Admin | WhatsApp RSVP Bot</title>
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <!-- Additional Admin-specific styling -->
+    <style>
+        .customer-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .customer-card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .customer-card h3 {
+            margin-top: 0;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+        
+        .customer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .status-active {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-inactive {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .customer-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        
+        .detail-item {
+            margin-bottom: 8px;
+        }
+        
+        .detail-label {
+            font-weight: bold;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .customer-actions {
+            margin-top: 16px;
+            display: flex;
+            gap: 8px;
+        }
+        
+        .add-customer-form {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .form-field {
+            margin-bottom: 16px;
+        }
+        
+        .form-field label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+        
+        .form-field input,
+        .form-field textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .empty-state {
+            padding: 20px;
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Multi-Customer Admin Dashboard</h1>
+            <div class="controls">
+                <button id="btn-add-customer" class="button">Add New Customer</button>
+                <button id="logout-btn" class="button outline">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="add-customer-section" style="display: none;">
+            <div class="add-customer-form">
+                <h2>Add New Customer</h2>
+                <form id="customer-form">
+                    <div class="form-grid">
+                        <div class="form-field">
+                            <label for="name">Customer Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="phone">Phone Number (with country code)</label>
+                            <input type="text" id="phone" name="phone" placeholder="+972526901876" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="eventName">Event Name</label>
+                            <input type="text" id="eventName" name="eventName" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="eventDate">Event Date</label>
+                            <input type="date" id="eventDate" name="eventDate" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="spreadsheetUrl">Google Sheet URL</label>
+                            <input type="text" id="spreadsheetUrl" name="spreadsheetUrl" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="appScriptUrl">Apps Script URL</label>
+                            <input type="text" id="appScriptUrl" name="appScriptUrl" required>
+                        </div>
+                    </div>
+                    <div class="form-field">
+                        <label for="secretKey">Secret Key</label>
+                        <input type="text" id="secretKey" name="secretKey" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="button">Save Customer</button>
+                        <button type="button" id="cancel-add" class="button outline">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+        
+        <section id="customers-section">
+            <div class="section-header">
+                <h2>Customer Events</h2>
+                <div class="filter-controls">
+                    <select id="status-filter">
+                        <option value="all">All Events</option>
+                        <option value="active">Active Events</option>
+                        <option value="upcoming">Upcoming Events</option>
+                        <option value="past">Past Events</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="customers-container">
+                <div class="loading-indicator" id="loading-indicator">
+                    <div class="spinner"></div>
+                    <p>Loading customers...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Global variables for easier reference and to avoid null issues
+            let addCustomerSection = document.getElementById('add-customer-section');
+            let customersSection = document.getElementById('customers-section');
+            let customerForm = document.getElementById('customer-form');
+            let loadingIndicator = document.getElementById('loading-indicator');
+            let customersContainer = document.getElementById('customers-container');
+            let statusFilter = document.getElementById('status-filter');
+            
+            // Ensure required DOM elements exist
+            if (!addCustomerSection) console.error('Add customer section not found');
+            if (!customersSection) console.error('Customers section not found');
+            if (!customerForm) console.error('Customer form not found');
+            if (!loadingIndicator) console.error('Loading indicator not found');
+            if (!customersContainer) console.error('Customers container not found');
+            if (!statusFilter) console.error('Status filter not found');
+            
+            // Show/hide add customer form
+            document.getElementById('btn-add-customer').addEventListener('click', function() {
+                if (addCustomerSection) addCustomerSection.style.display = 'block';
+                if (customersSection) customersSection.style.display = 'none';
+            });
+            
+            document.getElementById('cancel-add').addEventListener('click', function() {
+                if (addCustomerSection) addCustomerSection.style.display = 'none';
+                if (customersSection) customersSection.style.display = 'block';
+            });
+            
+            // Handle logout
+            document.getElementById('logout-btn').addEventListener('click', function() {
+                fetch('/admin/logout', {
+                    method: 'POST',
+                    credentials: 'same-origin'
+                }).then(() => {
+                    window.location.href = '/admin/login';
+                });
+            });
+            
+            // Handle customer form submission
+            if (customerForm) {
+                customerForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    console.log('Form submission started');
+                    
+                    try {
+                        const formData = new FormData(this);
+                        const data = Object.fromEntries(formData.entries());
+                        
+                        // Clean URL fields by removing trailing semicolons, quotes, and spaces
+                        if (data.spreadsheetUrl) {
+                            data.spreadsheetUrl = data.spreadsheetUrl.replace(/["';,\s]+$/, '');
+                        }
+                        if (data.appScriptUrl) {
+                            data.appScriptUrl = data.appScriptUrl.replace(/["';,\s]+$/, '');
+                        }
+                        
+                        console.log('Cleaned customer data:', data);
+                        
+                        // Validate required fields on frontend before submission
+                        const required = ['name', 'phone', 'eventName', 'eventDate', 'appScriptUrl', 'secretKey'];
+                        const missing = required.filter(field => !data[field]);
+                        
+                        if (missing.length > 0) {
+                            alert('Please fill in all required fields: ' + missing.join(', '));
+                            return;
+                        }
+                        
+                        // Show a processing indicator
+                        const submitBtn = this.querySelector('button[type="submit"]');
+                        if (!submitBtn) {
+                            console.error('Submit button not found');
+                            return;
+                        }
+                        
+                        const originalText = submitBtn.textContent;
+                        submitBtn.disabled = true;
+                        submitBtn.textContent = 'Processing...';
+                        
+                        fetch('/api/admin/customers', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        })
+                        .then(response => {
+                            console.log('Response status:', response.status);
+                            
+                            if (!response.ok) {
+                                return response.json()
+                                    .then(errorData => {
+                                        console.error('Server error details:', errorData);
+                                        throw new Error(`Server responded with status: ${response.status} - ${errorData.error || 'Unknown error'}`);
+                                    })
+                                    .catch(err => {
+                                        if (err.name === 'SyntaxError') {
+                                            throw new Error(`Server responded with status: ${response.status} - Could not parse error response`);
+                                        }
+                                        throw err;
+                                    });
+                            }
+                            return response.json();
+                        })
+                        .then(result => {
+                            console.log('Server response:', result);
+                            
+                            if (result.success) {
+                                if (addCustomerSection) addCustomerSection.style.display = 'none';
+                                if (customersSection) customersSection.style.display = 'block';
+                                
+                                if (customerForm) customerForm.reset();
+                                
+                                if (result.warning) {
+                                    alert('Customer added with warning: ' + result.warning);
+                                } else {
+                                    alert('Customer added successfully!');
+                                }
+                                
+                                // Reload customers with a delay to ensure the backend has processed everything
+                                setTimeout(() => {
+                                    loadCustomers();
+                                }, 500);
+                            } else {
+                                alert('Error: ' + (result.error || 'Unknown error occurred'));
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error adding customer:', error);
+                            alert(`Error adding customer: ${error.message}\n\nPlease check the console for more details.`);
+                            
+                            // Return to customer list view after error
+                            if (addCustomerSection) addCustomerSection.style.display = 'none';
+                            if (customersSection) customersSection.style.display = 'block';
+                        })
+                        .finally(() => {
+                            // Reset button state
+                            if (submitBtn) {
+                                submitBtn.disabled = false;
+                                submitBtn.textContent = originalText;
+                            }
+                        });
+                    } catch (formError) {
+                        console.error('Critical error in form submission:', formError);
+                        alert('An unexpected error occurred. Please try again.');
+                    }
+                });
+            } else {
+                console.error('Customer form not found!');
+            }
+            
+            // Handle status filter change
+            if (statusFilter) {
+                statusFilter.addEventListener('change', function() {
+                    loadCustomers(this.value);
+                });
+            }
+            
+            // Load customers function with better error handling
+            function loadCustomers(filter = 'all') {
+                try {
+                    console.log('Loading customers with filter:', filter);
+                    
+                    if (!customersContainer) {
+                        console.error('Customers container not found in loadCustomers');
+                        return;
+                    }
+                    
+                    if (loadingIndicator) {
+                        loadingIndicator.style.display = 'flex';
+                    }
+                    
+                    // Clear the container but keep the loading indicator
+                    if (customersContainer) {
+                        customersContainer.innerHTML = '';
+                        customersContainer.appendChild(loadingIndicator);
+                    }
+                    
+                    fetch(`/api/admin/customers?filter=${filter}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`Server responded with status: ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('Customer data received:', data);
+                            
+                            if (loadingIndicator) {
+                                loadingIndicator.style.display = 'none';
+                            }
+                            
+                            if (data.success) {
+                                if (Array.isArray(data.customers)) {
+                                    renderCustomers(data.customers);
+                                } else {
+                                    console.error('Invalid customers data:', data.customers);
+                                    if (customersContainer) {
+                                        customersContainer.innerHTML = 
+                                            '<div class="error-message">Invalid customer data received from server</div>';
+                                    }
+                                }
+                            } else {
+                                throw new Error(data.error || 'Failed to load customers');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error loading customers:', error);
+                            
+                            if (loadingIndicator) {
+                                loadingIndicator.style.display = 'none';
+                            }
+                            
+                            if (customersContainer) {
+                                customersContainer.innerHTML = `
+                                    <div class="error-message">
+                                        <h3>Error loading customers:</h3>
+                                        <p>${error.message}</p>
+                                        <button onclick="loadCustomers('all')" class="button">Retry</button>
+                                    </div>`;
+                            }
+                        });
+                } catch (criticalError) {
+                    console.error('Critical error in loadCustomers:', criticalError);
+                    alert('A critical error occurred while loading customers. Please refresh the page.');
+                }
+            }
+            
+            // Improved renderCustomers function with error handling
+            function renderCustomers(customers) {
+                try {
+                    console.log('Rendering customers:', customers);
+                    
+                    if (!customersContainer) {
+                        console.error('Customers container not found in renderCustomers');
+                        return;
+                    }
+                    
+                    // Clear existing content
+                    customersContainer.innerHTML = '';
+                    
+                    if (!customers || customers.length === 0) {
+                        customersContainer.innerHTML = '<div class="empty-state">No customers found</div>';
+                        return;
+                    }
+                    
+                    customers.forEach((customer, index) => {
+                        try {
+                            if (!customer || !customer.id) {
+                                console.error(`Invalid customer at index ${index}:`, customer);
+                                return;
+                            }
+                            
+                            const customerCard = document.createElement('div');
+                            customerCard.className = 'customer-card';
+                            
+                            let daysRemaining;
+                            try {
+                                daysRemaining = calculateDaysRemaining(customer.eventDate);
+                            } catch (dateError) {
+                                console.error(`Error calculating days for customer ${customer.id}:`, dateError);
+                                daysRemaining = 'Error';
+                            }
+                            
+                            const statusClass = customer.active ? 'status-active' : 'status-inactive';
+                            const statusText = customer.active ? 'Active' : 'Inactive';
+                            
+                            // Safely handle potentially missing fields
+                            const name = customer.name || 'Unnamed Customer';
+                            const eventName = customer.eventName || 'No Event Name';
+                            const eventDate = customer.eventDate || 'No Date';
+                            const phone = customer.phone || 'No Phone';
+                            
+                            customerCard.innerHTML = `
+                                <div class="customer-header">
+                                    <h3>${name}</h3>
+                                    <span class="status-badge ${statusClass}">${statusText}</span>
+                                </div>
+                                <div class="customer-details">
+                                    <div class="detail-item">
+                                        <div class="detail-label">Event Name</div>
+                                        <div>${eventName}</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Event Date</div>
+                                        <div>${formatDate(eventDate)}</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Days Remaining</div>
+                                        <div>${typeof daysRemaining === 'number' ? daysRemaining : 'N/A'}</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Phone Number</div>
+                                        <div>${phone}</div>
+                                    </div>
+                                </div>
+                                <div class="customer-actions">
+                                    <button class="button" onclick="viewCustomerDashboard('${customer.id}')">View Dashboard</button>
+                                    <button class="button outline" onclick="editCustomer('${customer.id}')">Edit</button>
+                                    <button class="button outline ${customer.active ? 'warning' : 'success'}" 
+                                        onclick="toggleCustomerStatus('${customer.id}', ${!customer.active})">
+                                        ${customer.active ? 'Deactivate' : 'Activate'}
+                                    </button>
+                                </div>
+                            `;
+                            
+                            customersContainer.appendChild(customerCard);
+                        } catch (customerError) {
+                            console.error(`Error rendering customer ${index}:`, customerError);
+                        }
+                    });
+                } catch (renderError) {
+                    console.error('Critical error rendering customers:', renderError);
+                    if (customersContainer) {
+                        customersContainer.innerHTML = `
+                            <div class="error-message">
+                                <h3>Error rendering customers:</h3>
+                                <p>${renderError.message}</p>
+                                <button onclick="loadCustomers('all')" class="button">Retry</button>
+                            </div>`;
+                    }
+                }
+            }
+            
+            // Safe utility functions
+            function calculateDaysRemaining(dateStr) {
+                try {
+                    if (!dateStr) return 'N/A';
+                    
+                    const eventDate = new Date(dateStr);
+                    if (isNaN(eventDate.getTime())) return 'Invalid Date';
+                    
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    
+                    const diffTime = eventDate.getTime() - today.getTime();
+                    return Math.round(diffTime / (1000 * 60 * 60 * 24));
+                } catch (error) {
+                    console.error('Error calculating days remaining:', error);
+                    return 'Error';
+                }
+            }
+            
+            function formatDate(dateStr) {
+                try {
+                    if (!dateStr) return 'N/A';
+                    
+                    const date = new Date(dateStr);
+                    if (isNaN(date.getTime())) return dateStr;
+                    
+                    const day = date.getDate().toString().padStart(2, '0');
+                    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                    const year = date.getFullYear();
+                    return `${day}.${month}.${year}`;
+                } catch (error) {
+                    console.error('Error formatting date:', error);
+                    return dateStr || 'N/A';
+                }
+            }
+            
+            // Load customers on page load - with a delay to ensure DOM is fully ready
+            setTimeout(() => {
+                loadCustomers();
+            }, 100);
+        });
+        
+        // Functions referenced in HTML that need to be in global scope
+        function viewCustomerDashboard(customerId) {
+            if (!customerId) {
+                console.error('No customer ID provided to viewCustomerDashboard');
+                alert('Error: Missing customer ID');
+                return;
+            }
+            window.location.href = `/dashboard/${customerId}`;
+        }
+        
+        function editCustomer(customerId) {
+            if (!customerId) {
+                console.error('No customer ID provided to editCustomer');
+                alert('Error: Missing customer ID');
+                return;
+            }
+            
+            fetch(`/api/admin/customers/${customerId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        populateCustomerForm(data.customer);
+                        
+                        const addSection = document.getElementById('add-customer-section');
+                        const custSection = document.getElementById('customers-section');
+                        
+                        if (addSection) addSection.style.display = 'block';
+                        if (custSection) custSection.style.display = 'none';
+                    } else {
+                        alert('Error: ' + (data.error || 'Failed to load customer details'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching customer:', error);
+                    alert('Failed to load customer details: ' + error.message);
+                });
+        }
+        
+        function toggleCustomerStatus(customerId, active) {
+            if (!customerId) {
+                console.error('No customer ID provided to toggleCustomerStatus');
+                alert('Error: Missing customer ID');
+                return;
+            }
+            
+            fetch(`/api/admin/customers/${customerId}/status`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ active })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    const statusFilter = document.getElementById('status-filter');
+                    const filter = statusFilter ? statusFilter.value : 'all';
+                    
+                    // Call the loadCustomers function in the proper scope
+                    if (typeof loadCustomers === 'function') {
+                        loadCustomers(filter);
+                    } else {
+                        // If loadCustomers isn't available in this scope, reload the page
+                        location.reload();
+                    }
+                } else {
+                    alert('Error: ' + (result.error || 'Failed to update status'));
+                }
+            })
+            .catch(error => {
+                console.error('Error updating customer status:', error);
+                alert('Failed to update customer status: ' + error.message);
+            });
+        }
+        
+        function populateCustomerForm(customer) {
+            try {
+                if (!customer || !customer.id) {
+                    console.error('Invalid customer data for form population:', customer);
+                    alert('Error: Invalid customer data');
+                    return;
+                }
+                
+                const fields = {
+                    'name': document.getElementById('name'),
+                    'phone': document.getElementById('phone'),
+                    'eventName': document.getElementById('eventName'),
+                    'eventDate': document.getElementById('eventDate'),
+                    'spreadsheetUrl': document.getElementById('spreadsheetUrl'),
+                };
+                
+                // Check if all required fields exist
+                for (const [key, element] of Object.entries(fields)) {
+                    if (!element) {
+                        console.error(`Field ${key} not found in the form`);
+                        alert(`Error: Form field "${key}" not found`);
+                        return;
+                    }
+                }
+                
+                // Set field values with null checking
+                fields.name.value = customer.name || '';
+                fields.phone.value = customer.phone || '';
+                fields.eventName.value = customer.eventName || '';
+                
+                // Format date for input field (YYYY-MM-DD)
+                if (customer.eventDate) {
+                    try {
+                        const date = new Date(customer.eventDate);
+                        if (!isNaN(date.getTime())) {
+                            const formattedDate = date.toISOString().split('T')[0];
+                            fields.eventDate.value = formattedDate;
+                        } else {
+                            fields.eventDate.value = '';
+                            console.error('Invalid date value:', customer.eventDate);
+                        }
+                    } catch (dateError) {
+                        console.error('Error formatting date:', dateError);
+                        fields.eventDate.value = '';
+                    }
+                } else {
+                    fields.eventDate.value = '';
+                }
+                
+                fields.spreadsheetUrl.value = customer.spreadsheetUrl || '';
+                
+                // Add a hidden field for the customer ID
+                const form = document.getElementById('customer-form');
+                if (!form) {
+                    console.error('Customer form not found');
+                    return;
+                }
+                
+                let idField = document.getElementById('customerId');
+                if (!idField) {
+                    idField = document.createElement('input');
+                    idField.type = 'hidden';
+                    idField.id = 'customerId';
+                    idField.name = 'customerId';
+                    form.appendChild(idField);
+                }
+                idField.value = customer.id;
+                
+                // Update form title and submit button text
+                const formTitle = document.querySelector('.add-customer-form h2');
+                const submitBtn = document.querySelector('.form-actions button[type="submit"]');
+                
+                if (formTitle) formTitle.textContent = 'Edit Customer';
+                if (submitBtn) submitBtn.textContent = 'Update Customer';
+            } catch (error) {
+                console.error('Error populating customer form:', error);
+                alert('Failed to populate form: ' + error.message);
+            }
+        }
+        
+        // Provide a global loadCustomers for the retry button
+        function loadCustomers(filter = 'all') {
+            // This is just a stub for the global scope
+            // The actual function is inside the DOMContentLoaded event
+            console.log('Global loadCustomers called, refreshing page');
+            location.reload();
+        }
+    </script>
+</body>
+</html>

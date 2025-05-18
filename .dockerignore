@@ -1,9 +1,42 @@
 node_modules
 npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Runtime data
 whatsapp-qr.png
 .env
 local_session
-session
-logs
+
+# Keep directory structure but ignore contents
+session/*
+logs/*
+data/*
+!session/.gitkeep
+!logs/.gitkeep
+!data/.gitkeep
+
+# Git files
 .git
 .gitignore
+
+# Development files
+.vscode
+.idea
+*.swp
+*.swo
+
+# Keep data directory structure but not contents
+data/*
+!data/.gitkeep
+
+# Test files
+__tests__
+test
+tests
+*.test.js
+*.spec.js
+
+# OS generated files
+.DS_Store
+Thumbs.db

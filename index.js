@@ -15,6 +15,8 @@ import cron from 'node-cron';
 import express from 'express';
 import qrcode from 'qrcode';
 import { calculateDaysRemaining, filterGuestsByEventProximity, getMessageByProximity } from './utils/eventScheduler.js';
+import adminRoutes from './routes/adminRoutes.js';
+import dashboardRoutes from './routes/dashboardRoutes.js';
 
 // Import all Baileys functions via dynamic import to handle ES Module vs CommonJS compatibility
 import * as baileysImport from '@nstar/baileys';
@@ -106,9 +108,26 @@ import makeWASocketDefault, {
 // Handle makeWASocket not being a function
 const makeWASocket = makeWASocketDefault.default || makeWASocketDefault;
 
-// Import helper modules
-import { color } from './lib/color.js';
-import { smsg, sleep, getBuffer } from './lib/myfunction.js';
+// Utility functions (migrated from removed lib directory)
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+const getBuffer = async (url) => {
+  const response = await axios.get(url, { responseType: 'arraybuffer' });
+  return Buffer.from(response.data, 'binary');
+};
+const smsg = (conn, m, hasParent) => {
+  if (!m) return m;
+  let M = proto.WebMessageInfo;
+  m = M.fromObject(m);
+  if (m.key) {
+    m.id = m.key.id;
+    m.isBaileys = m.id && m.id.length === 16 || m.id.startsWith('3EB0') && m.id.length === 12 || false;
+    m.chat = conn.decodeJid(m.key.remoteJid || message.message?.senderKeyDistributionMessage?.groupId || '');
+    m.isGroup = m.chat.endsWith('@g.us');
+    m.sender = conn.decodeJid(m.key.fromMe && conn.user.id || m.participant || m.key.participant || m.chat || '');
+    m.fromMe = m.key.fromMe || false;
+  }
+  return m;
+};
 
 // Handle uncaught exceptions
 process.on("uncaughtException", (err) => {
@@ -1186,7 +1205,691 @@ const SESSION_PATH = process.env.SESSION_PATH ||
               return;
             } catch (error) {
               log.error('Error in debug command:', error);
+              await waClient.sendMessage(m.chat, { 
+                text: `Debug error: ${error.message}` 
+              });
             }
+            return;
+          }
+          
+          // New diagnostics command for troubleshooting data issues
+          if (m.text === '!diagnose') {
+            try {
+              await waClient.sendMessage(m.chat, { 
+                text: "🔍 Running diagnostics... Please wait." 
+              });
+              
+              // Import necessary utilities
+              const { ensureDataAccess, validateJsonFile } = await import('./utils/fixDataAccess.js');
+              const fs = await import('fs');
+              const path = await import('path');
+              const { getActiveCustomers } = await import('./utils/customerManager.js');
+              
+              // Define paths
+              const dataDir = path.default.join(process.cwd(), 'data');
+              const customersFile = path.default.join(dataDir, 'customers.json');
+              const credentialsFile = path.default.join(dataDir, 'credentials.json');
+              
+              // Check data directory
+              const dirExists = fs.default.existsSync(dataDir);
+              const dirStats = dirExists ? fs.default.statSync(dataDir) : null;
+              const dirPerms = dirStats ? (dirStats.mode & parseInt('777', 8)).toString(8) : 'n/a';
+              
+              // Check customer file
+              const custFileExists = fs.default.existsSync(customersFile);
+              const custStats = custFileExists ? fs.default.statSync(customersFile) : null;
+              const custPerms = custStats ? (custStats.mode & parseInt('777', 8)).toString(8) : 'n/a';
+              const custSize = custStats ? custStats.size : 0;
+              
+              // Check credentials file
+              const credFileExists = fs.default.existsSync(credentialsFile);
+              const credStats = credFileExists ? fs.default.statSync(credentialsFile) : null;
+              const credPerms = credStats ? (credStats.mode & parseInt('777', 8)).toString(8) : 'n/a';
+              const credSize = credStats ? credStats.size : 0;
+              
+              // Load and validate customers
+              let customersValid = false;
+              let customerCount = 0;
+              let activeCustomers = [];
+              
+              try {
+                if (custFileExists) {
+                  const custData = validateJsonFile(customersFile, []);
+                  customerCount = custData.length;
+                  customersValid = Array.isArray(custData);
+                  activeCustomers = getActiveCustomers() || [];
+                }
+              } catch (custError) {
+                log.error('Error validating customers file:', custError);
+              }
+              
+              // Load and validate credentials
+              let credsValid = false;
+              let credCount = 0;
+              
+              try {
+                if (credFileExists) {
+                  const credsData = validateJsonFile(credentialsFile, {});
+                  credCount = Object.keys(credsData).length;
+                  credsValid = typeof credsData === 'object' && !Array.isArray(credsData);
+                }
+              } catch (credError) {
+                log.error('Error validating credentials file:', credError);
+              }
+              
+              // Run fix utility
+              try {
+                ensureDataAccess();
+              } catch (fixError) {
+                log.error('Error running data fix:', fixError);
+              }
+              
+              // Test write access
+              let writeAccess = false;
+              try {
+                const testFile = path.default.join(dataDir, '.diagnose_test');
+                fs.default.writeFileSync(testFile, 'test data');
+                fs.default.unlinkSync(testFile);
+                writeAccess = true;
+              } catch (writeError) {
+                log.error('Write access test failed:', writeError);
+              }
+              
+              // Create diagnostic report
+              const report = 
+                "📊 *WhatsApp RSVP Bot Diagnostics Report*\n\n" +
+                "*File System Status:*\n" +
+                `- Data Directory: ${dirExists ? '✅' : '❌'} (${dirPerms})\n` +
+                `- Customers File: ${custFileExists ? '✅' : '❌'} (${custPerms}, ${custSize} bytes)\n` +
+                `- Credentials File: ${credFileExists ? '✅' : '❌'} (${credPerms}, ${credSize} bytes)\n` +
+                `- Write Access: ${writeAccess ? '✅' : '❌'}\n\n` +
+                "*Data Validation:*\n" +
+                `- Customers File Valid: ${customersValid ? '✅' : '❌'}\n` +
+                `- Credentials File Valid: ${credsValid ? '✅' : '❌'}\n\n` +
+                "*Customer Information:*\n" +
+                `- Total Customers: ${customerCount}\n` +
+                `- Active Customers: ${activeCustomers.length}\n` +
+                (activeCustomers.length > 0 ? 
+                `- First Customer: ${activeCustomers[0]?.name || 'Unknown'} (${activeCustomers[0]?.eventName || 'Unknown Event'})\n` : 
+                "- No active customers found\n") +
+                "\n*Bot Status:*\n" +
+                `- Connected: ${!!waClient.user ? '✅' : '❌'}\n` +
+                `- Mode: ${process.env.NODE_ENV || 'development'}\n`;
+              
+              // Send the report
+              await waClient.sendMessage(m.chat, { text: report });
+              
+              // Check customer file content
+              if (custFileExists && custSize > 0 && customersValid && customerCount === 0) {
+                await waClient.sendMessage(m.chat, { 
+                  text: "⚠️ WARNING: Customers file exists and is valid but contains no customers. This may indicate a permission issue or data loss."
+                });
+              }
+              
+              // Fix permissions if needed
+              if (dirExists && dirPerms !== '777') {
+                try {
+                  fs.default.chmodSync(dataDir, 0o777);
+                  await waClient.sendMessage(m.chat, { 
+                    text: "🔧 Fixed data directory permissions."
+                  });
+                } catch (permError) {
+                  log.error('Error fixing directory permissions:', permError);
+                }
+              }
+              
+              if (custFileExists && custPerms !== '666') {
+                try {
+                  fs.default.chmodSync(customersFile, 0o666);
+                  await waClient.sendMessage(m.chat, { 
+                    text: "🔧 Fixed customers file permissions."
+                  });
+                } catch (permError) {
+                  log.error('Error fixing customers file permissions:', permError);
+                }
+              }
+              
+              if (credFileExists && credPerms !== '666') {
+                try {
+                  fs.default.chmodSync(credentialsFile, 0o666);
+                  await waClient.sendMessage(m.chat, { 
+                    text: "🔧 Fixed credentials file permissions."
+                  });
+                } catch (permError) {
+                  log.error('Error fixing credentials file permissions:', permError);
+                }
+              }
+            } catch (error) {
+              log.error('Error in diagnose command:', error);
+              await waClient.sendMessage(m.chat, { 
+                text: `Diagnostics error: ${error.message}\n\nCheck server logs for details.`
+              });
+            }
+            return;
+          }
+          
+          if (m.text === '!eventdate') {
+            try {
+              // Get event date (either from env var or from event details)
+              const eventDetails = await appScriptManager.getEventDetails();
+              const eventDate = process.env.EVENT_DATE || eventDetails.date;
+              const daysRemaining = calculateDaysRemaining(eventDate);
+              
+              let message = `*Event Date Information*\n\n`;
+              message += `Event: ${eventDetails.name}\n`;
+              message += `Date: ${eventDate}\n`;
+              message += `Days remaining: ${daysRemaining}\n\n`;
+              
+              // Add scheduling information
+              message += `*Messaging Schedule:*\n`;
+              message += `- Initial invitation: 28-30 days before\n`;
+              message += `- First reminder: 14 days before\n`;
+              message += `- Second reminder: 7 days before\n`;
+              message += `- Final reminder: 2-3 days before\n`;
+              
+              // Show which phase we're in
+              if (daysRemaining >= 28 && daysRemaining <= 30) {
+                message += `\n*Current phase: Initial invitation*`;
+              } else if (daysRemaining === 14) {
+                message += `\n*Current phase: First reminder*`;
+              } else if (daysRemaining === 7) {
+                message += `\n*Current phase: Second reminder*`;
+              } else if (daysRemaining >= 2 && daysRemaining <= 3) {
+                message += `\n*Current phase: Final reminder*`;
+              } else {
+                message += `\n*Current phase: No scheduled messages today*`;
+              }
+              
+              await waClient.sendMessage(m.chat, { text: message });
+            } catch (error) {
+              log.error('Error in eventdate command:', error);
+              await waClient.sendMessage(m.chat, { 
+                text: "Error getting event date information." 
+              });
+            }
+            return;
+          }
+          
+          if (m.text === '!debug') {
+            try {
+              // Get the sender's info
+              const senderInfo = {
+                number: senderPhone,
+                formattedNumber: appScriptManager.formatPhoneNumber(senderPhone),
+                isAdmin: isAdmin,
+                adminNumbers: ADMIN_NUMBERS,
+                message: m.text
+              };
+              
+              await waClient.sendMessage(m.chat, { 
+                text: `Debug Info: \n${JSON.stringify(senderInfo, null, 2)}` 
+              });
+              
+              // Also check if they're in the guest list
+              const guests = await appScriptManager.fetchGuestList();
+              const matchingGuest = guests.find(g => {
+                const guestDigits = g.phone.replace(/\D/g, '');
+                const senderDigits = senderPhone.replace(/\D/g, '');
+                return guestDigits.includes(senderDigits) || senderDigits.includes(guestDigits);
+              });
+              
+              if (matchingGuest) {
+                await waClient.sendMessage(m.chat, { 
+                  text: `You are in the guest list as: \n${JSON.stringify(matchingGuest, null, 2)}` 
+                });
+              } else {
+                await waClient.sendMessage(m.chat, { 
+                  text: `You are NOT found in the guest list.` 
+                });
+              }
+              
+              return;
+            } catch (error) {
+              log.error('Error in debug command:', error);
+              await waClient.sendMessage(m.chat, { 
+                text: `Debug error: ${error.message}` 
+              });
+            }
+            return;
+          }
+          
+          // New diagnostics command for troubleshooting data issues
+          if (m.text === '!diagnose') {
+            try {
+              await waClient.sendMessage(m.chat, { 
+                text: "🔍 Running diagnostics... Please wait." 
+              });
+              
+              // Import necessary utilities
+              const { ensureDataAccess, validateJsonFile } = await import('./utils/fixDataAccess.js');
+              const fs = await import('fs');
+              const path = await import('path');
+              const { getActiveCustomers } = await import('./utils/customerManager.js');
+              
+              // Define paths
+              const dataDir = path.default.join(process.cwd(), 'data');
+              const customersFile = path.default.join(dataDir, 'customers.json');
+              const credentialsFile = path.default.join(dataDir, 'credentials.json');
+              
+              // Check data directory
+              const dirExists = fs.default.existsSync(dataDir);
+              const dirStats = dirExists ? fs.default.statSync(dataDir) : null;
+              const dirPerms = dirStats ? (dirStats.mode & parseInt('777', 8)).toString(8) : 'n/a';
+              
+              // Check customer file
+              const custFileExists = fs.default.existsSync(customersFile);
+              const custStats = custFileExists ? fs.default.statSync(customersFile) : null;
+              const custPerms = custStats ? (custStats.mode & parseInt('777', 8)).toString(8) : 'n/a';
+              const custSize = custStats ? custStats.size : 0;
+              
+              // Check credentials file
+              const credFileExists = fs.default.existsSync(credentialsFile);
+              const credStats = credFileExists ? fs.default.statSync(credentialsFile) : null;
+              const credPerms = credStats ? (credStats.mode & parseInt('777', 8)).toString(8) : 'n/a';
+              const credSize = credStats ? credStats.size : 0;
+              
+              // Load and validate customers
+              let customersValid = false;
+              let customerCount = 0;
+              let activeCustomers = [];
+              
+              try {
+                if (custFileExists) {
+                  const custData = validateJsonFile(customersFile, []);
+                  customerCount = custData.length;
+                  customersValid = Array.isArray(custData);
+                  activeCustomers = getActiveCustomers() || [];
+                }
+              } catch (custError) {
+                log.error('Error validating customers file:', custError);
+              }
+              
+              // Load and validate credentials
+              let credsValid = false;
+              let credCount = 0;
+              
+              try {
+                if (credFileExists) {
+                  const credsData = validateJsonFile(credentialsFile, {});
+                  credCount = Object.keys(credsData).length;
+                  credsValid = typeof credsData === 'object' && !Array.isArray(credsData);
+                }
+              } catch (credError) {
+                log.error('Error validating credentials file:', credError);
+              }
+              
+              // Run fix utility
+              try {
+                ensureDataAccess();
+              } catch (fixError) {
+                log.error('Error running data fix:', fixError);
+              }
+              
+              // Test write access
+              let writeAccess = false;
+              try {
+                const testFile = path.default.join(dataDir, '.diagnose_test');
+                fs.default.writeFileSync(testFile, 'test data');
+                fs.default.unlinkSync(testFile);
+                writeAccess = true;
+              } catch (writeError) {
+                log.error('Write access test failed:', writeError);
+              }
+              
+              // Create diagnostic report
+              const report = 
+                "📊 *WhatsApp RSVP Bot Diagnostics Report*\n\n" +
+                "*File System Status:*\n" +
+                `- Data Directory: ${dirExists ? '✅' : '❌'} (${dirPerms})\n` +
+                `- Customers File: ${custFileExists ? '✅' : '❌'} (${custPerms}, ${custSize} bytes)\n` +
+                `- Credentials File: ${credFileExists ? '✅' : '❌'} (${credPerms}, ${credSize} bytes)\n` +
+                `- Write Access: ${writeAccess ? '✅' : '❌'}\n\n` +
+                "*Data Validation:*\n" +
+                `- Customers File Valid: ${customersValid ? '✅' : '❌'}\n` +
+                `- Credentials File Valid: ${credsValid ? '✅' : '❌'}\n\n` +
+                "*Customer Information:*\n" +
+                `- Total Customers: ${customerCount}\n` +
+                `- Active Customers: ${activeCustomers.length}\n` +
+                (activeCustomers.length > 0 ? 
+                `- First Customer: ${activeCustomers[0]?.name || 'Unknown'} (${activeCustomers[0]?.eventName || 'Unknown Event'})\n` : 
+                "- No active customers found\n") +
+                "\n*Bot Status:*\n" +
+                `- Connected: ${!!waClient.user ? '✅' : '❌'}\n` +
+                `- Mode: ${process.env.NODE_ENV || 'development'}\n`;
+              
+              // Send the report
+              await waClient.sendMessage(m.chat, { text: report });
+              
+              // Check customer file content
+              if (custFileExists && custSize > 0 && customersValid && customerCount === 0) {
+                await waClient.sendMessage(m.chat, { 
+                  text: "⚠️ WARNING: Customers file exists and is valid but contains no customers. This may indicate a permission issue or data loss."
+                });
+              }
+              
+              // Fix permissions if needed
+              if (dirExists && dirPerms !== '777') {
+                try {
+                  fs.default.chmodSync(dataDir, 0o777);
+                  await waClient.sendMessage(m.chat, { 
+                    text: "🔧 Fixed data directory permissions."
+                  });
+                } catch (permError) {
+                  log.error('Error fixing directory permissions:', permError);
+                }
+              }
+              
+              if (custFileExists && custPerms !== '666') {
+                try {
+                  fs.default.chmodSync(customersFile, 0o666);
+                  await waClient.sendMessage(m.chat, { 
+                    text: "🔧 Fixed customers file permissions."
+                  });
+                } catch (permError) {
+                  log.error('Error fixing customers file permissions:', permError);
+                }
+              }
+              
+              if (credFileExists && credPerms !== '666') {
+                try {
+                  fs.default.chmodSync(credentialsFile, 0o666);
+                  await waClient.sendMessage(m.chat, { 
+                    text: "🔧 Fixed credentials file permissions."
+                  });
+                } catch (permError) {
+                  log.error('Error fixing credentials file permissions:', permError);
+                }
+              }
+            } catch (error) {
+              log.error('Error in diagnose command:', error);
+              await waClient.sendMessage(m.chat, { 
+                text: `Diagnostics error: ${error.message}\n\nCheck server logs for details.`
+              });
+            }
+            return;
+          }
+          
+          if (m.text === '!eventdate') {
+            try {
+              // Get event date (either from env var or from event details)
+              const eventDetails = await appScriptManager.getEventDetails();
+              const eventDate = process.env.EVENT_DATE || eventDetails.date;
+              const daysRemaining = calculateDaysRemaining(eventDate);
+              
+              let message = `*Event Date Information*\n\n`;
+              message += `Event: ${eventDetails.name}\n`;
+              message += `Date: ${eventDate}\n`;
+              message += `Days remaining: ${daysRemaining}\n\n`;
+              
+              // Add scheduling information
+              message += `*Messaging Schedule:*\n`;
+              message += `- Initial invitation: 28-30 days before\n`;
+              message += `- First reminder: 14 days before\n`;
+              message += `- Second reminder: 7 days before\n`;
+              message += `- Final reminder: 2-3 days before\n`;
+              
+              // Show which phase we're in
+              if (daysRemaining >= 28 && daysRemaining <= 30) {
+                message += `\n*Current phase: Initial invitation*`;
+              } else if (daysRemaining === 14) {
+                message += `\n*Current phase: First reminder*`;
+              } else if (daysRemaining === 7) {
+                message += `\n*Current phase: Second reminder*`;
+              } else if (daysRemaining >= 2 && daysRemaining <= 3) {
+                message += `\n*Current phase: Final reminder*`;
+              } else {
+                message += `\n*Current phase: No scheduled messages today*`;
+              }
+              
+              await waClient.sendMessage(m.chat, { text: message });
+            } catch (error) {
+              log.error('Error in eventdate command:', error);
+              await waClient.sendMessage(m.chat, { 
+                text: "Error getting event date information." 
+              });
+            }
+            return;
+          }
+          
+          if (m.text === '!debug') {
+            try {
+              // Get the sender's info
+              const senderInfo = {
+                number: senderPhone,
+                formattedNumber: appScriptManager.formatPhoneNumber(senderPhone),
+                isAdmin: isAdmin,
+                adminNumbers: ADMIN_NUMBERS,
+                message: m.text
+              };
+              
+              await waClient.sendMessage(m.chat, { 
+                text: `Debug Info: \n${JSON.stringify(senderInfo, null, 2)}` 
+              });
+              
+              // Also check if they're in the guest list
+              const guests = await appScriptManager.fetchGuestList();
+              const matchingGuest = guests.find(g => {
+                const guestDigits = g.phone.replace(/\D/g, '');
+                const senderDigits = senderPhone.replace(/\D/g, '');
+                return guestDigits.includes(senderDigits) || senderDigits.includes(guestDigits);
+              });
+              
+              if (matchingGuest) {
+                await waClient.sendMessage(m.chat, { 
+                  text: `You are in the guest list as: \n${JSON.stringify(matchingGuest, null, 2)}` 
+                });
+              } else {
+                await waClient.sendMessage(m.chat, { 
+                  text: `You are NOT found in the guest list.` 
+                });
+              }
+              
+              return;
+            } catch (error) {
+              log.error('Error in debug command:', error);
+              await waClient.sendMessage(m.chat, { 
+                text: `Debug error: ${error.message}` 
+              });
+            }
+            return;
+          }
+          
+          // New diagnostics command for troubleshooting data issues
+          if (m.text === '!diagnose') {
+            try {
+              await waClient.sendMessage(m.chat, { 
+                text: "🔍 Running diagnostics... Please wait." 
+              });
+              
+              // Import necessary utilities
+              const { ensureDataAccess, validateJsonFile } = await import('./utils/fixDataAccess.js');
+              const fs = await import('fs');
+              const path = await import('path');
+              const { getActiveCustomers } = await import('./utils/customerManager.js');
+              
+              // Define paths
+              const dataDir = path.default.join(process.cwd(), 'data');
+              const customersFile = path.default.join(dataDir, 'customers.json');
+              const credentialsFile = path.default.join(dataDir, 'credentials.json');
+              
+              // Check data directory
+              const dirExists = fs.default.existsSync(dataDir);
+              const dirStats = dirExists ? fs.default.statSync(dataDir) : null;
+              const dirPerms = dirStats ? (dirStats.mode & parseInt('777', 8)).toString(8) : 'n/a';
+              
+              // Check customer file
+              const custFileExists = fs.default.existsSync(customersFile);
+              const custStats = custFileExists ? fs.default.statSync(customersFile) : null;
+              const custPerms = custStats ? (custStats.mode & parseInt('777', 8)).toString(8) : 'n/a';
+              const custSize = custStats ? custStats.size : 0;
+              
+              // Check credentials file
+              const credFileExists = fs.default.existsSync(credentialsFile);
+              const credStats = credFileExists ? fs.default.statSync(credentialsFile) : null;
+              const credPerms = credStats ? (credStats.mode & parseInt('777', 8)).toString(8) : 'n/a';
+              const credSize = credStats ? credStats.size : 0;
+              
+              // Load and validate customers
+              let customersValid = false;
+              let customerCount = 0;
+              let activeCustomers = [];
+              
+              try {
+                if (custFileExists) {
+                  const custData = validateJsonFile(customersFile, []);
+                  customerCount = custData.length;
+                  customersValid = Array.isArray(custData);
+                  activeCustomers = getActiveCustomers() || [];
+                }
+              } catch (custError) {
+                log.error('Error validating customers file:', custError);
+              }
+              
+              // Load and validate credentials
+              let credsValid = false;
+              let credCount = 0;
+              
+              try {
+                if (credFileExists) {
+                  const credsData = validateJsonFile(credentialsFile, {});
+                  credCount = Object.keys(credsData).length;
+                  credsValid = typeof credsData === 'object' && !Array.isArray(credsData);
+                }
+              } catch (credError) {
+                log.error('Error validating credentials file:', credError);
+              }
+              
+              // Run fix utility
+              try {
+                ensureDataAccess();
+              } catch (fixError) {
+                log.error('Error running data fix:', fixError);
+              }
+              
+              // Test write access
+              let writeAccess = false;
+              try {
+                const testFile = path.default.join(dataDir, '.diagnose_test');
+                fs.default.writeFileSync(testFile, 'test data');
+                fs.default.unlinkSync(testFile);
+                writeAccess = true;
+              } catch (writeError) {
+                log.error('Write access test failed:', writeError);
+              }
+              
+              // Create diagnostic report
+              const report = 
+                "📊 *WhatsApp RSVP Bot Diagnostics Report*\n\n" +
+                "*File System Status:*\n" +
+                `- Data Directory: ${dirExists ? '✅' : '❌'} (${dirPerms})\n` +
+                `- Customers File: ${custFileExists ? '✅' : '❌'} (${custPerms}, ${custSize} bytes)\n` +
+                `- Credentials File: ${credFileExists ? '✅' : '❌'} (${credPerms}, ${credSize} bytes)\n` +
+                `- Write Access: ${writeAccess ? '✅' : '❌'}\n\n` +
+                "*Data Validation:*\n" +
+                `- Customers File Valid: ${customersValid ? '✅' : '❌'}\n` +
+                `- Credentials File Valid: ${credsValid ? '✅' : '❌'}\n\n` +
+                "*Customer Information:*\n" +
+                `- Total Customers: ${customerCount}\n` +
+                `- Active Customers: ${activeCustomers.length}\n` +
+                (activeCustomers.length > 0 ? 
+                `- First Customer: ${activeCustomers[0]?.name || 'Unknown'} (${activeCustomers[0]?.eventName || 'Unknown Event'})\n` : 
+                "- No active customers found\n") +
+                "\n*Bot Status:*\n" +
+                `- Connected: ${!!waClient.user ? '✅' : '❌'}\n` +
+                `- Mode: ${process.env.NODE_ENV || 'development'}\n`;
+              
+              // Send the report
+              await waClient.sendMessage(m.chat, { text: report });
+              
+              // Check customer file content
+              if (custFileExists && custSize > 0 && customersValid && customerCount === 0) {
+                await waClient.sendMessage(m.chat, { 
+                  text: "⚠️ WARNING: Customers file exists and is valid but contains no customers. This may indicate a permission issue or data loss."
+                });
+              }
+              
+              // Fix permissions if needed
+              if (dirExists && dirPerms !== '777') {
+                try {
+                  fs.default.chmodSync(dataDir, 0o777);
+                  await waClient.sendMessage(m.chat, { 
+                    text: "🔧 Fixed data directory permissions."
+                  });
+                } catch (permError) {
+                  log.error('Error fixing directory permissions:', permError);
+                }
+              }
+              
+              if (custFileExists && custPerms !== '666') {
+                try {
+                  fs.default.chmodSync(customersFile, 0o666);
+                  await waClient.sendMessage(m.chat, { 
+                    text: "🔧 Fixed customers file permissions."
+                  });
+                } catch (permError) {
+                  log.error('Error fixing customers file permissions:', permError);
+                }
+              }
+              
+              if (credFileExists && credPerms !== '666') {
+                               try {
+                  fs.default.chmodSync(credentialsFile, 0o666);
+                  await waClient.sendMessage(m.chat, { 
+                    text: "🔧 Fixed credentials file permissions."
+                  });
+                } catch (permError) {
+                  log.error('Error fixing credentials file permissions:', permError);
+                }
+              }
+            } catch (error) {
+              log.error('Error in diagnose command:', error);
+              await waClient.sendMessage(m.chat, { 
+                text: `Diagnostics error: ${error.message}\n\nCheck server logs for details.`
+              });
+            }
+            return;
+          }
+          
+          if (m.text === '!eventdate') {
+            try {
+              // Get event date (either from env var or from event details)
+              const eventDetails = await appScriptManager.getEventDetails();
+              const eventDate = process.env.EVENT_DATE || eventDetails.date;
+              const daysRemaining = calculateDaysRemaining(eventDate);
+              
+              let message = `*Event Date Information*\n\n`;
+              message += `Event: ${eventDetails.name}\n`;
+              message += `Date: ${eventDate}\n`;
+              message += `Days remaining: ${daysRemaining}\n\n`;
+              
+              // Add scheduling information
+              message += `*Messaging Schedule:*\n`;
+              message += `- Initial invitation: 28-30 days before\n`;
+              message += `- First reminder: 14 days before\n`;
+              message += `- Second reminder: 7 days before\n`;
+              message += `- Final reminder: 2-3 days before\n`;
+              
+              // Show which phase we're in
+              if (daysRemaining >= 28 && daysRemaining <= 30) {
+                message += `\n*Current phase: Initial invitation*`;
+              } else if (daysRemaining === 14) {
+                message += `\n*Current phase: First reminder*`;
+              } else if (daysRemaining === 7) {
+                message += `\n*Current phase: Second reminder*`;
+              } else if (daysRemaining >= 2 && daysRemaining <= 3) {
+                message += `\n*Current phase: Final reminder*`;
+              } else {
+                message += `\n*Current phase: No scheduled messages today*`;
+              }
+              
+              await waClient.sendMessage(m.chat, { text: message });
+            } catch (error) {
+              log.error('Error in eventdate command:', error);
+              await waClient.sendMessage(m.chat, { 
+                text: "Error getting event date information." 
+              });
+            }
+            return;
           }
         }
         
@@ -1428,6 +2131,7 @@ const SESSION_PATH = process.env.SESSION_PATH ||
         log.info('!reload - Reload guest list from Google Sheets');
         log.info('!debugapi - Test API connection to Google Apps Script');
         log.info('!followups - View scheduled follow-up reminders');
+        log.info('!diagnose - Check system health and fix data issues');
         if (process.env.NODE_ENV === 'development') {
           log.info('!test - Send a test RSVP message (development only)');
         }
@@ -1816,6 +2520,10 @@ app.use(cookieParser());
 app.use(express.static(publicDir));
 app.use(express.static(__dirname));
 
+// Add multi-tenant routes
+app.use(adminRoutes);
+app.use(dashboardRoutes);
+
 // API endpoint for guest list
 app.get('/api/guests', dashboardAuth, async (req, res) => {
   try {
@@ -2175,6 +2883,8 @@ app.get('/', (req, res) => {
           <li><strong>!clearcache</strong> - Clear the contacted guests cache</li>
           <li><strong>!reload</strong> - Refresh data from Google Sheets</li>
           <li><strong>!debugapi</strong> - Test API connection</li>
+          <li><strong>!followups</strong> - View scheduled follow-up reminders</li>
+          <li><strong>!diagnose</strong> - Check system health and fix data issues</li>
           ${process.env.NODE_ENV === 'development' ? '<li><strong>!test</strong> - Send a test message with buttons</li>' : ''}
         </ul>
       </div>
