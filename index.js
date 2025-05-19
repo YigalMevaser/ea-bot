@@ -732,11 +732,34 @@ const SESSION_PATH = process.env.SESSION_PATH ||
           return;
         }
         
-        // Log incoming messages
-        log.info(`Message from ${senderPhone}: ${m.text}`);
+        // Better handling of message text
+        let messageText = '';
         
-        // Define text variable first
-        const text = m.text ? m.text.toLowerCase().trim() : '';
+        // Extract message text from various possible message types
+        try {
+          if (m.text) {
+            messageText = m.text;
+          } else if (m.message?.conversation) {
+            messageText = m.message.conversation;
+          } else if (m.message?.extendedTextMessage?.text) {
+            messageText = m.message.extendedTextMessage.text;
+          } else if (mek.message?.conversation) {
+            messageText = mek.message.conversation;
+          } else if (mek.message?.extendedTextMessage?.text) {
+            messageText = mek.message.extendedTextMessage.text;
+          }
+          
+          // Assign to m.text for compatibility with existing code
+          m.text = messageText;
+        } catch (err) {
+          log.error(`Error extracting message text: ${err.message}`);
+        }
+        
+        // Log incoming messages
+        log.info(`Message from ${senderPhone}: ${messageText}`);
+        
+        // Define text variable for processing
+        const text = messageText ? messageText.toLowerCase().trim() : '';
         
         // Check if this is a message sent as a response to our auto-responses
         const possibleAutoReply = 
@@ -761,10 +784,38 @@ const SESSION_PATH = process.env.SESSION_PATH ||
         
         log.info(`Checking if ${senderPhone} (${senderDigitsOnly}) is admin: ${isAdmin}`);
         
+        // Enhanced logging to debug command processing
+        if (isAdmin && m.text && m.text.startsWith('!')) {
+          log.info(`Admin command received: ${m.text}`);
+          log.info(`Admin phone numbers configured: ${ADMIN_NUMBERS.join(', ')}`);
+        }
         
         if (isAdmin) {
-          // ...existing code...
-          if (m.text === '!followups') {
+          // Process admin commands in a more structured way
+          const cmd = m.text ? m.text.trim() : '';
+          
+          // Command handler for better logging and reliability
+          const handleCommand = async (command, handler) => {
+            if (cmd === command) {
+              log.info(`Executing admin command: ${command}`);
+              try {
+                await handler();
+              } catch (error) {
+                log.error(`Error executing ${command}:`, error);
+                await waClient.sendMessage(m.chat, { 
+                  text: `Error executing command ${command}: ${error.message}` 
+                });
+              }
+              return true;
+            }
+            return false;
+          };
+          
+          // Handle each command in sequence
+          let commandHandled = false;
+          
+          // !followups command
+          commandHandled = await handleCommand('!followups', async () => {
             try {
               if (!global.scheduledFollowUps || global.scheduledFollowUps.length === 0) {
                 await waClient.sendMessage(m.chat, { 
@@ -789,7 +840,8 @@ const SESSION_PATH = process.env.SESSION_PATH ||
               });
             }
             return;
-          }
+          });
+          
           if (m.text === '!sendrsvp') {
             await waClient.sendMessage(m.chat, { text: "Starting RSVP message batch..." });
             

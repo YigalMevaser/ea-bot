@@ -51,8 +51,8 @@ COPY . .
 # Post-process files after copy (using find without unnecessary pipes)
 RUN find . -type f -name "*.js" -exec sed -i 's|@nstar/baileys|baileys|g' {} \;
 
-# Create volume mounts for persistence (including data directory for multi-tenant)
-VOLUME ["/app/session", "/app/logs", "/app/data"]
+# Create a single volume mount for Railway persistence
+VOLUME ["/app/persistent"]
 
 # Expose the port the app runs on
 EXPOSE 3000
