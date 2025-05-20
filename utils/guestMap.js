@@ -27,7 +27,8 @@ try {
     if (fs.existsSync(guestMapFile)) {
         const data = fs.readFileSync(guestMapFile, 'utf8');
         guestMap = JSON.parse(data);
-        console.log(`Loaded ${Object.keys(guestMap).length} guest mappings`);
+        console.log(`[guestMap] Loaded ${Object.keys(guestMap).length} guest mappings`);
+        console.log('[guestMap] Current mappings:', JSON.stringify(guestMap, null, 2));
     }
 } catch (error) {
     console.error('Error loading guest map:', error);
@@ -55,14 +56,36 @@ function saveGuestMap() {
  * @param {string} guestName - Guest name for logging
  */
 export function mapGuestToCustomer(phone, customerId, guestName = '') {
-    if (!phone || !customerId) return;
+    if (!phone || !customerId) {
+        console.log('[guestMap] Missing phone or customerId');
+        return;
+    }
 
-    // Clean phone number
-    const cleanPhone = phone.replace(/[^\d+]/g, '');
-    if (guestMap[cleanPhone] === customerId) return; // Already mapped correctly
+    // Clean phone number - first remove any non-numeric characters except +
+    let cleanPhone = String(phone).replace(/[^\d+]/g, '');
+    
+    // If it doesn't start with +, add it
+    if (!cleanPhone.startsWith('+')) {
+        cleanPhone = '+' + cleanPhone;
+    }
+    
+    // If it's a 10-digit number not starting with 972, assume it needs 972 prefix
+    if (cleanPhone.length === 11 && !cleanPhone.includes('972')) { // +1234567890
+        cleanPhone = '+972' + cleanPhone.substring(2); // Replace the +1 with +972
+    }
+    
+    // Log the mapping attempt
+    console.log(`[guestMap] Attempting to map ${guestName} (${phone} -> ${cleanPhone}) to customer ${customerId}`);
+    console.log(`[guestMap] Current mappings before:`, JSON.stringify(guestMap, null, 2));
+
+    if (guestMap[cleanPhone] === customerId) {
+        console.log(`[guestMap] Guest ${guestName} (${cleanPhone}) already mapped to ${customerId}`);
+        return;
+    }
 
     guestMap[cleanPhone] = customerId;
-    console.log(`Mapped guest ${guestName} (${cleanPhone}) to customer ${customerId}`);
+    console.log(`[guestMap] Mapped guest ${guestName} (${cleanPhone}) to customer ${customerId}`);
+    console.log(`[guestMap] Current mappings after:`, JSON.stringify(guestMap, null, 2));
     saveGuestMap();
 }
 

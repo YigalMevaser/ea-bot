@@ -3356,8 +3356,8 @@ app.get('/dashboard/login', (req, res) => {
     </html>
   `);
 });
-
-// Dashboard login processing
+      case 'liststatus':
+        // Get RSVP stats for the customer
 app.post('/dashboard/login', (req, res) => {
   try {
     log.info(`Dashboard login attempt from IP: ${req.ip}`);
