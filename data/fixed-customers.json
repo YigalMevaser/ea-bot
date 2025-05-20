@@ -1,0 +1,24 @@
+[
+  {
+    "id": "cust_1747609067224",
+    "createdAt": "2025-05-19T01:57:47.224 +03:00",
+    "updatedAt": "2025-05-19T11:06:44.780 +03:00",
+    "active": true,
+    "name": "יגאל ושירן",
+    "phone": "+972526901876",
+    "eventName": "החתונה של שירן ויגאל",
+    "eventDate": "2025-06-02",
+    "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1BKG19i5pkbAN9wgbOkrDbiXUO0t_dTXl4yLhvbUpe1o"
+  },
+  {
+    "id": "cust_1747636321249",
+    "createdAt": "2025-05-19T09:32:01.249 +03:00",
+    "updatedAt": "2025-05-19T09:36:40.458 +03:00",
+    "active": true,
+    "name": "Yasmin and Netanel",
+    "phone": "+972526901876",
+    "eventName": "Yasmin and Netanel Wedding",
+    "eventDate": "2025-06-01",
+    "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/18oMHIR4y3IuSTQdoOBrpfScfqY28cgznpWRBBDi8HFw"
+  }
+]

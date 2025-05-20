@@ -570,7 +570,8 @@
                 alert('Error: Missing customer ID');
                 return;
             }
-            window.location.href = `/dashboard/${customerId}`;
+            // Open in a new tab
+            window.open(`/dashboard/${customerId}`, '_blank');
         }
         
         function editCustomer(customerId) {

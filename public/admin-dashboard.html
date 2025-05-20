@@ -105,6 +105,75 @@
             border-radius: 4px;
         }
         
+        .whatsapp-commands {
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px dashed #ddd;
+        }
+        
+        .whatsapp-commands h4 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 16px;
+        }
+        
+        .command-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .button.small {
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+        
+        .command-status {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #f5f5f5;
+        }
+        
+        .command-status.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .command-status.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .command-status p {
+            margin: 0;
+        }
+        
+        .spinner.small {
+            width: 16px;
+            height: 16px;
+            border-width: 2px;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left: 4px solid #128C7E;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
         .error-message {
             background-color: #f8d7da;
             color: #721c24;
@@ -118,6 +187,102 @@
             text-align: center;
             color: #6c757d;
             font-style: italic;
+        }
+        
+        .invitation-image {
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px dashed #ddd;
+        }
+        
+        .invitation-image h4 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 16px;
+        }
+        
+        .image-upload {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .invitation-preview {
+            margin-top: 8px;
+            position: relative;
+            width: 150px;
+            height: 200px;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fa;
+        }
+
+        .invitation-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .invitation-preview.empty::after {
+            content: 'No image uploaded';
+            color: #6c757d;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .image-upload-container {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+        
+        .upload-status {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .upload-status.success {
+            color: #28a745;
+        }
+        
+        .upload-status.error {
+            color: #dc3545;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .button.warning {
+            background-color: #dc3545;
+            color: white;
+            opacity: 1;
+            transition: all 0.3s ease;
+        }
+        
+        .button.warning:hover {
+            background-color: #bb2d3b;
+            opacity: 0.9;
+        }
+        
+        .button.outline.warning {
+            color: #dc3545;
+            border-color: #dc3545;
+            background-color: transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .button.outline.warning:hover {
+            background-color: #fef2f2;
+            color: #dc3545;
+            border-color: #bb2d3b;
         }
     </style>
 </head>
@@ -217,14 +382,190 @@
             
             // Show/hide add customer form
             document.getElementById('btn-add-customer').addEventListener('click', function() {
-                if (addCustomerSection) addCustomerSection.style.display = 'block';
+                if (addCustomerSection) {
+                    // Reset form to clear previous customer data
+                    if (customerForm) {
+                        customerForm.reset();
+                        // Remove any hidden customer ID field
+                        const idField = document.getElementById('customerId');
+                        if (idField) {
+                            idField.remove();
+                        }
+                        // Reset form title and button text
+                        const formTitle = document.querySelector('.add-customer-form h2');
+                        const submitBtn = document.querySelector('.form-actions button[type="submit"]');
+                        if (formTitle) formTitle.textContent = 'Add New Customer';
+                        if (submitBtn) submitBtn.textContent = 'Save Customer';
+                    }
+                    addCustomerSection.style.display = 'block';
+                }
                 if (customersSection) customersSection.style.display = 'none';
             });
             
             document.getElementById('cancel-add').addEventListener('click', function() {
-                if (addCustomerSection) addCustomerSection.style.display = 'none';
+                if (addCustomerSection) {
+                    addCustomerSection.style.display = 'none';
+                    // Reset form when canceling
+                    if (customerForm) {
+                        customerForm.reset();
+                        // Remove any hidden customer ID field
+                        const idField = document.getElementById('customerId');
+                        if (idField) {
+                            idField.remove();
+                        }
+                    }
+                }
                 if (customersSection) customersSection.style.display = 'block';
             });
+            
+            // Handle image preview and upload
+            window.handleImageUpload = function(customerId, file) {
+                if (file) {
+                    // Show preview
+                    const preview = document.getElementById(`preview-img-${customerId}`);
+                    const previewContainer = document.getElementById(`preview-${customerId}`);
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                        previewContainer.classList.remove('empty');
+                    }
+                    
+                    reader.readAsDataURL(file);
+                    
+                    // Upload the file
+                    uploadInvitationImage(customerId, file);
+                }
+            };
+
+            // Handle invitation image upload
+            window.uploadInvitationImage = async function(customerId, file) {
+                const statusEl = document.getElementById(`upload-status-${customerId}`);
+                statusEl.textContent = 'Uploading...';
+                statusEl.className = 'upload-status';
+                
+                try {
+                    const formData = new FormData();
+                    formData.append('image', file);
+                    
+                    const response = await fetch(`/api/admin/customers/${customerId}/invitation-image`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (response.ok) {
+                        statusEl.textContent = 'Upload successful';
+                        statusEl.className = 'upload-status success';
+                        setTimeout(() => {
+                            statusEl.textContent = '';
+                        }, 3000);
+                    } else {
+                        throw new Error(result.error || 'Upload failed');
+                    }
+                } catch (error) {
+                    console.error('Error uploading invitation image:', error);
+                    statusEl.textContent = `Error: ${error.message}`;
+                    statusEl.className = 'upload-status error';
+                }
+            };
+            
+            // Function to clear invitation image
+            window.clearInvitationImage = async function(customerId) {
+                if (!confirm('Are you sure you want to remove this invitation image?')) {
+                    return;
+                }
+                
+                const statusEl = document.getElementById(`upload-status-${customerId}`);
+                statusEl.textContent = 'Removing image...';
+                statusEl.className = 'upload-status';
+                
+                try {
+                    const response = await fetch(`/api/admin/customers/${customerId}/invitation-image`, {
+                        method: 'DELETE'
+                    });
+                    
+                    if (response.ok) {
+                        statusEl.textContent = 'Image removed successfully';
+                        statusEl.className = 'upload-status success';
+                        
+                        // Reset the preview
+                        const preview = document.getElementById(`preview-img-${customerId}`);
+                        const previewContainer = document.getElementById(`preview-${customerId}`);
+                        if (preview && previewContainer) {
+                            preview.style.display = 'none';
+                            preview.src = '';
+                            previewContainer.classList.add('empty');
+                        }
+                        
+                        setTimeout(() => {
+                            statusEl.textContent = '';
+                        }, 3000);
+                    } else {
+                        const result = await response.json();
+                        throw new Error(result.error || 'Failed to remove image');
+                    }
+                } catch (error) {
+                    console.error('Error removing invitation image:', error);
+                    statusEl.textContent = `Error: ${error.message}`;
+                    statusEl.className = 'upload-status error';
+                }
+            };
+            
+            // Function to load existing invitation image
+            async function loadExistingInvitationImage(customerId) {
+                const preview = document.getElementById(`preview-img-${customerId}`);
+                const previewContainer = document.getElementById(`preview-${customerId}`);
+                
+                if (!preview || !previewContainer) {
+                    console.error('Preview elements not found for customer:', customerId);
+                    return;
+                }
+                
+                // Reset to empty state first
+                preview.style.display = 'none';
+                preview.src = '';
+                previewContainer.classList.add('empty');
+                
+                try {
+                    // Add timestamp to prevent caching
+                    const response = await fetch(`/api/admin/customers/${customerId}/invitation-image?t=${Date.now()}`);
+                    
+                    if (response.ok) {
+                        const contentLength = response.headers.get('content-length');
+                        const contentType = response.headers.get('content-type');
+                        
+                        // Only proceed if we got a valid image
+                        if (contentLength && parseInt(contentLength) > 0 && contentType && contentType.startsWith('image/')) {
+                            const blob = await response.blob();
+                            const imageUrl = URL.createObjectURL(blob);
+                            
+                            // Set up onload handler before setting src
+                            preview.onload = () => {
+                                URL.revokeObjectURL(preview.src);
+                                preview.style.display = 'block';
+                                previewContainer.classList.remove('empty');
+                            };
+                            
+                            preview.src = imageUrl;
+                        }
+                    }
+                } catch (error) {
+                    console.log('No existing image found for customer:', customerId);
+                }
+                
+                // Handle loading errors
+                preview.onerror = function() {
+                    preview.style.display = 'none';
+                    preview.src = '';
+                    previewContainer.classList.add('empty');
+                    if (preview.src) {
+                        URL.revokeObjectURL(preview.src);
+                    }
+                };
+            }
             
             // Handle logout
             document.getElementById('logout-btn').addEventListener('click', function() {
@@ -452,6 +793,7 @@
                             
                             const customerCard = document.createElement('div');
                             customerCard.className = 'customer-card';
+                            customerCard.setAttribute('data-customer-id', customer.id);
                             
                             let daysRemaining;
                             try {
@@ -492,6 +834,10 @@
                                         <div class="detail-label">Phone Number</div>
                                         <div>${phone}</div>
                                     </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">תאריך עדכון אחרון</div>
+                                        <div>${formatDate(customer.updatedAt)}</div>
+                                    </div>
                                 </div>
                                 <div class="customer-actions">
                                     <button class="button" onclick="viewCustomerDashboard('${customer.id}')">View Dashboard</button>
@@ -501,9 +847,45 @@
                                         ${customer.active ? 'Deactivate' : 'Activate'}
                                     </button>
                                 </div>
+                                <div class="invitation-image">
+                                    <h4>Invitation Image</h4>
+                                    <div class="image-upload-container">
+                                        <div class="invitation-preview empty" id="preview-${customer.id}">
+                                            <img src="" alt="Invitation preview" style="display: none;" id="preview-img-${customer.id}">
+                                        </div>
+                                        <div class="image-upload">
+                                            <input type="file" 
+                                                id="invitation-${customer.id}" 
+                                                accept="image/*" 
+                                                style="display: none;"
+                                                onchange="handleImageUpload('${customer.id}', this.files[0])"
+                                            >
+                                            <div class="button-group">
+                                                <button class="button small outline" onclick="document.getElementById('invitation-${customer.id}').click()">
+                                                    Upload Invitation
+                                                </button>
+                                                <button class="button small outline warning" onclick="clearInvitationImage('${customer.id}')">
+                                                    Clear Image
+                                                </button>
+                                            </div>
+                                            <span id="upload-status-${customer.id}" class="upload-status"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="whatsapp-commands">
+                                    <h4>WhatsApp Commands</h4>
+                                    <div class="command-buttons">
+                                        <button class="button small" onclick="executeWhatsAppCommand('${customer.id}', 'sendrsvpforce')">Send RSVP</button>
+                                        <button class="button small outline" onclick="executeWhatsAppCommand('${customer.id}', 'liststatus')">List Status</button>
+                                        <button class="button small outline" onclick="copyCustomerId('${customer.id}', '${customer.name}')" title="Copy ID for WhatsApp usage">Copy ID</button>
+                                    </div>
+                                </div>
                             `;
                             
                             customersContainer.appendChild(customerCard);
+                            
+                            // Load existing invitation image if any
+                            loadExistingInvitationImage(customer.id);
                         } catch (customerError) {
                             console.error(`Error rendering customer ${index}:`, customerError);
                         }
@@ -547,10 +929,14 @@
                     const date = new Date(dateStr);
                     if (isNaN(date.getTime())) return dateStr;
                     
-                    const day = date.getDate().toString().padStart(2, '0');
-                    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-                    const year = date.getFullYear();
-                    return `${day}.${month}.${year}`;
+                    return new Intl.DateTimeFormat('he-IL', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false
+                    }).format(date);
                 } catch (error) {
                     console.error('Error formatting date:', error);
                     return dateStr || 'N/A';
@@ -570,7 +956,8 @@
                 alert('Error: Missing customer ID');
                 return;
             }
-            window.location.href = `/dashboard/${customerId}`;
+            // Open in a new tab
+            window.open(`/dashboard/${customerId}`, '_blank');
         }
         
         function editCustomer(customerId) {
@@ -640,6 +1027,8 @@
         
         function populateCustomerForm(customer) {
             try {
+                console.log('Populating form with customer data:', customer);
+                
                 if (!customer || !customer.id) {
                     console.error('Invalid customer data for form population:', customer);
                     alert('Error: Invalid customer data');
@@ -652,6 +1041,8 @@
                     'eventName': document.getElementById('eventName'),
                     'eventDate': document.getElementById('eventDate'),
                     'spreadsheetUrl': document.getElementById('spreadsheetUrl'),
+                    'appScriptUrl': document.getElementById('appScriptUrl'),
+                    'secretKey': document.getElementById('secretKey'),
                 };
                 
                 // Check if all required fields exist
@@ -664,9 +1055,13 @@
                 }
                 
                 // Set field values with null checking
+                // Set field values with null checking
                 fields.name.value = customer.name || '';
                 fields.phone.value = customer.phone || '';
                 fields.eventName.value = customer.eventName || '';
+                fields.spreadsheetUrl.value = customer.spreadsheetUrl || '';
+                fields.appScriptUrl.value = customer.appScriptUrl || '';  // Use consistent property name
+                fields.secretKey.value = customer.secretKey || '';
                 
                 // Format date for input field (YYYY-MM-DD)
                 if (customer.eventDate) {
@@ -724,6 +1119,120 @@
             // The actual function is inside the DOMContentLoaded event
             console.log('Global loadCustomers called, refreshing page');
             location.reload();
+        }
+        
+        /**
+         * Copy a customer ID to clipboard for use with WhatsApp commands
+         * @param {string} customerId - The customer ID to copy
+         * @param {string} customerName - The customer name for display
+         */
+        function copyCustomerId(customerId, customerName) {
+            navigator.clipboard.writeText(customerId)
+                .then(() => {
+                    alert(`Copied ID for customer: ${customerName}\n\nID: ${customerId}\n\nUse this ID with the !sendrsvpforce command in WhatsApp`);
+                })
+                .catch(err => {
+                    console.error('Could not copy text: ', err);
+                    alert(`Customer ID: ${customerId}\n\nPlease copy this ID manually for use with the !sendrsvpforce command in WhatsApp`);
+                });
+        }
+        
+        /**
+         * Execute WhatsApp command for a specific customer
+         * @param {string} customerId - Customer ID
+         * @param {string} command - Command to execute (sendrsvpforce, liststatus)
+         */
+        function executeWhatsAppCommand(customerId, command) {
+            if (!customerId) {
+                console.error('No customer ID provided for WhatsApp command');
+                alert('Error: Missing customer ID');
+                return;
+            }
+            
+            const commandName = command === 'sendrsvpforce' ? 'Send RSVP messages' :
+                               command === 'liststatus' ? 'List RSVP status' :
+                               'Execute command';
+            
+            // Confirm action with user
+            if (!confirm(`Are you sure you want to ${commandName.toLowerCase()} for this customer?`)) {
+                return;
+            }
+            
+            // Show executing status
+            const commandElement = document.createElement('div');
+            commandElement.className = 'command-status';
+            commandElement.innerHTML = `<p>Executing command: ${commandName}...</p><div class="spinner small"></div>`;
+            
+            // Find the customer card
+            const customerCard = document.querySelector(`[data-customer-id="${customerId}"]`) || 
+                                document.querySelector(`.customer-card:has(button[onclick*="${customerId}"])`);
+            
+            if (customerCard) {
+                const commandsSection = customerCard.querySelector('.whatsapp-commands');
+                if (commandsSection) {
+                    commandsSection.appendChild(commandElement);
+                }
+            }
+            
+            // Call API to execute command
+            fetch(`/api/admin/whatsapp-command`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    customerId, 
+                    command 
+                })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (commandElement) {
+                    if (result.success) {
+                        commandElement.className = 'command-status success';
+                        commandElement.innerHTML = `<p>✅ ${result.message || 'Command executed successfully'}</p>`;
+                        
+                        // Remove the status after 10 seconds
+                        setTimeout(() => {
+                            commandElement.remove();
+                        }, 10000);
+                    } else {
+                        commandElement.className = 'command-status error';
+                        commandElement.innerHTML = `<p>❌ Error: ${result.error || 'Unknown error occurred'}</p>`;
+                        
+                        // Add a dismiss button
+                        const dismissBtn = document.createElement('button');
+                        dismissBtn.className = 'button outline small';
+                        dismissBtn.textContent = 'Dismiss';
+                        dismissBtn.onclick = () => commandElement.remove();
+                        commandElement.appendChild(dismissBtn);
+                    }
+                } else {
+                    // Fallback if command element was removed
+                    if (result.success) {
+                        alert(`Success: ${result.message || 'Command executed successfully'}`);
+                    } else {
+                        alert(`Error: ${result.error || 'Unknown error occurred'}`);
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error executing WhatsApp command:', error);
+                
+                if (commandElement) {
+                    commandElement.className = 'command-status error';
+                    commandElement.innerHTML = `<p>❌ Error: ${error.message}</p>`;
+                    
+                    // Add a dismiss button
+                    const dismissBtn = document.createElement('button');
+                    dismissBtn.className = 'button outline small';
+                    dismissBtn.textContent = 'Dismiss';
+                    dismissBtn.onclick = () => commandElement.remove();
+                    commandElement.appendChild(dismissBtn);
+                } else {
+                    alert(`Error: ${error.message}`);
+                }
+            });
         }
     </script>
 </body>

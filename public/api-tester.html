@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EA-Bot API Tester</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #3b3b3b;
+        }
+        .customer-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px 0;
+        }
+        .test-button:disabled {
+            background-color: #cccccc;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+        .error {
+            color: #D8000C;
+            background-color: #FFD2D2;
+        }
+        .success {
+            color: #4F8A10;
+            background-color: #DFF2BF;
+        }
+        .guests-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .guests-table th, .guests-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .guests-table th {
+            background-color: #f2f2f2;
+        }
+        .guests-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .api-url, .secret-key {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+        .parameter-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .parameter-row label {
+            width: 120px;
+            line-height: 30px;
+        }
+        .parameter-row input {
+            flex-grow: 1;
+            padding: 5px;
+        }
+        .stats {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .stat-box {
+            flex: 1;
+            padding: 15px;
+            margin-right: 15px;
+            background-color: #f2f2f2;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .stat-box .number {
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>EA-Bot API Connection Tester</h1>
+    <p>Use this tool to verify that your Google Apps Script APIs are working correctly.</p>
+
+    <div class="customer-section" id="customer1">
+        <h2>Customer 1: Yigal and Shiran</h2>
+        
+        <div class="parameter-row">
+            <label>API URL:</label>
+            <input type="text" id="apiUrl1" class="api-url" placeholder="Paste Google Apps Script Web App URL here">
+        </div>
+        
+        <div class="parameter-row">
+            <label>Secret Key:</label>
+            <input type="text" id="secretKey1" class="secret-key" placeholder="Paste secret key here">
+        </div>
+
+        <div>
+            <button class="test-button" onclick="testDetectSheets(1)">Test Sheet Detection</button>
+            <button class="test-button" onclick="testEventDetails(1)">Test Event Details</button>
+            <button class="test-button" onclick="testGuests(1)">Test Guest List</button>
+        </div>
+
+        <div class="stats" id="stats1" style="display: none;">
+            <div class="stat-box">
+                <div class="number" id="totalGuests1">0</div>
+                <div>Total Guests</div>
+            </div>
+            <div class="stat-box">
+                <div class="number" id="attending1">0</div>
+                <div>Attending</div>
+            </div>
+            <div class="stat-box">
+                <div class="number" id="awaiting1">0</div>
+                <div>Awaiting Response</div>
+            </div>
+        </div>
+
+        <div id="result1" class="result">Results will appear here...</div>
+        
+        <div id="guestsTable1Container" style="display: none; margin-top: 20px;">
+            <h3>Guest List</h3>
+            <table class="guests-table" id="guestsTable1">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Invited</th>
+                        <th>Attending</th>
+                        <th>Response</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="customer-section" id="customer2">
+        <h2>Customer 2: Yasmin and Netanel</h2>
+        
+        <div class="parameter-row">
+            <label>API URL:</label>
+            <input type="text" id="apiUrl2" class="api-url" placeholder="Paste Google Apps Script Web App URL here">
+        </div>
+        
+        <div class="parameter-row">
+            <label>Secret Key:</label>
+            <input type="text" id="secretKey2" class="secret-key" placeholder="Paste secret key here">
+        </div>
+
+        <div>
+            <button class="test-button" onclick="testDetectSheets(2)">Test Sheet Detection</button>
+            <button class="test-button" onclick="testEventDetails(2)">Test Event Details</button>
+            <button class="test-button" onclick="testGuests(2)">Test Guest List</button>
+        </div>
+
+        <div class="stats" id="stats2" style="display: none;">
+            <div class="stat-box">
+                <div class="number" id="totalGuests2">0</div>
+                <div>Total Guests</div>
+            </div>
+            <div class="stat-box">
+                <div class="number" id="attending2">0</div>
+                <div>Attending</div>
+            </div>
+            <div class="stat-box">
+                <div class="number" id="awaiting2">0</div>
+                <div>Awaiting Response</div>
+            </div>
+        </div>
+
+        <div id="result2" class="result">Results will appear here...</div>
+        
+        <div id="guestsTable2Container" style="display: none; margin-top: 20px;">
+            <h3>Guest List</h3>
+            <table class="guests-table" id="guestsTable2">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Invited</th>
+                        <th>Attending</th>
+                        <th>Response</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Helper function to display results
+        function displayResult(customerId, result, isError = false) {
+            const resultElement = document.getElementById(`result${customerId}`);
+            resultElement.className = isError ? 'result error' : 'result success';
+            resultElement.textContent = typeof result === 'string' ? result : JSON.stringify(result, null, 2);
+        }
+        
+        // Helper function to make API calls
+        async function callApi(customerId, action) {
+            const apiUrl = document.getElementById(`apiUrl${customerId}`).value.trim();
+            const secretKey = document.getElementById(`secretKey${customerId}`).value.trim();
+            
+            if (!apiUrl || !secretKey) {
+                displayResult(customerId, "Error: API URL and Secret Key are required", true);
+                return null;
+            }
+            
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        action: action,
+                        secretKey: secretKey
+                    }),
+                });
+                
+                const data = await response.json();
+                if (!data.success) {
+                    throw new Error(data.error || "Unknown API error");
+                }
+                
+                displayResult(customerId, data);
+                return data;
+            } catch (error) {
+                displayResult(customerId, `Error: ${error.message}`, true);
+                return null;
+            }
+        }
+        
+        // Test sheet detection
+        async function testDetectSheets(customerId) {
+            return await callApi(customerId, 'detectSheets');
+        }
+        
+        // Test event details
+        async function testEventDetails(customerId) {
+            return await callApi(customerId, 'getEventDetails');
+        }
+        
+        // Test guest list
+        async function testGuests(customerId) {
+            const data = await callApi(customerId, 'getGuests');
+            if (!data || !data.success || !data.guests) return;
+            
+            // Show the stats section
+            document.getElementById(`stats${customerId}`).style.display = 'flex';
+            
+            // Calculate statistics
+            const totalGuests = data.guests.length;
+            const attending = data.guests.filter(g => g.attending > 0).length;
+            const awaiting = totalGuests - attending;
+            
+            // Update statistics
+            document.getElementById(`totalGuests${customerId}`).textContent = totalGuests;
+            document.getElementById(`attending${customerId}`).textContent = attending;
+            document.getElementById(`awaiting${customerId}`).textContent = awaiting;
+            
+            // Populate the guests table
+            const tableBody = document.querySelector(`#guestsTable${customerId} tbody`);
+            tableBody.innerHTML = '';
+            
+            data.guests.forEach(guest => {
+                const row = tableBody.insertRow();
+                
+                row.insertCell(0).textContent = guest.name || 'N/A';
+                row.insertCell(1).textContent = guest.phone || 'N/A';
+                row.insertCell(2).textContent = guest.invited || 0;
+                row.insertCell(3).textContent = guest.attending || 0;
+                row.insertCell(4).textContent = guest.response || 'No response';
+            });
+            
+            // Show the table
+            document.getElementById(`guestsTable${customerId}Container`).style.display = 'block';
+        }
+        
+        // Load credentials from localStorage if available
+        window.onload = function() {
+            const savedApiUrl1 = localStorage.getItem('apiUrl1');
+            const savedSecretKey1 = localStorage.getItem('secretKey1');
+            const savedApiUrl2 = localStorage.getItem('apiUrl2');
+            const savedSecretKey2 = localStorage.getItem('secretKey2');
+            
+            if (savedApiUrl1) document.getElementById('apiUrl1').value = savedApiUrl1;
+            if (savedSecretKey1) document.getElementById('secretKey1').value = savedSecretKey1;
+            if (savedApiUrl2) document.getElementById('apiUrl2').value = savedApiUrl2;
+            if (savedSecretKey2) document.getElementById('secretKey2').value = savedSecretKey2;
+            
+            // Add change listeners to save values
+            document.getElementById('apiUrl1').addEventListener('change', function() {
+                localStorage.setItem('apiUrl1', this.value);
+            });
+            document.getElementById('secretKey1').addEventListener('change', function() {
+                localStorage.setItem('secretKey1', this.value);
+            });
+            document.getElementById('apiUrl2').addEventListener('change', function() {
+                localStorage.setItem('apiUrl2', this.value);
+            });
+            document.getElementById('secretKey2').addEventListener('change', function() {
+                localStorage.setItem('secretKey2', this.value);
+            });
+        };
+    </script>
+</body>
+</html>

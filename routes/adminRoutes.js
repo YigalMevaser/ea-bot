@@ -466,4 +466,70 @@ router.put('/api/admin/customers/:id/status', adminAuthMiddleware, (req, res) =>
   }
 });
 
+/**
+ * Execute WhatsApp command for a customer
+ * This endpoint handles admin-triggered WhatsApp commands
+ */
+router.post('/api/admin/whatsapp-command', adminAuthMiddleware, (req, res) => {
+  try {
+    const { customerId, command } = req.body;
+    
+    if (!customerId || !command) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required parameters: customerId and command'
+      });
+    }
+    
+    // Validate customer exists
+    const customer = getCustomerById(customerId);
+    if (!customer) {
+      return res.status(404).json({
+        success: false,
+        error: `Customer with ID ${customerId} not found`
+      });
+    }
+    
+    // Validate that the customer is active
+    if (!customer.active) {
+      return res.status(403).json({
+        success: false,
+        error: `Customer ${customer.name} is inactive. Activate the customer first.`
+      });
+    }
+    
+    console.log(`[${getIsraelTimestamp()}] Admin executing WhatsApp command '${command}' for customer: ${customer.name}`);
+    
+    // Create a global event to notify the main WhatsApp handler
+    // The index.js file will listen for this event and execute the command
+    if (!global.eventEmitter) {
+      console.error(`[${getIsraelTimestamp()}] Event emitter not initialized`);
+      return res.status(500).json({
+        success: false,
+        error: 'WhatsApp command system not initialized. Please try again later.'
+      });
+    }
+    
+    // Emit event to be caught by the main application
+    global.eventEmitter.emit('admin-whatsapp-command', {
+      customerId,
+      command,
+      source: 'admin-dashboard',
+      timestamp: Date.now()
+    });
+    
+    return res.json({ 
+      success: true,
+      message: `Command '${command}' is being processed for ${customer.name}`
+    });
+    
+  } catch (error) {
+    console.error(`[${getIsraelTimestamp()}] Error executing WhatsApp command:`, error);
+    return res.status(500).json({
+      success: false,
+      error: error.message || 'Internal server error'
+    });
+  }
+});
+
 export default router;

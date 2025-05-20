@@ -14,9 +14,11 @@ import axios from 'axios';
 import cron from 'node-cron';
 import express from 'express';
 import qrcode from 'qrcode';
+import { EventEmitter } from 'events';
 import { calculateDaysRemaining, filterGuestsByEventProximity, getMessageByProximity } from './utils/eventScheduler.js';
 import adminRoutes from './routes/adminRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
+import uploadRoutes from './upload-invitation-image.js';
 
 // Import all Baileys functions via dynamic import to handle ES Module vs CommonJS compatibility
 import * as baileysImport from '@nstar/baileys';
@@ -182,10 +184,11 @@ const log = {
 
 // Google Apps Script Integration Helper
 class AppsScriptManager {
-  constructor(scriptUrl, secretKey, logFn = console.log) {
+  constructor(scriptUrl, secretKey, logFn = console.log, customerId = null) {
     this.scriptUrl = scriptUrl;
     this.secretKey = secretKey;
     this.log = logFn;
+    this.customerId = customerId;
     this.cachedGuests = null;
     this.cachedEventDetails = null;
     this.lastFetchTime = 0;
@@ -207,18 +210,76 @@ class AppsScriptManager {
       
       // Make API request to Apps Script
       this.log.info(`Fetching guest list from Google Sheets: ${this.scriptUrl}`);
-      const response = await axios.post(this.scriptUrl, {
-        key: this.secretKey,
-        operation: "get_guests"
-      });
       
-      // NEW LOGGING - Log API response
-      this.log.info(`API response status: ${response.status}`);
-      this.log.info(`API response data: ${JSON.stringify(response.data)}`);
-      
-      if (!response.data.success) {
-        throw new Error(response.data.message || "Failed to fetch guest list");
+      // Try with key parameter (original format)
+      try {
+        const response = await axios.post(this.scriptUrl, {
+          key: this.secretKey,
+          operation: "get_guests"
+        });
+        
+        // NEW LOGGING - Log API response
+        this.log.info(`API response status: ${response.status}`);
+        this.log.info(`API response data: ${JSON.stringify(response.data)}`);
+        
+        if (response.data.success) {
+          // Format the data
+          const guests = response.data.guests.map(guest => ({
+            name: guest.Name || '',
+            phone: this.formatPhoneNumber(guest.Phone || ''),
+            email: guest.Email || '',
+            status: guest.Status || 'Pending',
+            count: guest.GuestCount || '0',
+            notes: guest.Notes || '',
+            lastContacted: guest.LastContacted || ''
+          })).filter(guest => guest.phone); // Only include guests with phone numbers
+          
+          // Update cache
+          this.cachedGuests = guests;
+          this.lastFetchTime = now;
+          
+          this.log.info(`Fetched ${guests.length} guests from Apps Script`);
+          return guests;
+        }
+      } catch (error) {
+        this.log.warn(`First request format failed: ${error.message}`);
       }
+      
+      // Try with secretKey and action parameter (new format)
+      try {
+        const response = await axios.post(this.scriptUrl, {
+          secretKey: this.secretKey,
+          action: "getGuests"
+        });
+        
+        this.log.info(`Second format API response status: ${response.status}`);
+        this.log.info(`Second format API response data: ${JSON.stringify(response.data)}`);
+        
+        if (response.data.success) {
+          // Format the data
+          const guests = response.data.guests.map(guest => ({
+            name: guest.name || guest.Name || '',
+            phone: this.formatPhoneNumber(guest.phone || guest.Phone || ''),
+            email: guest.email || guest.Email || '',
+            status: guest.status || guest.Status || 'Pending',
+            count: guest.guestCount || guest.GuestCount || '0',
+            notes: guest.notes || guest.Notes || '',
+            lastContacted: guest.lastContacted || guest.LastContacted || ''
+          })).filter(guest => guest.phone); // Only include guests with phone numbers
+          
+          // Update cache
+          this.cachedGuests = guests;
+          this.lastFetchTime = now;
+          
+          this.log.info(`Fetched ${guests.length} guests from Apps Script (second format)`);
+          return guests;
+        }
+      } catch (error) {
+        this.log.warn(`Second request format failed: ${error.message}`);
+      }
+      
+      // If we get here, both requests failed
+      throw new Error("Failed to fetch guest list - all request formats failed");
       
       // Format the data
       const guests = response.data.guests.map(guest => ({
@@ -260,23 +321,60 @@ class AppsScriptManager {
       this.log.info(`Updating guest status in Apps Script: ${formattedPhone} to ${status}`);
       this.log.info(`Using script URL: ${this.scriptUrl}`);
       
-      // Make API request to Apps Script
+      // Make API request to Apps Script - try multiple formats
       this.log.info(`Updating guest status in Apps Script: ${formattedPhone}`);
-      const response = await axios.post(this.scriptUrl, {
-        key: this.secretKey,
-        operation: "update_status",
-        phone: formattedPhone,
-        status: status,
-        count: guestCount.toString(),
-        notes: notes
-      });
       
-      // NEW LOGGING - Log response
-      this.log.info(`Update response: ${JSON.stringify(response.data)}`);
-      
-      if (!response.data.success) {
-        throw new Error(response.data.message || "Failed to update guest status");
+      // Try with key parameter (original format)
+      try {
+        const response = await axios.post(this.scriptUrl, {
+          key: this.secretKey,
+          operation: "update_status",
+          phone: formattedPhone,
+          status: status,
+          count: guestCount.toString(),
+          notes: notes
+        });
+        
+        // NEW LOGGING - Log response
+        this.log.info(`Update response: ${JSON.stringify(response.data)}`);
+        
+        if (response.data.success) {
+          // Invalidate cache
+          this.cachedGuests = null;
+          
+          this.log.info(`Updated status for ${formattedPhone} to ${status} with ${guestCount} guests`);
+          return true;
+        }
+      } catch (error) {
+        this.log.warn(`First update status request format failed: ${error.message}`);
       }
+      
+      // Try with secretKey parameter (new format)
+      try {
+        const response = await axios.post(this.scriptUrl, {
+          secretKey: this.secretKey,
+          action: "updateGuestStatus",
+          phone: formattedPhone,
+          status: status,
+          count: guestCount.toString(),
+          notes: notes
+        });
+        
+        this.log.info(`Second format update response: ${JSON.stringify(response.data)}`);
+        
+        if (response.data.success) {
+          // Invalidate cache
+          this.cachedGuests = null;
+          
+          this.log.info(`Updated status for ${formattedPhone} to ${status} with ${guestCount} guests (second format)`);
+          return true;
+        }
+      } catch (error) {
+        this.log.warn(`Second update status request format failed: ${error.message}`);
+      }
+      
+      // If we get here, both requests failed
+      throw new Error("Failed to update guest status - all request formats failed");
       
       // Invalidate cache
       this.cachedGuests = null;
@@ -324,19 +422,80 @@ class AppsScriptManager {
       // NEW LOGGING - Log request details
       this.log.info(`Attempting to fetch event details from: ${this.scriptUrl}`);
       
-      // Make API request to Apps Script
+      // Make API request to Apps Script - try multiple formats
       this.log.info(`Fetching event details from Google Sheets: ${this.scriptUrl}`);
-      const response = await axios.post(this.scriptUrl, {
-        key: this.secretKey,
-        operation: "get_event_details"
-      });
       
-      // NEW LOGGING - Log response
-      this.log.info(`Event details response: ${JSON.stringify(response.data)}`);
-      
-      if (!response.data.success) {
-        throw new Error(response.data.message || "Failed to fetch event details");
+      // Try with key parameter and operation (original format)
+      try {
+        const response = await axios.post(this.scriptUrl, {
+          key: this.secretKey,
+          operation: "get_event_details"
+        });
+        
+        // NEW LOGGING - Log response
+        this.log.info(`Event details response: ${JSON.stringify(response.data)}`);
+        
+        if (response.data.success) {
+          const details = response.data.details;
+          
+          const eventDetails = {
+            name: details.Name || "Event",
+            date: details.Date || new Date().toLocaleDateString(),
+            // Fix the time format from Google Sheets
+            time: typeof details.Time === 'string' && details.Time.includes('T') ? 
+              new Date(details.Time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 
+              details.Time || "12:00 PM",
+            location: details.Location || "TBD",
+            description: details.Description || "Please RSVP for our event"
+          };
+          
+          // Update cache
+          this.cachedEventDetails = eventDetails;
+          this.lastFetchTime = now;
+          
+          return eventDetails;
+        }
+      } catch (error) {
+        this.log.warn(`First event details request format failed: ${error.message}`);
       }
+      
+      // Try with secretKey parameter and action (new format)
+      try {
+        const response = await axios.post(this.scriptUrl, {
+          secretKey: this.secretKey,
+          action: "getEventDetails" 
+        });
+        
+        this.log.info(`Second format event details response status: ${response.status}`);
+        this.log.info(`Second format event details response data: ${JSON.stringify(response.data)}`);
+        
+        if (response.data.success) {
+          const details = response.data.details;
+          
+          // Support both uppercase and lowercase property names
+          const eventDetails = {
+            name: details.Name || details.name || "Event",
+            date: details.Date || details.date || new Date().toLocaleDateString(),
+            // Fix the time format from Google Sheets
+            time: typeof (details.Time || details.time) === 'string' && (details.Time || details.time || '').includes('T') ? 
+              new Date(details.Time || details.time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 
+              details.Time || details.time || "12:00 PM",
+            location: details.Location || details.location || "TBD",
+            description: details.Description || details.description || "Please RSVP for our event"
+          };
+          
+          // Update cache
+          this.cachedEventDetails = eventDetails;
+          this.lastFetchTime = now;
+          
+          return eventDetails;
+        }
+      } catch (error) {
+        this.log.warn(`Second event details request format failed: ${error.message}`);
+      }
+      
+      // If we get here, both requests failed
+      throw new Error("Failed to fetch event details - all request formats failed");
       
       const details = response.data.details;
       
@@ -380,17 +539,33 @@ function isEmptyObject(obj) {
   return obj && Object.keys(obj).length === 0 && obj.constructor === Object;
 }
 
-// Load the invitation image
-let invitationImage;
-try {
-  const imagePath = path.join(__dirname, 'invitation.jpeg');
-  log.info(`Loading invitation image from: ${imagePath}`);
-  invitationImage = fs.readFileSync(imagePath);
-  log.info('Invitation image loaded successfully');
-} catch (error) {
-  log.error('Failed to load invitation image:', error);
-  // Continue without image if there's an error
+/**
+ * Load customer-specific invitation image if available, fallback to default
+ * @param {string} customerId - The customer ID to load image for
+ * @returns {Buffer|null} - The image buffer or null if no image found
+ */
+function loadInvitationImage(customerId = null) {
+  try {
+    // Only load customer-specific image, no fallback
+    if (customerId) {
+      const customerImagePath = path.join(__dirname, 'data', 'images', `${customerId}.jpeg`);
+      if (fs.existsSync(customerImagePath)) {
+        log.info(`Loading customer-specific invitation image for customer ${customerId}`);
+        return fs.readFileSync(customerImagePath);
+      }
+      log.info(`No invitation image found for ${customerId}`);
+    }
+    
+    // Return null if no image is found
+    return null;
+  } catch (error) {
+    log.error('Failed to load invitation image:', error);
+    return null;
+  }
 }
+
+// Load the default invitation image
+let invitationImage = loadInvitationImage();
 
 // Declare client at the top level so it's accessible in event handlers
 let client = null;
@@ -398,6 +573,9 @@ let client = null;
 // Setup Express server
 const app = express();
 const serverPort = process.env.PORT || 8080; // Use Railway.app default port 
+
+// Initialize global event emitter for communication between components
+global.eventEmitter = new EventEmitter();
 
 // Store the latest QR code
 let lastQR = null;
@@ -587,11 +765,14 @@ const SESSION_PATH = process.env.SESSION_PATH ||
             // Get the appropriate message based on event proximity
             const messageText = getMessageByProximity(daysRemaining, eventDetails, guest.name);
             
+            // Try to load customer-specific invitation image
+            const customerImage = loadInvitationImage(appScriptManager.customerId);
+
             // Create message with image if available, otherwise text only
             let buttonMessage;
-            if (invitationImage) {
+            if (customerImage) {
               buttonMessage = {
-                image: invitationImage,
+                image: customerImage,
                 caption: messageText,
                 footer: 'אנא השיבו באמצעות הכפתורים למטה',
                 buttons: buttons,
@@ -891,81 +1072,111 @@ const SESSION_PATH = process.env.SESSION_PATH ||
             }
             return;
           }
-          // Check if the message is a response to our RSVP buttons
-
-          // ADD THE NEW FORCE COMMAND RIGHT AFTER THE SENDRSVP COMMAND
-          if (m.text === '!sendrsvpforce') {
+          
+          // List available customers command
+          if (m.text === '!listcustomers' || m.text === '!customers') {
             try {
-              await waClient.sendMessage(m.chat, { text: "Forcing RSVP messages to ALL guests..." });
+              // Import necessary modules for customer management
+              const { getActiveCustomers, getCustomerById } = await import('./utils/customerManager.js');
               
-              // Get event details directly
-              const eventDetails = await appScriptManager.getEventDetails();
+              // Get all active customers
+              const activeCustomers = getActiveCustomers();
               
-              // Get guests directly
-              const guests = await appScriptManager.fetchGuestList();
-              
-              // Log what we found
-              log.info(`Found ${guests.length} guests to message`);
-              
-              // Send messages without filtering
-              for (const guest of guests) {
-                try {
-                  // Create buttons for interactive responses
-                  const buttons = [
-                    {buttonId: 'yes', buttonText: {displayText: 'כן, אני מגיע/ה'}, type: 1},
-                    {buttonId: 'no', buttonText: {displayText: 'לא אוכל להגיע'}, type: 1}
-                  ];
-                  
-                  // Fix time format from Google Sheets
-                  let displayTime = eventDetails.time;
-                  if (typeof eventDetails.time === 'string' && eventDetails.time.includes('T')) {
-                    try {
-                      displayTime = new Date(eventDetails.time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                    } catch (e) {
-                      log.warn(`Failed to format time: ${e.message}`);
-                    }
-                  }
-                  
-                  // Create message with image if available, otherwise text only
-                  let buttonMessage;
-                  if (invitationImage) {
-                    buttonMessage = {
-                      image: invitationImage,
-                      caption: `*${eventDetails.name} - הזמנה לאירוע*\n\nשלום ${guest.name},\n\nאתם מוזמנים ל${eventDetails.name}!\n\n📅 תאריך: ${eventDetails.date}\n⏰ שעה: ${displayTime}\n📍 מיקום: ${eventDetails.location}\n\n${eventDetails.description}\n\nהאם תוכלו להגיע?`,
-                      footer: 'אנא השיבו באמצעות הכפתורים למטה',
-                      buttons: buttons,
-                      headerType: 4, // Type 4 for image with caption
-                      viewOnce: true
-                    };
-                  } else {
-                    buttonMessage = {
-                      text: `*${eventDetails.name} - הזמנה לאירוע*\n\nשלום ${guest.name},\n\nאתם מוזמנים ל${eventDetails.name}!\n\n📅 תאריך: ${eventDetails.date}\n⏰ שעה: ${displayTime}\n📍 מיקום: ${eventDetails.location}\n\n${eventDetails.description}\n\nהאם תוכלו להגיע?`,
-                      footer: 'אנא השיבו באמצעות הכפתורים למטה',
-                      buttons: buttons,
-                      headerType: 1,
-                      viewOnce: true
-                    };
-                  }
-                  
-                  // Send the message
-                  log.info(`Sending force RSVP message to: ${guest.phone}@s.whatsapp.net`);
-                  
-                  // Remove the plus sign from the phone number if present
-                  const formattedPhone = guest.phone.startsWith('+') ? 
-                  guest.phone.substring(1) + '@s.whatsapp.net' : 
-                  guest.phone + '@s.whatsapp.net';
-                  log.info(`Formatted phone for WhatsApp: ${formattedPhone}`);
-                  await waClient.sendMessage(formattedPhone, buttonMessage);
-                  log.info(`✓ Sent RSVP message to ${guest.name} (${guest.phone})`);
-                  
-                  // Wait 2 seconds between messages
-                  await new Promise(resolve => setTimeout(resolve, 2000));
-                } catch (error) {
-                  log.error(`Failed to send message to ${guest.name} (${guest.phone}):`, error);
-                }
+              if (activeCustomers.length === 0) {
+                await waClient.sendMessage(m.chat, { text: "No active customers found in the system." });
+                return;
               }
               
-              await waClient.sendMessage(m.chat, { text: `Completed sending force messages to ${guests.length} guests` });
+              // Build a list of customers
+              let message = "*Available Customers*\n\n";
+              
+              activeCustomers.forEach((customer, index) => {
+                const daysRemaining = calculateDaysRemaining(customer.eventDate);
+                const daysInfo = daysRemaining >= 0 ? 
+                  `${daysRemaining} days remaining` : 
+                  `${Math.abs(daysRemaining)} days ago`;
+                  
+                message += `${index + 1}. *${customer.name}* (${customer.eventName})\n`;
+                message += `   ID: \`${customer.id}\`\n`;
+                message += `   Date: ${customer.eventDate} (${daysInfo})\n`;
+                message += `   Phone: ${customer.phone}\n\n`;
+              });
+              
+              message += "To send RSVP to a specific customer, use: !sendrsvpforce [customer_id]";
+              
+              await waClient.sendMessage(m.chat, { text: message });
+            } catch (error) {
+              log.error('Error listing customers:', error);
+              await waClient.sendMessage(m.chat, { 
+                text: `Error: ${error.message}` 
+              });
+            }
+            return;
+          }
+          
+          // Check if the message is a response to our RSVP buttons
+
+          // Enhanced force command that can target specific customers
+          if (m.text.startsWith('!sendrsvpforce')) {
+            try {
+              // Extract customer ID if provided (format: !sendrsvpforce [customerID])
+              const parts = m.text.split(' ');
+              const targetCustomerId = parts.length > 1 ? parts[1] : null;
+              
+              // Import necessary modules for customer management
+              const { getActiveCustomers, getCustomerById } = await import('./utils/customerManager.js');
+              
+              // If no specific customer ID provided, get all active customers
+              if (!targetCustomerId) {
+                await waClient.sendMessage(m.chat, { text: "Forcing RSVP messages to ALL guests across all customers..." });
+                
+                // Get all active customers
+                const activeCustomers = getActiveCustomers();
+                
+                if (activeCustomers.length === 0) {
+                  await waClient.sendMessage(m.chat, { text: "No active customers found in the system." });
+                  return;
+                }
+                
+                // Loop through each customer and execute the command
+                let processedCount = 0;
+                for (const customer of activeCustomers) {
+                  await waClient.sendMessage(m.chat, { 
+                    text: `Processing customer: ${customer.name} (${customer.eventName})` 
+                  });
+                  
+                  try {
+                    // Use the reusable utility function for each customer
+                    const result = await executeRsvpForceCommand(waClient, customer, m.chat);
+                    if (result.success) {
+                      processedCount++;
+                    }
+                  } catch (customerError) {
+                    log.error(`Error processing customer ${customer.id}:`, customerError);
+                    await waClient.sendMessage(m.chat, { 
+                      text: `Error processing customer ${customer.name}: ${customerError.message}` 
+                    });
+                  }
+                }
+                
+                await waClient.sendMessage(m.chat, { 
+                  text: `Completed processing ${processedCount} of ${activeCustomers.length} customers` 
+                });
+                return;
+              }
+              
+              // Process specific customer if ID was provided
+              const targetCustomer = getCustomerById(targetCustomerId);
+              
+              if (!targetCustomer) {
+                await waClient.sendMessage(m.chat, { 
+                  text: `Customer with ID ${targetCustomerId} not found. Use !customers to see available customers.` 
+                });
+                return;
+              }
+              
+              // Use the reusable utility function for the specific customer
+              await executeRsvpForceCommand(waClient, targetCustomer, m.chat);
             } catch (error) {
               log.error('Error in force send command:', error);
               await waClient.sendMessage(m.chat, { 
@@ -1050,11 +1261,14 @@ const SESSION_PATH = process.env.SESSION_PATH ||
                 {buttonId: 'test_no', buttonText: {displayText: 'לא (בדיקה)'}, type: 1}
               ];
               
+              // Try to load customer-specific invitation image
+              const customerImage = loadInvitationImage(appScriptManager.customerId);
+
               // Create message with image if available
               let buttonMessage;
-              if (invitationImage) {
+              if (customerImage) {
                 buttonMessage = {
-                  image: invitationImage,
+                  image: customerImage,
                   caption: `*בדיקת הודעה*\n\nזוהי הזמנה לבדיקה.\n\nהאם תוכל להגיע לאירוע הבדיקה?`,
                   footer: 'אנא השיב באמצעות הכפתורים למטה',
                   buttons: buttons,
@@ -1950,6 +2164,30 @@ const SESSION_PATH = process.env.SESSION_PATH ||
           const response = mek.message.buttonsResponseMessage;
           log.info(`Button response received: ${JSON.stringify(response.selectedButtonId)}`);
           
+          // Import utilities for multi-tenant handling
+          const { findCustomerIdByPhone } = await import('./utils/phoneUtils.js');
+          const { createAppScriptManager } = await import('./utils/multiTenantSheets.js');
+          
+          // Find the correct customer based on the sender's phone number
+          const customerId = findCustomerIdByPhone(senderPhone);
+          if (!customerId) {
+            log.error(`Could not find customer for phone number: ${senderPhone}`);
+            await waClient.sendMessage(m.chat, { 
+              text: "מצטערים, אך לא הצלחנו לאתר את האירוע המתאים. אנא צרו קשר עם מארגני האירוע." 
+            });
+            return;
+          }
+          
+          // Get the correct App Script Manager for this customer
+          const customerAppScriptManager = createAppScriptManager(customerId);
+          if (!customerAppScriptManager) {
+            log.error(`Could not create App Script Manager for customer: ${customerId}`);
+            await waClient.sendMessage(m.chat, { 
+              text: "מצטערים, אך אירעה שגיאה בעדכון התשובה שלך. אנא צרו קשר עם מארגני האירוע." 
+            });
+            return;
+          }
+          
           if (response.selectedButtonId === 'yes' || response.selectedButtonId === 'test_yes') {
             // Ask for the number of guests
             const buttons = [
@@ -1971,15 +2209,15 @@ const SESSION_PATH = process.env.SESSION_PATH ||
           else if (response.selectedButtonId === 'no' || response.selectedButtonId === 'test_no') {
             // This is a decline
             try {
-              // Update their status in the sheet
-              await appScriptManager.updateGuestStatus(senderPhone, 'Declined', '0');
+              // Update their status in the sheet using the customer-specific manager
+              await customerAppScriptManager.updateGuestStatus(senderPhone, 'Declined', '0');
               
               // Send acknowledgment
               await waClient.sendMessage(m.chat, { 
                 text: "תודה שהודעת לנו. חבל שלא תוכל להגיע!" 
               });
             } catch (error) {
-              log.error(`Error updating decline status for ${senderPhone}:`, error);
+              log.error(`Error updating decline status for ${senderPhone} (customer ${customerId}):`, error);
               
               // Send generic acknowledgment if update fails
               await waClient.sendMessage(m.chat, { 
@@ -1990,8 +2228,8 @@ const SESSION_PATH = process.env.SESSION_PATH ||
           }
           else if (response.selectedButtonId === 'maybe') {
             try {
-              // Update their status in the sheet as "Maybe"
-              await appScriptManager.updateGuestStatus(senderPhone, 'Maybe', '0', 'Will follow up tomorrow');
+              // Update their status in the sheet as "Maybe" using customer-specific manager
+              await customerAppScriptManager.updateGuestStatus(senderPhone, 'Maybe', '0', 'Will follow up tomorrow');
               
               // Schedule a follow-up for tomorrow
               const tomorrowDate = new Date();
@@ -2046,15 +2284,15 @@ const SESSION_PATH = process.env.SESSION_PATH ||
             }
             
             try {
-              // Update their status in the sheet
-              await appScriptManager.updateGuestStatus(senderPhone, 'Confirmed', guestCount.toString());
+              // Update their status in the sheet using customer-specific manager
+              await customerAppScriptManager.updateGuestStatus(senderPhone, 'Confirmed', guestCount.toString());
               
               // Send confirmation
               await waClient.sendMessage(m.chat, { 
                 text: `תודה על האישור! רשמנו שיגיעו ${guestCount} ${guestCount === 1 ? 'איש' : 'אנשים'}` 
               });
             } catch (error) {
-              log.error(`Error updating confirm status for ${senderPhone}:`, error);
+              log.error(`Error updating confirm status for ${senderPhone} (customer ${customerId}):`, error);
               
               // Send generic acknowledgment if update fails
               await waClient.sendMessage(m.chat, { 
@@ -2125,8 +2363,27 @@ const SESSION_PATH = process.env.SESSION_PATH ||
           const guestCount = parseInt(numberMatch[0], 10);
           
           try {
-            // Update their status in the sheet
-            await appScriptManager.updateGuestStatus(senderPhone, 'Confirmed', guestCount.toString());
+            // Get the correct customer and app script manager for this response
+            const customerId = findCustomerIdByPhone(senderPhone);
+            if (!customerId) {
+              log.error(`Could not find customer for phone number: ${senderPhone}`);
+              await waClient.sendMessage(m.chat, { 
+                text: "מצטערים, אך לא הצלחנו לאתר את האירוע המתאים. אנא צרו קשר עם מארגני האירוע." 
+              });
+              return;
+            }
+            
+            const customerAppScriptManager = createAppScriptManager(customerId);
+            if (!customerAppScriptManager) {
+              log.error(`Could not create App Script Manager for customer: ${customerId}`);
+              await waClient.sendMessage(m.chat, { 
+                text: "מצטערים, אך אירעה שגיאה בעדכון התשובה שלך. אנא צרו קשר עם מארגני האירוע." 
+              });
+              return;
+            }
+            
+            // Update their status in the sheet using customer-specific manager
+            await customerAppScriptManager.updateGuestStatus(senderPhone, 'Confirmed', guestCount.toString());
             
             // Send confirmation
             await waClient.sendMessage(m.chat, { 
@@ -2371,10 +2628,284 @@ const SESSION_PATH = process.env.SESSION_PATH ||
     // Set the global client reference
     client = waClient;
     
+    // Make the client available globally for other modules
+    global.conn = waClient;
+    
+    // If app is initialized, make the client available to Express
+    if (app) {
+      app.set('whatsappClient', waClient);
+    }
+    
     return waClient;
   } catch (error) {
     log.error('Error initializing WhatsApp client:', error);
     throw error;
+  }
+}
+
+/**
+ * Execute the Send RSVP Force command for a specific customer
+ * This function can be called from both WhatsApp commands and admin dashboard
+ * @param {Object} waClient - The WhatsApp client instance
+ * @param {Object} targetCustomer - The customer object
+ * @param {String|null} replyToChat - The chat ID to reply to (null if from admin dashboard)
+ * @returns {Promise<void>}
+ */
+async function executeRsvpForceCommand(waClient, targetCustomer, replyToChat) {
+  try {
+    log.info(`Executing RSVP Force command for customer: ${targetCustomer.name} (${targetCustomer.id})`);
+    
+    // Send initial status if we have a chat to reply to
+    if (replyToChat) {
+      await waClient.sendMessage(replyToChat, { 
+        text: `Forcing RSVP messages for customer: ${targetCustomer.name} (${targetCustomer.eventName})` 
+      });
+    }
+    
+    // Create AppScript Manager for this specific customer
+    let appScriptManager;
+    try {
+      log.info(`Creating AppScript manager for customer ${targetCustomer.name} (ID: ${targetCustomer.id})`);
+      const { createAppScriptManager } = await import('./utils/multiTenantSheets.js');
+      appScriptManager = createAppScriptManager(targetCustomer.id);
+      
+      if (!appScriptManager) {
+        throw new Error('AppScript manager creation returned null');
+      }
+      
+      // Verify manager has required methods
+      const requiredMethods = ['getEventDetails', 'getGuests'];
+      const missingMethods = requiredMethods.filter(method => typeof appScriptManager[method] !== 'function');
+      
+      if (missingMethods.length > 0) {
+        throw new Error(`AppScript manager missing methods: ${missingMethods.join(', ')}`);
+      }
+      
+      log.info('AppScript manager created successfully');
+    } catch (managerError) {
+      const errorMsg = `Failed to create AppScript manager for customer ${targetCustomer.name}: ${managerError.message}`;
+      log.error(errorMsg);
+      if (replyToChat) {
+        await waClient.sendMessage(replyToChat, { text: errorMsg });
+      }
+      return;
+    }
+    
+    // Get event details directly
+    let eventDetails;
+    try {
+      log.info(`Fetching event details for customer ${targetCustomer.name}`);
+      eventDetails = await appScriptManager.getEventDetails();
+      log.info(`Event details response: ${JSON.stringify(eventDetails)}`);
+      
+      if (!eventDetails || Object.keys(eventDetails).length === 0) {
+        throw new Error('Empty event details returned');
+      }
+      
+      // Add default values for missing fields
+      const defaults = {
+        name: targetCustomer.eventName || 'Event',
+        date: targetCustomer.eventDate || new Date().toLocaleDateString(),
+        time: '18:00',
+        location: 'TBD',
+        description: 'Please RSVP for our event'
+      };
+      
+      // Apply defaults where needed
+      for (const [field, defaultValue] of Object.entries(defaults)) {
+        if (!eventDetails[field] || eventDetails[field].trim() === '') {
+          log.warn(`Missing event field "${field}" for customer ${targetCustomer.name}, using default: "${defaultValue}"`);
+          eventDetails[field] = defaultValue;
+          // Also set uppercase version for compatibility
+          eventDetails[field.charAt(0).toUpperCase() + field.slice(1)] = defaultValue;
+        }
+      }
+      
+      log.info(`Final event details after applying defaults: ${JSON.stringify(eventDetails)}`);
+    } catch (detailsError) {
+      const errorMsg = `Could not retrieve event details for customer ${targetCustomer.name}: ${detailsError.message}`;
+      log.error(errorMsg);
+      if (replyToChat) {
+        await waClient.sendMessage(replyToChat, { text: errorMsg });
+      }
+      return;
+    }
+    
+    // Get guests directly
+    const guests = await appScriptManager.getGuests();
+    if (!Array.isArray(guests) || guests.length === 0) {
+      const errorMsg = `No guests found for customer: ${targetCustomer.name}`;
+      log.error(errorMsg);
+      if (replyToChat) {
+        await waClient.sendMessage(replyToChat, { text: errorMsg });
+      }
+      return;
+    }
+    
+    // Log what we found
+    log.info(`Found ${guests.length} guests to message for customer: ${targetCustomer.name}`);
+    if (replyToChat) {
+      await waClient.sendMessage(replyToChat, { 
+        text: `Found ${guests.length} guests for customer: ${targetCustomer.name}` 
+      });
+    }
+    
+    // Try to load customer-specific invitation image, or fallback to default
+    let invitationImage = null;
+    try {
+      // First try customer-specific image
+      const customerImagePath = path.join(__dirname, 'data', 'images', `${targetCustomer.id}.jpeg`);
+      if (fs.existsSync(customerImagePath)) {
+        invitationImage = fs.readFileSync(customerImagePath);
+        log.info(`Using customer-specific invitation image: ${customerImagePath}`);
+      } else {
+        // Fallback to default image
+        invitationImage = fs.readFileSync(path.join(__dirname, 'invitation.jpeg'));
+        log.info(`Using default invitation image`);
+      }
+    } catch (error) {
+      log.warn(`No invitation image found: ${error.message}`);
+    }
+    
+    // Send messages to each guest
+    let successCount = 0;
+    let errorCount = 0;
+    
+    for (const guest of guests) {
+      try {
+        // Create buttons for interactive responses
+        const buttons = [
+          {buttonId: 'yes', buttonText: {displayText: 'כן, אני מגיע/ה'}, type: 1},
+          {buttonId: 'no', buttonText: {displayText: 'לא אוכל להגיע'}, type: 1},
+          {buttonId: 'maybe', buttonText: {displayText: 'לא בטוח/ה, תשאל אותי מחר'}, type: 1}
+        ];
+        
+        // Fix time format from Google Sheets
+        let displayTime = eventDetails.time;
+        if (typeof eventDetails.time === 'string' && eventDetails.time.includes('T')) {
+          try {
+            displayTime = new Date(eventDetails.time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+          } catch (e) {
+            log.warn(`Failed to format time: ${e.message}`);
+          }
+        }
+        
+        // Get guest name or use fallback
+        const guestName = guest.name || guest.Name || 'אורח/ת';
+        
+        // Prepare message text with fallbacks for all key event details
+        const messageText = `*${eventDetails.name} - הזמנה לאירוע*\n\n` +
+                            `שלום ${guestName},\n\n` +
+                            `אתם מוזמנים ל${eventDetails.name}!\n\n` +
+                            `📅 תאריך: ${eventDetails.date || targetCustomer.eventDate || 'יפורסם בהמשך'}\n` +
+                            `⏰ שעה: ${displayTime || '18:00'}\n` +
+                            `📍 מיקום: ${eventDetails.location || 'יפורסם בהמשך'}\n\n` +
+                            `${eventDetails.description || ''}\n\n` +
+                            `האם תוכלו להגיע?`;
+        
+        // Create message with image if available, otherwise text only
+        let buttonMessage;
+        if (invitationImage) {
+          buttonMessage = {
+            image: invitationImage,
+            caption: messageText,
+            footer: 'אנא השיבו באמצעות הכפתורים למטה',
+            buttons: buttons,
+            headerType: 4, // Type 4 for image with caption
+            viewOnce: true
+          };
+        } else {
+          buttonMessage = {
+            text: messageText,
+            footer: 'אנא השיבו באמצעות הכפתורים למטה',
+            buttons: buttons,
+            headerType: 1,
+            viewOnce: true
+          };
+        }
+        
+        // Send the message
+        log.info(`Preparing to send RSVP message to: ${guest.phone}`);
+        
+        // Validate phone number format
+        if (!guest.phone) {
+          log.error('Guest phone number is missing');
+          errorCount++;
+          continue;
+        }
+        
+        // Remove the plus sign and any other non-numeric characters from phone
+        const cleanPhone = guest.phone.replace(/[^\d]/g, '');
+        const formattedPhone = cleanPhone + '@s.whatsapp.net';
+        
+        // Log message details before sending
+        log.info(`Formatted phone: ${formattedPhone}`);
+        log.info(`Message structure: ${JSON.stringify({
+          ...buttonMessage,
+          image: buttonMessage.image ? 'image-data-present' : 'no-image'
+        })}`);
+        
+        try {
+          // Verify WhatsApp client state
+          if (!waClient.user) {
+            throw new Error('WhatsApp client not connected');
+          }
+          
+          // Send with timeout
+          const sendPromise = waClient.sendMessage(formattedPhone, buttonMessage);
+          const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Send timeout')), 30000)
+          );
+          
+          await Promise.race([sendPromise, timeoutPromise]);
+          
+          log.info(`✓ Successfully sent RSVP message to ${guest.name} (${guest.phone})`);
+          successCount++;
+          
+          // Wait between messages to avoid rate limiting
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        } catch (sendError) {
+          log.error(`Failed to send message to ${guest.name} (${guest.phone}):`, sendError);
+          errorCount++;
+          
+          // Try to notify admin if we have a chat
+          if (replyToChat) {
+            await waClient.sendMessage(replyToChat, {
+              text: `Failed to send to ${guest.name}: ${sendError.message}`
+            }).catch(() => {}); // Ignore errors in error reporting
+          }
+        }
+      } catch (error) {
+        log.error(`Failed to send message to ${guest.name} (${guest.phone}):`, error);
+        errorCount++;
+      }
+    }
+    
+    // Send summary message if we have a chat to reply to
+    if (replyToChat) {
+      await waClient.sendMessage(replyToChat, { 
+        text: `Completed sending force messages to ${guests.length} guests\nSuccess: ${successCount}, Errors: ${errorCount}` 
+      });
+    }
+    
+    // Also send summary to the customer's admin phone
+    const adminSummary = `*RSVP Message Summary*\n\nEvent: ${targetCustomer.eventName}\nTotal guests: ${guests.length}\nMessages sent: ${successCount}\nFailed: ${errorCount}`;
+    
+    try {
+      await waClient.sendMessage(targetCustomer.phone + '@s.whatsapp.net', { text: adminSummary });
+    } catch (error) {
+      log.error(`Could not send summary to customer admin phone: ${error.message}`);
+    }
+    
+    return { success: true, sent: successCount, errors: errorCount, total: guests.length };
+  } catch (error) {
+    log.error('Error in executeRsvpForceCommand:', error);
+    if (replyToChat) {
+      await waClient.sendMessage(replyToChat, { 
+        text: `Error executing RSVP Force: ${error.message}` 
+      });
+    }
+    return { success: false, error: error.message };
   }
 }
 
@@ -2575,11 +3106,101 @@ app.use(express.static(__dirname));
 // Add multi-tenant routes
 app.use(adminRoutes);
 app.use(dashboardRoutes);
+app.use(uploadRoutes);
+
+// Set up event handlers for admin-triggered WhatsApp commands
+global.eventEmitter.on('admin-whatsapp-command', async (data) => {
+  try {
+    const { customerId, command, source = 'admin-dashboard' } = data;
+    
+    // Make sure the WhatsApp client is initialized
+    if (!client) {
+      log.error(`[${source}] WhatsApp client not initialized when executing command: ${command} for customer: ${customerId}`);
+      return;
+    }
+    
+    log.info(`[${source}] Processing WhatsApp command: ${command} for customer: ${customerId}`);
+    
+    // Import necessary modules for customer management
+    const { getCustomerById } = await import('./utils/customerManager.js');
+    const customer = getCustomerById(customerId);
+    
+    if (!customer) {
+      log.error(`[${source}] Customer with ID ${customerId} not found`);
+      return;
+    }
+    
+    // Switch between different commands
+    switch (command) {
+      case 'sendrsvpforce':
+        // Execute the same logic as the !sendrsvpforce command
+        log.info(`[${source}] Executing Send RSVP Force for customer: ${customer.name}`);
+        
+        // Execute in the same way as we would from a WhatsApp message
+        // This reuses the existing command implementation
+        await executeRsvpForceCommand(client, customer, null);
+        break;
+        
+      case 'liststatus':
+        // Get RSVP stats for the customer
+        log.info(`[${source}] Executing List Status for customer: ${customer.name}`);
+        
+        try {
+          // Get statistics through the multi-tenant manager
+          const { createAppScriptManager } = await import('./utils/multiTenantSheets.js');
+          const appScriptManager = createAppScriptManager(customerId);
+          
+          if (!appScriptManager) {
+            log.error(`[${source}] Failed to create App Script Manager for customer: ${customer.name}`);
+            return;
+          }
+          
+          const stats = await appScriptManager.getRsvpStats();
+          
+          // Format a message with the stats
+          const message = `*RSVP Status for ${customer.name} (${customer.eventName})*\n\n` +
+                          `📊 Total Guests: ${stats.total || 0}\n` +
+                          `✅ Confirmed: ${stats.confirmed || 0}\n` +
+                          `❌ Declined: ${stats.declined || 0}\n` +
+                          `⏳ Pending: ${stats.pending || 0}\n\n` +
+                          `Expected Attendance: ${stats.confirmedCount || 0} people\n` +
+                          `Last Updated: ${new Date().toLocaleString()}`;
+                          
+          // Send the stats back to the customer's admin number
+          await client.sendMessage(customer.phone + '@s.whatsapp.net', { text: message });
+          log.info(`[${source}] Sent RSVP stats to customer: ${customer.name}`);
+        } catch (error) {
+          log.error(`[${source}] Error getting stats for customer ${customer.name}:`, error);
+        }
+        break;
+        
+      default:
+        log.warn(`[${source}] Unknown command: ${command} for customer: ${customer.name}`);
+        break;
+    }
+  } catch (error) {
+    log.error(`Error processing admin WhatsApp command:`, error);
+  }
+});
 
 // API endpoint for guest list
 app.get('/api/guests', dashboardAuth, async (req, res) => {
   try {
-    const guestsList = await appScriptManager.fetchGuestList();
+    // Get customer ID from the request
+    const customerId = req.query.customerId;
+    if (!customerId) {
+      return res.status(400).json({ success: false, error: 'Customer ID is required' });
+    }
+
+    // Import necessary modules
+    const { createAppScriptManager } = await import('./utils/multiTenantSheets.js');
+    const customerAppScriptManager = createAppScriptManager(customerId);
+    
+    if (!customerAppScriptManager) {
+      return res.status(404).json({ success: false, error: 'Customer credentials not found' });
+    }
+
+    const guestsList = await customerAppScriptManager.fetchGuestList();
     
     // Ensure all guests have both lowercase and uppercase property names for compatibility
     const formattedGuests = guestsList.map(guest => {
@@ -2608,7 +3229,21 @@ app.get('/api/guests', dashboardAuth, async (req, res) => {
 // API endpoint for event details
 app.get('/api/event-details', dashboardAuth, async (req, res) => {
   try {
-    const eventDetails = await appScriptManager.getEventDetails();
+    // Get customer ID from the request
+    const customerId = req.query.customerId;
+    if (!customerId) {
+      return res.status(400).json({ success: false, error: 'Customer ID is required' });
+    }
+
+    // Import necessary modules
+    const { createAppScriptManager } = await import('./utils/multiTenantSheets.js');
+    const customerAppScriptManager = createAppScriptManager(customerId);
+    
+    if (!customerAppScriptManager) {
+      return res.status(404).json({ success: false, error: 'Customer credentials not found' });
+    }
+
+    const eventDetails = await customerAppScriptManager.getEventDetails();
     
     // Ensure date is in DD.MM.YYYY format for Hebrew locale
     let formattedDate = eventDetails.date;

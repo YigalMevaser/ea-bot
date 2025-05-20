@@ -36,8 +36,11 @@ RUN echo "unsafe-perm=true\nloglevel=error\nfetch-timeout=60000\nfetch-retries=3
 
 # Create persistent directories first and set very permissive permissions
 # This ensures any process can write to these directories on Railway
-RUN mkdir -p /app/session /app/logs /app/data && \
+RUN mkdir -p /app/session /app/logs /app/data/images && \
     chmod -R 777 /app/session /app/logs /app/data
+
+# Create a volume mount point for persistent storage
+VOLUME ["/app/data/images"]
 
 # Set environment variables
 ENV NODE_ENV=production
@@ -61,14 +64,12 @@ EXPOSE 3000
 HEALTHCHECK --interval=60s --timeout=10s --start-period=30s --retries=3 \
   CMD node health-check.js || exit 1
 
-# Make the health and monitor scripts executable
-RUN chmod +x check-deps.sh
-
 # We're not using a non-root user to avoid permission issues on Railway
 # This simplifies deployment but note that running as root is less secure
 
-# Make the fix-railway-volume script executable
-RUN chmod +x fix-railway-volume.sh
+# Make any scripts executable that need it 
+RUN chmod +x *.sh 2>/dev/null || echo "No shell scripts to make executable"
+RUN chmod +x init-credentials.js
 
 # Create a startup wrapper script
 RUN echo '#!/bin/bash\n\
@@ -83,6 +84,29 @@ if [ -d "/app/persistent" ] || [ "$RAILWAY_VOLUME_MOUNT" = "true" ]; then\n\
 else\n\
   echo "Using standard directory structure"\n\
   echo "Using SESSION_PATH=$SESSION_PATH (standard configuration)"\n\
+fi\n\
+\n\
+echo "Restoring customer data from fixed backup if available..."\n\
+bash /app/restore-customer-data.sh\n\
+\n\
+echo "Initializing credentials for all customers..."\n\
+if [ -f "/app/persistent/data/customers.json" ] || [ -f "/app/data/customers.json" ]; then\n\
+  # Check if environment variables for customer credentials are available\n\
+  if [ "$AUTO_INIT_CREDENTIALS" = "true" ]; then\n\
+    echo "Running auto-initialization of credentials for all customers..."\n\
+    node /app/init-all-credentials.js\n\
+  elif [ -n "$CUSTOMER_ID" ] && [ -n "$SECRET_KEY" ]; then\n\
+    echo "Initializing credentials for single customer from environment variables..."\n\
+    if [ -n "$APPS_SCRIPT_URL" ]; then\n\
+      node /app/init-credentials.js "$CUSTOMER_ID" "$SECRET_KEY" "$APPS_SCRIPT_URL"\n\
+    else\n\
+      node /app/init-credentials.js "$CUSTOMER_ID" "$SECRET_KEY"\n\
+    fi\n\
+  else\n\
+    echo "Skipping credential initialization. Set AUTO_INIT_CREDENTIALS=true to enable automatic initialization."\n\
+  fi\n\
+else\n\
+  echo "WARNING: No customers.json file found. Skipping credential initialization."\n\
 fi\n\
 \n\
 echo "Starting WhatsApp RSVP Bot..."\n\

@@ -1,37 +1,6 @@
 /**
  * Credentials Manager - Handles API credentials for multiple customers
- * This module manafunction decrypt(text) {
-  try {
-    if (!text || text.length < 17 || !text.includes(':')) {
-      return '';
-    }
-    
-    // Debug output to verify key
-    console.log(`Decrypting with key length: ${encryptionKey.length} bytes`);
-    
-    // Ensure we have a valid key length
-    if (encryptionKey.length !== 32) {
-      console.error(`Warning: Invalid key length detected for decryption: ${encryptionKey.length} bytes. Using alternative method.`);
-      // Fall back to a predictable 32-byte key if the hash isn't right
-      const fallbackKey = Buffer.alloc(32, 'yourActualSecretKeyHere123');
-      console.log(`Using fallback key with length: ${fallbackKey.length}`);
-      
-      const textParts = text.split(':');
-      const iv = Buffer.from(textParts.shift(), 'hex');
-      const encryptedText = Buffer.from(textParts.join(':'), 'hex');
-      const decipher = crypto.createDecipheriv('aes-256-cbc', fallbackKey, iv);
-      let decrypted = decipher.update(encryptedText);
-      decrypted = Buffer.concat([decrypted, decipher.final()]);
-      return decrypted.toString();
-    }
-    
-    const textParts = text.split(':');
-    const iv = Buffer.from(textParts.shift(), 'hex');
-    const encryptedText = Buffer.from(textParts.join(':'), 'hex');
-    const decipher = crypto.createDecipheriv('aes-256-cbc', encryptionKey, iv);
-    let decrypted = decipher.update(encryptedText);
-    decrypted = Buffer.concat([decrypted, decipher.final()]);
-    return decrypted.toString();keys and connections for multiple events
+ * This module manages keys and connections for multiple events
  */
 
 import fs from 'fs';
@@ -210,6 +179,27 @@ export function storeCredentials(customerId, apiData) {
  * @returns {Object|null} Decrypted credentials or null if not found
  */
 export function getCredentials(customerId) {
+  // First check if we have a Railway environment variable for this customer
+  const envSecretKey = process.env[`CUSTOMER_SECRET_${customerId}`];
+  const envAppScriptUrl = process.env[`CUSTOMER_URL_${customerId}`];
+  
+  // If environment variable for secret key is defined, it takes precedence
+  if (envSecretKey) {
+    console.log(`Using environment variables for customer: ${customerId}`);
+    
+    // Use environment URL if available, otherwise use from credentials file
+    const appScriptUrl = envAppScriptUrl || 
+      (credentials[customerId] ? decrypt(credentials[customerId].appScriptUrl) : null);
+    
+    if (appScriptUrl) {
+      return {
+        appScriptUrl,
+        secretKey: envSecretKey
+      };
+    }
+  }
+  
+  // Otherwise use the credentials file
   if (!credentials[customerId]) return null;
   
   return {

@@ -15,6 +15,9 @@ data/*
 !session/.gitkeep
 !logs/.gitkeep
 !data/.gitkeep
+!data/images/
+data/images/*
+!data/images/.gitkeep
 
 # Git files
 .git
@@ -26,9 +29,16 @@ data/*
 *.swp
 *.swo
 
-# Keep data directory structure but not contents
+# Keep data directory structure and fixed customer data
 data/*
 !data/.gitkeep
+!data/fixed-customers.json
+
+# Include critical scripts
+!fix-railway-volume.sh
+!restore-customer-data.sh
+!init-credentials.js
+!init-all-credentials.js
 
 # Test files
 __tests__

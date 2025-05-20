@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "id": "cust_1747609067224",
+    "createdAt": "2025-05-19T01:57:47.224 +03:00",
+    "updatedAt": "2025-05-19T09:20:41.035 +03:00",
+    "active": true,
+    "name": "יגאל ושירן",
+    "phone": "+972526901876",
+    "eventName": "החתונה של שירן ויגאל",
+    "eventDate": "2025-06-01",
+    "spreadsheetUrl": "https://script.google.com/macros/s/AKfycbwzLPj60Sa-jIszSVymHax4Oy-SHzp7pUZ9OBjY8YkKNcTAw3ICgv7Dbpgis2mZLRlbCQ/exec"
+  }
+]

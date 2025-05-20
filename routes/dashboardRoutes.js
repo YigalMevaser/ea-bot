@@ -311,4 +311,47 @@ router.get('/dashboard/:customerId/logout', (req, res) => {
   res.redirect(`/dashboard/${customerId}/login`);
 });
 
+// API endpoint to send message from customer dashboard
+router.post('/api/dashboard/:customerId/send-message', customerDashboardAuth, express.json(), async (req, res) => {
+  try {
+    const { phone, message } = req.body;
+    const customer = req.customer;
+    
+    if (!phone || !message) {
+      return res.status(400).json({ success: false, error: 'Missing phone or message' });
+    }
+    
+    // Normalize phone number - ensure it has country code
+    let normalizedPhone = phone.trim();
+    if (!normalizedPhone.startsWith('+')) {
+      // Add Israel country code if not present
+      if (normalizedPhone.startsWith('0')) {
+        normalizedPhone = '+972' + normalizedPhone.substring(1);
+      } else {
+        normalizedPhone = '+972' + normalizedPhone;
+      }
+    }
+    
+    // Get access to the global WhatsApp connection from index.js
+    // This assumes the WhatsApp client is exported or made available somehow
+    const conn = global.conn || req.app.get('whatsappClient');
+    
+    if (conn) {
+      // Send the message using WhatsApp client
+      await conn.sendMessage(normalizedPhone + '@s.whatsapp.net', { 
+        text: message 
+      });
+      
+      console.log(`[${new Date().toISOString()}] Customer ${customer.id}: Message sent to ${normalizedPhone}`);
+      res.json({ success: true, message: 'Message sent successfully' });
+    } else {
+      console.error(`[${new Date().toISOString()}] Customer ${customer.id}: WhatsApp client not connected`);
+      res.status(500).json({ success: false, error: 'WhatsApp client not connected' });
+    }
+  } catch (error) {
+    console.error(`[${new Date().toISOString()}] Error sending message:`, error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 export default router;
