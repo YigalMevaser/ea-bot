@@ -395,19 +395,38 @@
                 if (!dateStr) return 'לא נשלחה הודעה';
                 
                 try {
-                    // Normalize the date string by removing the space before timezone if present
-                    const normalizedDateStr = dateStr.replace(/(\d{2}:\d{2}:\d{2}\.\d{3})\s+(\+\d{2}:\d{2})/, '$1$2');
+                    // First try parsing the date string directly
+                    let date = new Date(dateStr);
                     
-                    // Convert to Date object
-                    const date = new Date(normalizedDateStr);
-                    
-                    // Check if date is valid
+                    // If that fails, try removing timezone if present and parse again
                     if (isNaN(date.getTime())) {
-                        console.error('Invalid date for input:', dateStr, 'normalized to:', normalizedDateStr);
-                        return 'תאריך לא תקין';
+                        // Remove timezone part and try again
+                        const withoutTZ = dateStr.replace(/([+-]\d{2}:?\d{2}|Z)$/, '');
+                        date = new Date(withoutTZ);
                     }
                     
-                    // Define Israel timezone formatter with timezone name
+                    // If that fails, try normalizing the format
+                    if (isNaN(date.getTime())) {
+                        // Normalize various date string formats
+                        const normalizedDateStr = dateStr
+                            .replace(/(\d{2}:\d{2}:\d{2}\.\d{3})\s+(\+\d{2}:\d{2})/, '$1$2')
+                            .replace(/[A-Za-z]{3}\+\d{4}/, '') // Remove timezone name
+                            .trim();
+                        date = new Date(normalizedDateStr);
+                    }
+                    
+                    // Final check - if still invalid, try parsing as Unix timestamp
+                    if (isNaN(date.getTime()) && /^\d+$/.test(dateStr)) {
+                        date = new Date(parseInt(dateStr));
+                    }
+                    
+                    // If all parsing attempts fail, throw error
+                    if (isNaN(date.getTime())) {
+                        console.error('Invalid date for input:', dateStr);
+                        throw new Error('Could not parse date string');
+                    }
+                    
+                    // Define Israel timezone formatter
                     const formatter = new Intl.DateTimeFormat('he-IL', {
                         timeZone: 'Asia/Jerusalem',
                         year: 'numeric',
@@ -422,8 +441,8 @@
                     
                     return formatter.format(date);
                 } catch (e) {
-                    console.error('Error formatting date:', e, 'for input:', dateStr, 'Error:', e.message);
-                    return 'לא נשלחה הודעה';
+                    console.error('Error formatting date:', e, 'for input:', dateStr);
+                    return dateStr; // Return original string instead of error message
                 }
             }
             
