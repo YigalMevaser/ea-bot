@@ -1,0 +1,13 @@
+[2025-05-22T13:42:30.478 +03:00] [INFO] Initializing WhatsApp connection...
+[2025-05-22T13:42:30.569 +03:00] [INFO] Setting up RSVP message schedule: */5 * * * *
+[2025-05-22T13:42:30.571 +03:00] [INFO] Setting up follow-up checker to run every hour
+[2025-05-22T13:42:30.573 +03:00] [INFO] Connection update: {"connection":"connecting","receivedPendingNotifications":false}
+[2025-05-22T13:42:30.573 +03:00] [INFO] Web server running on port 3000
+[2025-05-22T13:42:31.667 +03:00] [INFO] Connection update: {"qr":"2@yD6MvKcRmbLfmnncLDV6fi9FebxH8iRRVtFgI0XKOAx8+2dshcVWMZhdGMPJhIXrdcbJ5CTVQy2GHMbqnCwT8+mQRDesvT5q4Go=,V4HOBOiZOOcUiPXDNRXFTCI2UbH+bPQoUQMlMCDM9FU=,IlZsuRQjVkQ9upj4+H5wlvbbevOWGenPmT0kKks7+i0=,i/fdCi3r4JPEqRYGyfXx/GLrPnVbCuGx6p3QQ3b1GbQ="}
+[2025-05-22T13:42:31.678 +03:00] [INFO] 
+
+==== WHATSAPP QR CODE (SCAN WITH PHONE) ====
+[2025-05-22T13:42:31.679 +03:00] [INFO] ============================================
+[2025-05-22T13:42:31.679 +03:00] [INFO] Scan this QR code with WhatsApp to connect your bot
+[2025-05-22T13:42:31.679 +03:00] [INFO] Or visit http://localhost:3000/qr or your Railway.app URL to scan it
+[2025-05-22T13:42:31.690 +03:00] [INFO] QR code saved as HTML and PNG files

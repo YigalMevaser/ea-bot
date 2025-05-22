@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event RSVP Bot</title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .card {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    h1, h2 { color: #333; }
+    .status {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-weight: bold;
+    }
+    .connected {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .disconnected {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+    .mode {
+      background-color: #cce5ff;
+      color: #004085;
+    }
+    .button {
+      display: inline-block;
+      background-color: #128C7E;
+      color: white;
+      padding: 10px 15px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .button:hover {
+      background-color: #0C6B5B;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Event RSVP Bot</h1>
+    <p>Status: 
+      <span class="status disconnected" id="bot-status">
+        Waiting for connection
+      </span>
+    </p>
+    <p>Mode: 
+      <span class="status mode">
+        development
+      </span>
+    </p>
+    <p>Server Time: <span id="server-time"></span></p>
+  </div>
+  
+  <div class="card">
+    <h2>Connection Instructions</h2>
+    <p>To connect WhatsApp:</p>
+    <ul>
+      <li>Open the QR code page</li>
+      <li>Scan the QR code with WhatsApp on your phone</li>
+      <li>Once connected, you can use the admin commands</li>
+    </ul>
+    <a href="/qr" class="button">Open QR Code Scanner</a>
+  </div>
+  
+  <div class="card">
+    <h2>Guest Dashboard</h2>
+    <p>View real-time information about your event guests:</p>
+    <ul>
+      <li>See confirmed, declined, and pending guests</li>
+      <li>View total expected attendees</li>
+      <li>Track response rates</li>
+      <li>Search and filter the guest list</li>
+    </ul>
+    <a href="/dashboard" class="button">Open Guest Dashboard</a>
+  </div>
+  
+  <div class="card">
+    <h2>Admin Commands</h2>
+    <ul>
+      <li><strong>!status</strong> - Show event details and RSVP statistics</li>
+      <li><strong>!eventdate</strong> - Show event date and messaging schedule</li>
+      <li><strong>!sendrsvp</strong> - Manually send RSVP messages</li>
+      <li><strong>!sendrsvpforce</strong> - Send to ALL guests</li>
+      <li><strong>!clearcache</strong> - Clear the contacted guests cache</li>
+      <li><strong>!reload</strong> - Refresh data from Google Sheets</li>
+      <li><strong>!debugapi</strong> - Test API connection to Google Apps Script</li>
+      <li><strong>!followups</strong> - View scheduled follow-up reminders</li>
+      <li><strong>!diagnose</strong> - Check system health and fix data issues</li>
+    </ul>
+  </div>
+  
+  <script>
+    // Update status and server time dynamically
+    fetch('/health')
+      .then(res => res.json())
+      .then(data => {
+        const statusEl = document.getElementById('bot-status');
+        if (data.botConnected) {
+          statusEl.textContent = 'Connected';
+          statusEl.classList.remove('disconnected');
+          statusEl.classList.add('connected');
+        }
+        document.getElementById('server-time').textContent = new Date(data.timestamp).toLocaleString();
+      })
+      .catch(() => {});
+  </script>
+</body>
+</html>

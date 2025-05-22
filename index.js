@@ -14,6 +14,8 @@ import axios from 'axios';
 import cron from 'node-cron';
 import express from 'express';
 import qrcode from 'qrcode';
+import cookieParser from 'cookie-parser';
+import dashboardAuth from './utils/dashboardAuth.js';
 import { EventEmitter } from 'events';
 import { calculateDaysRemaining, filterGuestsByEventProximity, getMessageByProximity } from './utils/eventScheduler.js';
 import adminRoutes from './routes/adminRoutes.js';
@@ -569,6 +571,23 @@ let invitationImage = loadInvitationImage();
 
 // Declare client at the top level so it's accessible in event handlers
 let client = null;
+/**
+ * Send message with automatic reconnect on WebSocket closure (status 428)
+ * @param {string} jid
+ * @param {object} msg
+ */
+async function sendWithReconnect(jid, msg) {
+  try {
+    return await client.sendMessage(jid, msg);
+  } catch (err) {
+    if (err.isBoom && err.output?.statusCode === 428) {
+      log.warn('WebSocket closed, reconnecting...');
+      client = await clientstart();
+      return await client.sendMessage(jid, msg);
+    }
+    throw err;
+  }
+}
 
 // Setup Express server
 const app = express();
@@ -2363,7 +2382,10 @@ const SESSION_PATH = process.env.SESSION_PATH ||
           const guestCount = parseInt(numberMatch[0], 10);
           
           try {
-            // Get the correct customer and app script manager for this response
+            // Import utilities for multi-tenant handling in text responses
+            const { findCustomerIdByPhone } = await import('./utils/phoneUtils.js');
+            const { createAppScriptManager } = await import('./utils/multiTenantSheets.js');
+            // Find the correct customer based on the sender's phone number
             const customerId = findCustomerIdByPhone(senderPhone);
             if (!customerId) {
               log.error(`Could not find customer for phone number: ${senderPhone}`);
@@ -2910,140 +2932,22 @@ async function executeRsvpForceCommand(waClient, targetCustomer, replyToChat) {
 }
 
 // Add route for QR code
+// QR code page - serve static files or existing generated QR
 app.get('/qr', (req, res) => {
-  // Check if force reset is requested via query parameter
+  // Handle force reset via query param
   if (req.query.reset === 'true') {
     log.info('QR reset requested via URL parameter');
-    // Force logout to generate a new QR code
     if (client) {
-      log.info('Attempting to logout current session to force new QR code');
-      // Set a flag to ignore the current session and generate a new QR
       process.env.RESET_SESSION = 'true';
-      // Redirect back to the QR page without the reset parameter
       return res.redirect('/qr');
     }
   }
-  
   if (lastQR) {
-    // Generate QR image and serve it
-    qrcode.toDataURL(lastQR, (err, url) => {
-      if (err) {
-        res.status(500).send('Error generating QR code');
-        return;
-      }
-
-      const html = `
-<!DOCTYPE html>
-<html>
-<head>
-  <title>WhatsApp QR Code</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="refresh" content="60">
-  <style>
-    body { 
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #f0f2f5;
-    }
-    .container {
-      background-color: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      max-width: 500px;
-    }
-    h1 { color: #128C7E; }
-    .qr-container { margin: 20px 0; }
-    img { max-width: 100%; height: auto; }
-    p { margin: 10px 0; line-height: 1.5; }
-    .refresh { margin-top: 20px; color: #777; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>WhatsApp QR Code</h1>
-    <div class="qr-container">
-      <img src="${url}" alt="WhatsApp QR Code">
-    </div>
-    <p>1. Open WhatsApp on your phone</p>
-    <p>2. Tap Menu or Settings and select <strong>Linked Devices</strong></p>
-    <p>3. Tap on <strong>Link a Device</strong></p>
-    <p>4. Scan this QR code with your phone's camera</p>
-    <p class="refresh">This page will refresh automatically every 60 seconds</p>
-  </div>
-</body>
-</html>`;
-
-      res.send(html);
-    });
-  } else {
-    // Provide a page that explains there's no QR code and offers a reset option
-    const html = `
-<!DOCTYPE html>
-<html>
-<head>
-  <title>WhatsApp Connection</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="refresh" content="15">
-  <style>
-    body { 
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #f0f2f5;
-    }
-    .container {
-      background-color: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      text-align: center;
-      max-width: 500px;
-    }
-    h1 { color: #128C7E; }
-    p { margin: 15px 0; line-height: 1.5; }
-    .btn {
-      display: inline-block;
-      background-color: #128C7E;
-      color: white;
-      padding: 10px 20px;
-      text-decoration: none;
-      border-radius: 4px;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-    .status { color: #e74c3c; font-weight: bold; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>WhatsApp Connection</h1>
-    <p class="status">No QR code is available yet.</p>
-    <p>This could be because:</p>
-    <ul style="text-align:left">
-      <li>The bot is still starting up</li>
-      <li>The bot thinks it's already connected (but isn't)</li>
-      <li>There was an error generating the QR code</li>
-    </ul>
-    <p>This page will refresh automatically every 15 seconds.</p>
-    <p>Or you can try to force a new connection:</p>
-    <a href="/qr?reset=true" class="btn">Reset Connection & Generate New QR</a>
-  </div>
-</body>
-</html>`;
-
-    res.send(html);
+    // Serve pre-generated QR HTML
+    return res.sendFile(path.join(__dirname, 'whatsapp-qr.html'));
   }
+  // Serve no-QR static page
+  return res.sendFile(path.join(__dirname, 'public', 'no-qr.html'));
 });
 
 // Create a public directory for static files
@@ -3090,9 +2994,6 @@ body {
   }
 }
 
-// Import authentication middleware
-import dashboardAuth from './utils/dashboardAuth.js';
-import cookieParser from 'cookie-parser';
 
 // Parse cookies and request body for authentication
 app.use(express.urlencoded({ extended: true }));
@@ -3142,22 +3043,17 @@ global.eventEmitter.on('admin-whatsapp-command', async (data) => {
         break;
         
       case 'liststatus':
-        // Get RSVP stats for the customer
         log.info(`[${source}] Executing List Status for customer: ${customer.name}`);
-        
+        // Create manager
         try {
-          // Get statistics through the multi-tenant manager
           const { createAppScriptManager } = await import('./utils/multiTenantSheets.js');
           const appScriptManager = createAppScriptManager(customerId);
-          
           if (!appScriptManager) {
             log.error(`[${source}] Failed to create App Script Manager for customer: ${customer.name}`);
-            return;
+            break;
           }
-          
+          // Fetch stats
           const stats = await appScriptManager.getRsvpStats();
-          
-          // Format a message with the stats
           const message = `*RSVP Status for ${customer.name} (${customer.eventName})*\n\n` +
                           `📊 Total Guests: ${stats.total || 0}\n` +
                           `✅ Confirmed: ${stats.confirmed || 0}\n` +
@@ -3165,12 +3061,27 @@ global.eventEmitter.on('admin-whatsapp-command', async (data) => {
                           `⏳ Pending: ${stats.pending || 0}\n\n` +
                           `Expected Attendance: ${stats.confirmedCount || 0} people\n` +
                           `Last Updated: ${new Date().toLocaleString()}`;
-                          
-          // Send the stats back to the customer's admin number
-          await client.sendMessage(customer.phone + '@s.whatsapp.net', { text: message });
-          log.info(`[${source}] Sent RSVP stats to customer: ${customer.name}`);
-        } catch (error) {
-          log.error(`[${source}] Error getting stats for customer ${customer.name}:`, error);
+          // Send stats message, retry on connection closed
+          try {
+            await client.sendMessage(customer.phone + '@s.whatsapp.net', { text: message });
+            log.info(`[${source}] Sent RSVP stats to customer: ${customer.name}`);
+          } catch (sendErr) {
+            // If WebSocket closed, reconnect and retry once
+            if (sendErr.isBoom && sendErr.output?.statusCode === 428) {
+              log.warn(`[${source}] Connection closed, reconnecting and retrying stats message`);
+              try {
+                client = await clientstart();
+                await client.sendMessage(customer.phone + '@s.whatsapp.net', { text: message });
+                log.info(`[${source}] Sent RSVP stats after reconnect to customer: ${customer.name}`);
+              } catch (retryErr) {
+                log.error(`[${source}] Retry send failed:`, retryErr);
+              }
+            } else {
+              log.error(`[${source}] Failed to send stats to customer ${customer.name}:`, sendErr);
+            }
+          }
+        } catch (err) {
+          log.error(`[${source}] Error executing List Status for customer ${customer.name}:`, err);
         }
         break;
         
@@ -3287,77 +3198,14 @@ app.get('/dashboard', dashboardAuth, (req, res) => {
 
 // Dashboard login page - GET handler
 app.get('/dashboard/login', (req, res) => {
-  // Check if user is already authenticated via cookie
-  if (req.cookies?.dashboard_token) {
+  // If already authenticated, redirect to dashboard
+  if (req.cookies && req.cookies.dashboard_token) {
     return res.redirect('/dashboard');
   }
-  
-  // Display login form
-  res.status(200).send(`
-    <!DOCTYPE html>
-    <html lang="en" dir="rtl">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dashboard Login</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-        <style>
-            body {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                height: 100vh;
-                background-color: #f0f2f5;
-                font-family: Arial, sans-serif;
-            }
-            .login-container {
-                background-color: white;
-                border-radius: 10px;
-                padding: 30px;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-                width: 100%;
-                max-width: 400px;
-                text-align: center;
-            }
-            .logo {
-                color: #128C7E;
-                font-size: 24px;
-                font-weight: bold;
-                margin-bottom: 20px;
-            }
-            .form-control {
-                margin-bottom: 15px;
-                padding: 10px;
-            }
-            .btn-primary {
-                background-color: #128C7E;
-                border-color: #128C7E;
-                padding: 10px;
-                width: 100%;
-            }
-            .btn-primary:hover {
-                background-color: #075E54;
-                border-color: #075E54;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="login-container">
-            <div class="logo">אירוע RSVP - כניסה למנהלים</div>
-            <form method="POST" action="/dashboard/login">
-                <div class="mb-3">
-                    <input type="password" name="password" class="form-control" placeholder="סיסמת גישה" required>
-                </div>
-                <button type="submit" class="btn btn-primary">כניסה</button>
-            </form>
-            <p class="mt-3 text-muted">גישה מיועדת למנהלי האירוע בלבד</p>
-        </div>
-    </body>
-    </html>
-  `);
+  // Serve static login page
+  res.sendFile(path.join(__dirname, 'public', 'admin-dashboard-fixed.html'));
 });
-      case 'liststatus':
-        // Get RSVP stats for the customer
+// Dashboard login POST handler
 app.post('/dashboard/login', (req, res) => {
   try {
     log.info(`Dashboard login attempt from IP: ${req.ip}`);
@@ -3465,119 +3313,9 @@ app.get('/health', (req, res) => {
   }
 });
 
-// Home page
+// Home page - serve static HTML
 app.get('/', (req, res) => {
-  res.send(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>Event RSVP Bot</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <style>
-        body { 
-          font-family: Arial, sans-serif;
-          max-width: 800px;
-          margin: 0 auto;
-          padding: 20px;
-        }
-        .card {
-          background: #f8f9fa;
-          border-radius: 10px;
-          padding: 20px;
-          margin-bottom: 20px;
-          box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        h1, h2 { color: #333; }
-        .status {
-          display: inline-block;
-          padding: 5px 10px;
-          border-radius: 15px;
-          font-weight: bold;
-        }
-        .connected {
-          background-color: #d4edda;
-          color: #155724;
-        }
-        .disconnected {
-          background-color: #f8d7da;
-          color: #721c24;
-        }
-        .mode {
-          background-color: #cce5ff;
-          color: #004085;
-        }
-        .button {
-          display: inline-block;
-          background-color: #128C7E;
-          color: white;
-          padding: 10px 15px;
-          text-decoration: none;
-          border-radius: 5px;
-          font-weight: bold;
-          margin-top: 10px;
-        }
-        .button:hover {
-          background-color: #0C6B5B;
-        }
-      </style>
-    </head>
-    <body>
-      <div class="card">
-        <h1>Event RSVP Bot</h1>
-        <p>Status: 
-          <span class="status ${client ? 'connected' : 'disconnected'}">
-            ${client ? 'Connected' : 'Waiting for connection'}
-          </span>
-        </p>
-        <p>Mode: 
-          <span class="status mode">
-            ${process.env.NODE_ENV || 'development'}
-          </span>
-        </p>
-        <p>Server Time: ${new Date().toLocaleString()}</p>
-      </div>
-      
-      <div class="card">
-        <h2>Connection Instructions</h2>
-        <p>To connect WhatsApp:</p>
-        <ul>
-          <li>Open the QR code page</li>
-          <li>Scan the QR code with WhatsApp on your phone</li>
-          <li>Once connected, you can use the admin commands</li>
-        </ul>
-        ${!client ? `<a href="/qr" class="button">Open QR Code Scanner</a>` : ''}
-      </div>
-      
-      <div class="card">
-        <h2>Guest Dashboard</h2>
-        <p>View real-time information about your event guests:</p>
-        <ul>
-          <li>See confirmed, declined, and pending guests</li>
-          <li>View total expected attendees</li>
-          <li>Track response rates</li>
-          <li>Search and filter the guest list</li>
-        </ul>
-        <a href="/dashboard" class="button">Open Guest Dashboard</a>
-      </div>
-      
-      <div class="card">
-        <h2>Admin Commands</h2>
-        <ul>
-          <li><strong>!status</strong> - Show event details and RSVP statistics</li>
-          <li><strong>!eventdate</strong> - Show event date and messaging schedule</li>
-          <li><strong>!sendrsvp</strong> - Manually send RSVP messages</li>
-          <li><strong>!sendrsvpforce</strong> - Send to ALL guests</li>
-          <li><strong>!clearcache</strong> - Clear the contacted guests cache</li>
-          <li><strong>!reload</strong> - Refresh data from Google Sheets</li>
-          <li><strong>!debugapi</strong> - Test API connection</li>
-          <li><strong>!followups</strong> - View scheduled follow-up reminders</li>
-          <li><strong>!diagnose</strong> - Check system health and fix data issues</li>
-          ${process.env.NODE_ENV === 'development' ? '<li><strong>!test</strong> - Send a test message with buttons</li>' : ''}
-        </ul>
-      </div>
-    </body>
-    </html>
-  `);
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // API handling logic has been moved to the Google Apps Script
