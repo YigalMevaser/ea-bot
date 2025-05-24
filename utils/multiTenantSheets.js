@@ -6,6 +6,7 @@
 import axios from 'axios';
 import { getIsraelTimestamp } from './timeUtils.js';
 import { getCredentials } from './credentialsManager.js';
+import { formatPhoneNumber } from './numberFormatter.js';
 
 /**
  * Create a new AppScriptManager for a specific customer
@@ -28,23 +29,7 @@ export function createAppScriptManager(customerId) {
      * @returns {string} Formatted phone number
      */
     formatPhoneNumber(phone) {
-      if (!phone) return '';
-      
-      // Strip all non-numeric characters
-      const digits = phone.replace(/\D/g, '');
-      
-      // Handle Israeli numbers that might be missing the country code
-      if (digits.length === 10 && digits.startsWith('05')) {
-        return '+972' + digits.substring(1);
-      } else if (digits.length === 9 && digits.startsWith('5')) {
-        return '+972' + digits;
-      } else if (digits.startsWith('972')) {
-        return '+' + digits;
-      } else if (!digits.startsWith('+')) {
-        return '+' + digits;
-      }
-      
-      return phone;
+      return formatPhoneNumber(phone) || '';
     },
     
     /**

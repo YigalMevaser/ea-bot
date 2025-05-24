@@ -20,6 +20,8 @@ import {
   adminAuthMiddleware 
 } from '../utils/adminAuth.js';
 import { getIsraelTimestamp } from '../utils/timeUtils.js';
+// Utility for sanitizing and loading JSON data
+import { validateJsonFile } from '../utils/fixDataAccess.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
@@ -268,20 +270,18 @@ router.get('/api/admin/customers', adminAuthMiddleware, (req, res) => {
       console.log(`[${timestamp}] No customers found to return`);
       // Double check if we can load customers directly from file as a fallback
       try {
-        // Check for Railway single volume configuration
+        // Fallback: reload customers via validateJsonFile to handle malformed JSON
         const persistentBase = '/app/persistent';
-        const isRailwaySingleVolume = fs.existsSync(persistentBase);
-        
-        // Define the path based on the volume configuration
-        const dataDir = isRailwaySingleVolume ? path.join(persistentBase, 'data') : path.join(__dirname, '..', 'data');
-        const customersFile = path.join(dataDir, 'customers.json');
-        
-        if (fs.existsSync(customersFile)) {
-          const fileData = JSON.parse(fs.readFileSync(customersFile, 'utf8'));
-          if (Array.isArray(fileData) && fileData.length > 0) {
-            console.log(`[${timestamp}] Fallback: Found ${fileData.length} customers in file`);
-            customers = fileData;
-          }
+        const usePersistent = fs.existsSync(persistentBase);
+        const dataDir2 = usePersistent
+          ? path.join(persistentBase, 'data')
+          : path.join(__dirname, '..', 'data');
+        const fallbackFile = path.join(dataDir2, 'customers.json');
+        console.log(`[${timestamp}] Fallback loading customers from: ${fallbackFile}`);
+        const fileData = validateJsonFile(fallbackFile, []);
+        if (Array.isArray(fileData) && fileData.length > 0) {
+          console.log(`[${timestamp}] Fallback: Found ${fileData.length} customers in file after sanitize`);
+          customers = fileData;
         }
       } catch (fallbackError) {
         console.error(`[${timestamp}] Fallback attempt failed:`, fallbackError);
@@ -340,7 +340,7 @@ router.post('/api/admin/customers', adminAuthMiddleware, (req, res) => {
     } = body;
     
     // Validate required fields
-    if (!name || !phone || !eventName || !eventDate || !appScriptUrl || !secretKey) {
+    if (!name || !phone || !eventName || !eventDate || !spreadsheetUrl || !appScriptUrl || !secretKey) {
       console.log(`[${timestamp}] Validation failed - missing fields:`);
       console.log(`name: ${!!name}, phone: ${!!phone}, eventName: ${!!eventName}, eventDate: ${!!eventDate}`);
       console.log(`appScriptUrl: ${!!appScriptUrl}, secretKey: ${!!secretKey}`);

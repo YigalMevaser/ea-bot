@@ -39,8 +39,11 @@ if (Object.keys(credentials).length > 0) {
 }
 
 // Create a simple 32-byte key for AES-256 encryption
-// Using a fixed secret key for consistency
-const SECRET_KEY = process.env.SECRET_KEY || 'yourActualSecretKeyHere123';
+// SECRET_KEY must be provided via environment variable
+const SECRET_KEY = process.env.SECRET_KEY;
+if (!SECRET_KEY) {
+  throw new Error('Missing SECRET_KEY environment variable; encryption cannot proceed');
+}
 
 // Log key to help debug
 console.log(`Original SECRET_KEY: ${SECRET_KEY.substring(0, 3)}...`);
@@ -68,16 +71,7 @@ function encrypt(text) {
     
     // Ensure we have a valid key length (32 bytes for AES-256)
     if (encryptionKey.length !== 32) {
-      console.error(`Warning: Invalid key length detected: ${encryptionKey.length} bytes. Using alternative method.`);
-      // Fall back to a predictable 32-byte key if the hash isn't right
-      const fallbackKey = Buffer.alloc(32, 'yourActualSecretKeyHere123');
-      console.log(`Using fallback key with length: ${fallbackKey.length}`);
-      
-      const iv = crypto.randomBytes(16);
-      const cipher = crypto.createCipheriv('aes-256-cbc', fallbackKey, iv);
-      let encrypted = cipher.update(text);
-      encrypted = Buffer.concat([encrypted, cipher.final()]);
-      return iv.toString('hex') + ':' + encrypted.toString('hex');
+      throw new Error(`Invalid encryption key length: ${encryptionKey.length} bytes; must be 32 bytes`);
     }
     
     const iv = crypto.randomBytes(16);

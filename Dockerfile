@@ -1,7 +1,9 @@
 FROM --platform=linux/amd64 node:20-slim
 
 # Install git, python, ffmpeg and build tools needed for native modules
-RUN apt-get update && apt-get install -y \
+ RUN apt-get update \
+    && apt-get upgrade -y \
+    && apt-get install -y \
     git \
     python3 \
     make \
@@ -58,7 +60,7 @@ RUN find . -type f -name "*.js" -exec sed -i 's|@nstar/baileys|baileys|g' {} \;
 VOLUME ["/app/persistent"]
 
 # Expose the port the app runs on
-EXPOSE 3000
+EXPOSE 8080
 
 # Add Docker healthcheck
 HEALTHCHECK --interval=60s --timeout=10s --start-period=30s --retries=3 \

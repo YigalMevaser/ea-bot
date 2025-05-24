@@ -69,9 +69,18 @@ export function mapGuestToCustomer(phone, customerId, guestName = '') {
         cleanPhone = '+' + cleanPhone;
     }
     
-    // If it's a 10-digit number not starting with 972, assume it needs 972 prefix
-    if (cleanPhone.length === 11 && !cleanPhone.includes('972')) { // +1234567890
-        cleanPhone = '+972' + cleanPhone.substring(2); // Replace the +1 with +972
+    // Handle Israeli phone numbers specifically
+    if (cleanPhone.startsWith('+972')) {
+        // Already has correct Israeli prefix
+    } else if (cleanPhone.startsWith('+0')) {
+        // Israeli number with 0 prefix after country code: +05X -> +9725X
+        cleanPhone = '+972' + cleanPhone.substring(2);
+    } else if (cleanPhone.startsWith('+1') && cleanPhone.length === 12) {
+        // US format that should be Israeli: +1XXXXXXXXX -> +972XXXXXXXX
+        cleanPhone = '+972' + cleanPhone.substring(2);
+    } else if (cleanPhone.length === 11 && cleanPhone.startsWith('+') && !cleanPhone.startsWith('+972')) {
+        // Other country code that should be Israeli
+        cleanPhone = '+972' + cleanPhone.substring(2);
     }
     
     // Log the mapping attempt

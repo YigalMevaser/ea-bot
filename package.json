@@ -11,7 +11,8 @@
         "monitor": "node connection-monitor.js",
         "health": "node health-check.js",
         "wrapper": "node bot-wrapper.js",
-        "restart": "npm run check && npm run start"
+        "restart": "npm run check && npm run start",
+        "test": "jest --coverage"
     },
     "engines": {
         "node": "18.x"

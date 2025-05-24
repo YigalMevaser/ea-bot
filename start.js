@@ -109,6 +109,15 @@ if (!process.env.EVENT_DATE) {
   console.log(`Using fallback EVENT_DATE: ${process.env.EVENT_DATE}`);
 }
 
+// Check that required environment variables are set (required for multi-tenant operation)
+if (!process.env.SECRET_KEY) {
+  console.error('❌ Missing SECRET_KEY – aborting');
+  process.exit(1);
+}
+if (!process.env.APPS_SCRIPT_URL) {
+  console.error('❌ Missing APPS_SCRIPT_URL – aborting');
+  process.exit(1);
+}
 // Check that required dependencies are installed
 try {
   await import('date-fns');

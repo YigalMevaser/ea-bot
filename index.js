@@ -18,12 +18,17 @@ import cookieParser from 'cookie-parser';
 import dashboardAuth from './utils/dashboardAuth.js';
 import { EventEmitter } from 'events';
 import { calculateDaysRemaining, filterGuestsByEventProximity, getMessageByProximity } from './utils/eventScheduler.js';
+import { getActiveCustomers } from './utils/customerManager.js';
+import { createAppScriptManager } from './utils/multiTenantSheets.js';
+import { mapGuestToCustomer } from './utils/guestMap.js';
 import adminRoutes from './routes/adminRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
 import uploadRoutes from './upload-invitation-image.js';
 
 // Import all Baileys functions via dynamic import to handle ES Module vs CommonJS compatibility
 import * as baileysImport from '@nstar/baileys';
+// Import FileType once for dynamic file-type detection
+import * as fileTypeImport from 'file-type';
 const { 
     prepareWAMessageMedia, 
     removeAuthState,
@@ -40,13 +45,10 @@ const {
     generateForwardMessageContent, 
     MessageRetryMap 
 } = baileysImport; // Using GataNina-Li's fork
-
-// Import FileType via dynamic import
-import * as fileTypeImport from 'file-type';
 const FileType = fileTypeImport.default || fileTypeImport;
 
 const args = process.argv.slice(2);
-const shouldSendTestMessage = args.includes('--test-message');
+const shouldSendTestMessage = args.includes('--test-message') || process.env.TEST_MESSAGE === 'true';
 // ES Module compatibility
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -144,15 +146,23 @@ console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 
 // Initialize the application
 
-// Create logs directory if it doesn't exist
+// Create logs directory if it doesn't exist (only for non-production)
 const logDir = path.join(__dirname, 'logs');
-if (!fs.existsSync(logDir)) {
-  fs.mkdirSync(logDir);
+if (process.env.NODE_ENV !== 'production') {
+  if (!fs.existsSync(logDir)) {
+    fs.mkdirSync(logDir, { recursive: true });
+  }
 }
 
-// Setup logging
-const logFile = path.join(logDir, `bot-${new Date().toISOString().slice(0,10)}.log`);
-const logStream = fs.createWriteStream(logFile, { flags: 'a' });
+// Setup logging stream
+let logStream;
+if (process.env.NODE_ENV === 'production') {
+  // In containers, write logs to stdout
+  logStream = process.stdout;
+} else {
+  const logFile = path.join(logDir, `bot-${new Date().toISOString().slice(0,10)}.log`);
+  logStream = fs.createWriteStream(logFile, { flags: 'a' });
+}
 
 // Custom console logger that writes to file as well with timestamps (Israel timezone UTC+3)
 const log = {
@@ -333,7 +343,7 @@ class AppsScriptManager {
           operation: "update_status",
           phone: formattedPhone,
           status: status,
-          count: guestCount.toString(),
+          guestCount: guestCount.toString(),
           notes: notes
         });
         
@@ -358,7 +368,7 @@ class AppsScriptManager {
           action: "updateGuestStatus",
           phone: formattedPhone,
           status: status,
-          count: guestCount.toString(),
+          guestCount: guestCount.toString(),
           notes: notes
         });
         
@@ -395,19 +405,64 @@ class AppsScriptManager {
   
   // Helper to format phone numbers consistently
   formatPhoneNumber(phone) {
-    // Remove any non-numeric characters
-    let cleaned = String(phone).replace(/\D/g, '');
+    console.log(`[AppsScriptManager] Formatting phone number: ${phone}`);
     
-    // Ensure it starts with a country code (default to +1 if none)
-    if (cleaned.length === 10) {
-      cleaned = '1' + cleaned; // Add US country code
+    if (!phone) {
+      console.log('[AppsScriptManager] Phone number is empty or null');
+      return '';
     }
     
-    // Add the + if missing
-    if (cleaned.charAt(0) !== '+') {
-      cleaned = '+' + cleaned;
+    // Remove all non-numeric characters except +
+    let cleaned = String(phone).replace(/[^\d+]/g, '');
+    console.log(`[AppsScriptManager] After removing non-numeric chars: ${cleaned}`);
+    
+    // Remove + if it exists, we'll add it back later
+    if (cleaned.startsWith('+')) {
+      cleaned = cleaned.substring(1);
+      console.log(`[AppsScriptManager] Removed + prefix: ${cleaned}`);
     }
     
+    // Handle empty or too short numbers
+    if (cleaned.length < 9) {
+      console.log(`[AppsScriptManager] Number too short: ${cleaned}`);
+      return '';
+    }
+    
+    // For Israeli numbers:
+    if (cleaned.startsWith('972')) {
+      // Already has country code
+      console.log(`[AppsScriptManager] Already has 972 prefix: ${cleaned}`);
+    } else if (cleaned.startsWith('0')) {
+      // Convert Israeli format (0XX-XXX-XXXX) to international
+      cleaned = '972' + cleaned.substring(1);
+      console.log(`[AppsScriptManager] Converted 0 prefix to 972: ${cleaned}`);
+    } else if (cleaned.length === 9) {
+      // Assuming this is an Israeli number without prefix
+      cleaned = '972' + cleaned;
+      console.log(`[AppsScriptManager] Added 972 to 9-digit number: ${cleaned}`);
+    } else if (cleaned.length === 10) {
+      // If it starts with 05, assume it's an Israeli mobile number
+      if (cleaned.startsWith('05')) {
+        cleaned = '972' + cleaned.substring(1);
+        console.log(`[AppsScriptManager] Converted Israeli mobile number: ${cleaned}`);
+      } else {
+        // Non-Israeli 10-digit number, preserve as is but add 972
+        cleaned = '972' + cleaned;
+        console.log(`[AppsScriptManager] Added 972 to 10-digit number: ${cleaned}`);
+      }
+    }
+    
+    // Add the + prefix
+    cleaned = '+' + cleaned;
+    console.log(`[AppsScriptManager] Added + prefix: ${cleaned}`);
+    
+    // Allow both 9 and 10 digit numbers after the +972 prefix
+    if (!/^\+972\d{8,9}$/.test(cleaned)) {
+      console.warn(`[AppsScriptManager] Invalid phone number format after cleaning: ${cleaned}`);
+      return '';
+    }
+    
+    console.log(`[AppsScriptManager] Final formatted number: ${cleaned}`);
     return cleaned;
   }
   
@@ -591,6 +646,12 @@ async function sendWithReconnect(jid, msg) {
 
 // Setup Express server
 const app = express();
+// Health status flag
+let botConnected = false;
+// Health-check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'healthy', botConnected });
+});
 const serverPort = process.env.PORT || 8080; // Use Railway.app default port 
 
 // Initialize global event emitter for communication between components
@@ -599,10 +660,10 @@ global.eventEmitter = new EventEmitter();
 // Store the latest QR code
 let lastQR = null;
 
-// Initialize Apps Script manager before clientstart
+// Initialize Apps Script manager before clientstart (env-vars are guaranteed)
 const appScriptManager = new AppsScriptManager(
-  process.env.APPS_SCRIPT_URL || '',
-  process.env.SECRET_KEY || 'your_secret_key_here',
+  process.env.APPS_SCRIPT_URL,
+  process.env.SECRET_KEY,
   log
 );
 
@@ -701,139 +762,78 @@ const SESSION_PATH = process.env.SESSION_PATH ||
     const store = makeInMemoryStore({
       logger: pino().child({ level: 'silent', stream: 'store' })
     });
-    
     store.bind(waClient.ev);
+    // Track WhatsApp connection status
+    waClient.ev.on('connection.update', update => {
+      const conn = update.connection;
+      if (conn === 'open') {
+        botConnected = true;
+      } else if (conn === 'close') {
+        botConnected = false;
+      }
+    });
 
-    // Helper function to send RSVP messages
+    // In-memory map of guest phone to customer for live replies
+    const replyCustomerMap = new Map();
+    
+    // Helper function to send RSVP messages across all customers
     const sendRSVPMessages = async (forced = false) => {
       try {
-        // NEW LOGGING - Start message with more details
-        log.info(`Starting RSVP message batch with URL: ${process.env.APPS_SCRIPT_URL}`);
-        
-        // Ensure we have a valid connection
+        const customers = getActiveCustomers();
+        log.info(`Starting RSVP batches for ${customers.length} customers`);
         if (!waClient.user) {
-          log.warn('No active connection, skipping RSVP message batch');
+          log.warn('No active connection, aborting RSVP batches');
           return;
         }
-        
-        // Get event details
-        const eventDetails = await appScriptManager.getEventDetails();
-        log.info(`Preparing messages for event: ${eventDetails.name}`);
-        
-        // Get event date (either from env var or from event details)
-        const eventDate = process.env.EVENT_DATE || eventDetails.date;
-        const daysRemaining = calculateDaysRemaining(eventDate);
-        log.info(`Days remaining until event: ${daysRemaining}`);
-        
-        // NEW LOGGING - Log before fetching guests
-        log.info(`About to fetch guests with key: ${process.env.SECRET_KEY.substring(0, 3)}...`);
-        
-        // Fetch the guest list
-        const guests = await appScriptManager.fetchGuestList();
-        
-        // NEW LOGGING - Log guest count and first guest
-        log.info(`Guest list response received with ${guests.length} guests`);
-        if (guests.length > 0) {
-          log.info(`First guest data: ${JSON.stringify(guests[0])}`);
-        }
-        
-        log.info(`Found ${guests.length} potential guests to contact`);
-        
-        // Use event-aware scheduling if not forced
-        let pendingGuests;
-        if (forced) {
-          // If forced (manual trigger), use original filtering logic
-          pendingGuests = guests.filter(guest => 
-            !contactedGuests.has(guest.phone) && 
-            (guest.status === 'Pending' || guest.status === '')
-          );
-          log.info(`Manual trigger: using standard filtering (${pendingGuests.length} guests)`);
-        } else {
-          // Use event proximity-based filtering for automatic scheduling
-          pendingGuests = filterGuestsByEventProximity(guests, eventDate, contactedGuests);
-          log.info(`Automatic scheduling: ${daysRemaining} days until event, selected ${pendingGuests.length} guests`);
-          
-          // If no guests to message today based on schedule, exit early
-          if (pendingGuests.length === 0 && daysRemaining > 0) {
-            log.info(`No guests to message today according to event scheduling strategy (${daysRemaining} days until event)`);
-            return;
+        for (const cust of customers) {
+          const mgr = createAppScriptManager(cust.id);
+          if (!mgr) {
+            log.warn(`Skipping customer ${cust.id}, missing credentials`);
+            continue;
           }
-        }
-        
-        if (pendingGuests.length === 0) {
-          log.info('No new guests to contact in this batch');
-          return;
-        }
-        
-        // Take only a batch
-        const batchGuests = pendingGuests.slice(0, MESSAGE_BATCH_SIZE);
-        log.info(`Sending messages to ${batchGuests.length} guests in this batch`);
-        
-        // Send messages with a delay between each
-        for (const guest of batchGuests) {
-          try {
-            // Create buttons for interactive responses
+          log.info(`Batch for ${cust.name} (${cust.id})`);
+          const details = await mgr.getEventDetails();
+          log.info(`Event: ${details.name}`);
+          const eventDate = process.env.EVENT_DATE || details.date;
+          const daysRemaining = calculateDaysRemaining(eventDate);
+          log.info(`Days until event: ${daysRemaining}`);
+          const guests = await mgr.getGuests();
+          let pending = forced
+            ? guests.filter(g => !contactedGuests.has(g.phone) && (!g.status || g.status === 'Pending'))
+            : filterGuestsByEventProximity(guests, eventDate, contactedGuests);
+          if (!forced && pending.length === 0 && daysRemaining > 0) {
+            log.info(`No messages for ${cust.id} today`);
+            continue;
+          }
+          pending = pending.slice(0, MESSAGE_BATCH_SIZE);
+          for (const g of pending) {
+            const messageText = getMessageByProximity(daysRemaining, details, g.name);
             const buttons = [
-              {buttonId: 'yes', buttonText: {displayText: 'כן, אני מגיע/ה'}, type: 1},
-              {buttonId: 'no', buttonText: {displayText: 'לא אוכל להגיע'}, type: 1},
-              {buttonId: 'maybe', buttonText: {displayText: 'לא בטוח/ה, תשאל אותי מחר'}, type: 1}
-            ];              // Get event date and calculate days remaining
-            const eventDate = process.env.EVENT_DATE || eventDetails.date;
-            const daysRemaining = calculateDaysRemaining(eventDate);
-              
-            // Get the appropriate message based on event proximity
-            const messageText = getMessageByProximity(daysRemaining, eventDetails, guest.name);
+              { buttonId: 'yes', buttonText: { displayText: 'כן, אני מגיע/ה' }, type: 1 },
+              { buttonId: 'no', buttonText: { displayText: 'לא אוכל להגיע' }, type: 1 },
+              { buttonId: 'maybe', buttonText: { displayText: 'לא בטוח/ה, תשאל אותי מחר' }, type: 1 }
+            ];
+            const msg = { text: messageText, footer: 'אנא השיבו באמצעות הכפתורים למטה', buttons, headerType: 1, viewOnce: true };
+            const to = (g.phone.startsWith('+') ? g.phone.substring(1) : g.phone) + '@s.whatsapp.net';
+            await waClient.sendMessage(to, msg);
             
-            // Try to load customer-specific invitation image
-            const customerImage = loadInvitationImage(appScriptManager.customerId);
-
-            // Create message with image if available, otherwise text only
-            let buttonMessage;
-            if (customerImage) {
-              buttonMessage = {
-                image: customerImage,
-                caption: messageText,
-                footer: 'אנא השיבו באמצעות הכפתורים למטה',
-                buttons: buttons,
-                headerType: 4, // Type 4 for image with caption
-                viewOnce: true
-              };
-            } else {
-              buttonMessage = {
-                text: messageText,
-                footer: 'אנא השיבו באמצעות הכפתורים למטה',
-                buttons: buttons,
-                headerType: 1,
-                viewOnce: true
-              };
-            }
+            // Map the phone number in the same format that will come back in responses
+            // WhatsApp removes the + prefix, so we need to map both formats
+            const phoneForMapping = g.phone.startsWith('+') ? g.phone.substring(1) : g.phone;
+            const phoneWithPlus = phoneForMapping.startsWith('+') ? phoneForMapping : '+' + phoneForMapping;
             
-            // Send the message
-            // NEW LOGGING - Log message details
-            log.info(`Sending RSVP message to: ${guest.phone}@s.whatsapp.net`);
+            log.info(`[MAPPING] Guest: ${g.name}, Original: ${g.phone}, ForMapping: ${phoneForMapping}, WithPlus: ${phoneWithPlus}`);
             
-            // Remove the plus sign from the phone number if present
-            const formattedPhone = guest.phone.startsWith('+') ? 
-            guest.phone.substring(1) + '@s.whatsapp.net' : 
-            guest.phone + '@s.whatsapp.net';
-            log.info(`Formatted phone for WhatsApp: ${formattedPhone}`);
-            await waClient.sendMessage(formattedPhone, buttonMessage);
+            // Map both formats to ensure we can find the guest regardless of format
+            mapGuestToCustomer(phoneForMapping, cust.id, g.name);
+            mapGuestToCustomer(phoneWithPlus, cust.id, g.name);
             
-            // Mark as contacted
-            contactedGuests.add(guest.phone);
-            
-            log.info(`Sent RSVP message to ${guest.name} (${guest.phone})`);
-            
-            // Add a delay between messages
-            await new Promise(resolve => setTimeout(resolve, MESSAGE_DELAY));
-          } catch (error) {
-            log.error(`Failed to send message to ${guest.name} (${guest.phone}):`, error);
+            contactedGuests.add(g.phone);
+            await sleep(MESSAGE_DELAY);
           }
         }
-        
-        log.info(`Completed RSVP message batch, sent ${batchGuests.length} messages`);
-      } catch (error) {
-        log.error('Error in RSVP message sender:', error);
+      } catch (err) {
+        log.error('sendRSVPMessages error:', err);
       }
     };
 
@@ -923,8 +923,15 @@ const SESSION_PATH = process.env.SESSION_PATH ||
           return;
         }
         
-        // Get the sender's phone number
-        const senderPhone = m.sender.split('@')[0];
+        // Get the sender's phone number and normalize format
+        let senderPhone = m.sender.split('@')[0];
+        
+        // Normalize phone number format to match what we store in guest mappings
+        if (!senderPhone.startsWith('+')) {
+          senderPhone = '+' + senderPhone;
+        }
+        
+        log.info(`[DEBUG] Extracted senderPhone: ${senderPhone} from ${m.sender}`);
         
         // Check if the message is from the bot's own number (auto-reply from WhatsApp)
         if (waClient.user && senderPhone === waClient.user.id.split(':')[0]) {
@@ -1362,47 +1369,113 @@ const SESSION_PATH = process.env.SESSION_PATH ||
             return;
           }
           
+          // Debug guest mappings command
+          if (m.text === '!guestmap') {
+            try {
+              const { findCustomerForGuest } = await import('./utils/guestMap.js');
+              const { getActiveCustomers } = await import('./utils/customerManager.js');
+              
+              await waClient.sendMessage(m.chat, { text: "🔍 Checking guest mappings..." });
+              
+              const customers = getActiveCustomers();
+              let report = "*Guest Mapping Report*\n\n";
+              
+              for (const customer of customers) {
+                const mgr = createAppScriptManager(customer.id);
+                if (!mgr) continue;
+                
+                try {
+                  const guests = await mgr.getGuests();
+                  report += `*Customer: ${customer.name} (${customer.id})*\n`;
+                  report += `Guests: ${guests.length}\n`;
+                  
+                  guests.slice(0, 3).forEach(guest => {
+                    const mappedCustomer = findCustomerForGuest(guest.phone);
+                    report += `  📱 ${guest.phone} → ${mappedCustomer || 'NOT MAPPED'}\n`;
+                  });
+                  
+                  if (guests.length > 3) {
+                    report += `  ... and ${guests.length - 3} more\n`;
+                  }
+                  report += '\n';
+                } catch (error) {
+                  report += `*Customer: ${customer.name}* - Error: ${error.message}\n\n`;
+                }
+              }
+              
+              await waClient.sendMessage(m.chat, { text: report });
+            } catch (error) {
+              log.error('Error in guestmap command:', error);
+              await waClient.sendMessage(m.chat, { 
+                text: `Error checking guest mappings: ${error.message}` 
+              });
+            }
+            return;
+          }
+          
           // NEW CODE - Debug API Command
           if (m.text === '!debugapi') {
             try {
-              log.info('Testing API connection...');
-              await waClient.sendMessage(m.chat, { text: "Testing connection to Google Apps Script..." });
+              log.info('Testing multi-tenant API connection...');
+              await waClient.sendMessage(m.chat, { text: "🔍 Testing multi-tenant API connections..." });
               
-              // Log environment
-              log.info(`ENV: APPS_SCRIPT_URL=${process.env.APPS_SCRIPT_URL}`);
-              log.info(`ENV: SECRET_KEY=${process.env.SECRET_KEY.substring(0, 3)}...`);
+              const { getActiveCustomers } = await import('./utils/customerManager.js');
+              const customers = getActiveCustomers();
               
-              // Test getting guests
-              try {
-                const guests = await appScriptManager.fetchGuestList();
-                await waClient.sendMessage(m.chat, { 
-                  text: `Successfully fetched ${guests.length} guests from API.` 
-                });
+              let report = "*API Connection Test Results*\n\n";
+              
+              for (const customer of customers) {
+                report += `*Customer: ${customer.name} (${customer.id})*\n`;
                 
-                // Show first guest
-                if (guests.length > 0) {
-                  await waClient.sendMessage(m.chat, { 
-                    text: `First guest: ${JSON.stringify(guests[0])}` 
-                  });
+                try {
+                  const mgr = createAppScriptManager(customer.id);
+                  if (!mgr) {
+                    report += `❌ No manager created (missing credentials)\n\n`;
+                    continue;
+                  }
+                  
+                  // Test getting guests
+                  try {
+                    const guests = await mgr.getGuests();
+                    report += `✅ Guests: ${guests.length}\n`;
+                    
+                    if (guests.length > 0) {
+                      const firstGuest = guests[0];
+                      report += `  📱 Sample: ${firstGuest.name} (${firstGuest.phone})\n`;
+                      
+                      // Test phone number mapping
+                      const { findCustomerForGuest } = await import('./utils/guestMap.js');
+                      const mappedCustomer = findCustomerForGuest(firstGuest.phone);
+                      report += `  🔗 Mapped to: ${mappedCustomer || 'NOT MAPPED'}\n`;
+                    }
+                  } catch (guestError) {
+                    report += `❌ Guests error: ${guestError.message}\n`;
+                  }
+                  
+                  // Test getting event details
+                  try {
+                    const details = await mgr.getEventDetails();
+                    report += `✅ Event: ${details.name || 'No name'}\n`;
+                  } catch (detailsError) {
+                    report += `❌ Details error: ${detailsError.message}\n`;
+                  }
+                  
+                  // Test updating guest status with a dummy phone
+                  try {
+                    const testPhone = '+972501234567';
+                    const result = await mgr.updateGuestStatus(testPhone, 'Test', 1, 'API test');
+                    report += `✅ Update test: ${result.success ? 'Success' : 'Failed'}\n`;
+                  } catch (updateError) {
+                    report += `❌ Update error: ${updateError.message}\n`;
+                  }
+                  
+                } catch (error) {
+                  report += `❌ General error: ${error.message}\n`;
                 }
-              } catch (error) {
-                await waClient.sendMessage(m.chat, { 
-                  text: `Error fetching guests: ${error.message}` 
-                });
+                report += '\n';
               }
               
-              // Test getting event details
-              try {
-                const eventDetails = await appScriptManager.getEventDetails();
-                await waClient.sendMessage(m.chat, { 
-                  text: `Successfully fetched event details: ${JSON.stringify(eventDetails)}` 
-                });
-              } catch (error) {
-                await waClient.sendMessage(m.chat, { 
-                  text: `Error fetching event details: ${error.message}` 
-                });
-              }
-              
+              await waClient.sendMessage(m.chat, { text: report });
               return;
             } catch (error) {
               log.error('Error in debugapi command:', error);
@@ -1410,6 +1483,56 @@ const SESSION_PATH = process.env.SESSION_PATH ||
                 text: `Debug error: ${error.message}` 
               });
             }
+          }
+          
+          // Phone lookup test command
+          if (m.text.startsWith('!phonetest ')) {
+            try {
+              const testPhone = m.text.substring(11); // Remove '!phonetest '
+              await waClient.sendMessage(m.chat, { text: `🔍 Testing phone lookup for: ${testPhone}` });
+              
+              const { findCustomerIdByPhone } = await import('./utils/phoneUtils.js');
+              const { formatPhoneNumber } = await import('./utils/numberFormatter.js');
+              const { findCustomerForGuest } = await import('./utils/guestMap.js');
+              
+              // Test different formats
+              const originalPhone = testPhone;
+              const formattedPhone = formatPhoneNumber(testPhone);
+              const normalizedPhone = testPhone.startsWith('+') ? testPhone : '+' + testPhone;
+              
+              let report = "*Phone Lookup Test Results*\n\n";
+              report += `Original: ${originalPhone}\n`;
+              report += `Formatted: ${formattedPhone}\n`;
+              report += `Normalized: ${normalizedPhone}\n\n`;
+              
+              // Test customer lookup
+              const customerId1 = findCustomerIdByPhone(originalPhone);
+              const customerId2 = findCustomerIdByPhone(formattedPhone);
+              const customerId3 = findCustomerIdByPhone(normalizedPhone);
+              
+              report += `Customer lookup results:\n`;
+              report += `- Original → ${customerId1 || 'NOT FOUND'}\n`;
+              report += `- Formatted → ${customerId2 || 'NOT FOUND'}\n`;
+              report += `- Normalized → ${customerId3 || 'NOT FOUND'}\n\n`;
+              
+              // Test guest mapping
+              const guestCustomer1 = findCustomerForGuest(originalPhone);
+              const guestCustomer2 = findCustomerForGuest(formattedPhone);
+              const guestCustomer3 = findCustomerForGuest(normalizedPhone);
+              
+              report += `Guest mapping results:\n`;
+              report += `- Original → ${guestCustomer1 || 'NOT MAPPED'}\n`;
+              report += `- Formatted → ${guestCustomer2 || 'NOT MAPPED'}\n`;
+              report += `- Normalized → ${guestCustomer3 || 'NOT MAPPED'}\n`;
+              
+              await waClient.sendMessage(m.chat, { text: report });
+              return;
+            } catch (error) {
+              await waClient.sendMessage(m.chat, { 
+                text: `Phone test error: ${error.message}` 
+              });
+            }
+            return;
           }
           
           if (m.text === '!eventdate') {
@@ -2180,146 +2303,138 @@ const SESSION_PATH = process.env.SESSION_PATH ||
         
         // Handle RSVP button responses
         if (mek.message && mek.message.buttonsResponseMessage) {
-          const response = mek.message.buttonsResponseMessage;
-          log.info(`Button response received: ${JSON.stringify(response.selectedButtonId)}`);
+          const raw = mek.message.buttonsResponseMessage;
+          // Normalize button ID
+          let buttonId = raw.selectedButtonId ?? raw.selectedId ?? '';
           
-          // Import utilities for multi-tenant handling
+          // Infer from display text if missing or empty
+          if (!buttonId || buttonId.trim() === '') {
+            const displayText = raw.selectedDisplayText || '';
+            const dt = displayText.toLowerCase();
+            
+            log.info(`[BUTTON] Empty button ID, trying to infer from display text: "${displayText}"`);
+            
+            if (dt.includes('כן') || dt.includes('yes') || dt.includes('מגיע') || dt.includes('attend')) {
+              buttonId = 'yes';
+            } else if (dt.includes('לא אוכל') || dt.includes('לא') || dt.includes('no') || dt.includes("can't") || dt.includes('cannot')) {
+              buttonId = 'no';
+            } else if (dt.includes('בטוח') || dt.includes('maybe') || dt.includes('לא בטוח') || dt.includes('מחר')) {
+              buttonId = 'maybe';
+            } else if (dt.includes('1') && dt.includes('רק')) {
+              buttonId = 'guest_1';
+            } else if (dt.includes('2')) {
+              buttonId = 'guest_2';
+            } else if (dt.includes('3') || dt.includes('יותר')) {
+              buttonId = 'guest_more';
+            }
+            
+            if (buttonId) {
+              log.info(`[BUTTON] Inferred button ID: ${buttonId} from display text`);
+            }
+          }
+          
+          log.info(`[BUTTON] Button response received: ${buttonId} from phone: ${senderPhone}`);
+          log.info(`[BUTTON] Raw button data:`, JSON.stringify(raw, null, 2));
+
+          // Resolve customer context
           const { findCustomerIdByPhone } = await import('./utils/phoneUtils.js');
           const { createAppScriptManager } = await import('./utils/multiTenantSheets.js');
           
-          // Find the correct customer based on the sender's phone number
+          // Debug phone number formats and guest mapping
+          log.info(`[BUTTON] Original senderPhone: ${senderPhone}`);
+          log.info(`[BUTTON] Checking customer mapping for: ${senderPhone}`);
+          
           const customerId = findCustomerIdByPhone(senderPhone);
+          log.info(`[BUTTON] Found customerId: ${customerId}`);
+          
           if (!customerId) {
-            log.error(`Could not find customer for phone number: ${senderPhone}`);
-            await waClient.sendMessage(m.chat, { 
-              text: "מצטערים, אך לא הצלחנו לאתר את האירוע המתאים. אנא צרו קשר עם מארגני האירוע." 
-            });
+            log.error(`[BUTTON] No customer found for phone: ${senderPhone}`);
+            // Try to find with different phone formats
+            const alternatePhone = senderPhone.startsWith('+') ? senderPhone.substring(1) : '+' + senderPhone;
+            const alternateCustomerId = findCustomerIdByPhone(alternatePhone);
+            log.info(`[BUTTON] Tried alternate format ${alternatePhone}, found: ${alternateCustomerId}`);
+            
+            await waClient.sendMessage(m.chat, { text: "מצטערים, אך לא הצלחנו לאתר את האירוע המתאים." });
             return;
           }
           
-          // Get the correct App Script Manager for this customer
-          const customerAppScriptManager = createAppScriptManager(customerId);
-          if (!customerAppScriptManager) {
-            log.error(`Could not create App Script Manager for customer: ${customerId}`);
-            await waClient.sendMessage(m.chat, { 
-              text: "מצטערים, אך אירעה שגיאה בעדכון התשובה שלך. אנא צרו קשר עם מארגני האירוע." 
-            });
+          const mgr = createAppScriptManager(customerId);
+          if (!mgr) {
+            log.error(`[BUTTON] No manager created for customer: ${customerId}`);
+            await waClient.sendMessage(m.chat, { text: "אירעה שגיאה בעדכון התשובה שלך. אנא נסה שוב מאוחר יותר." });
             return;
           }
           
-          if (response.selectedButtonId === 'yes' || response.selectedButtonId === 'test_yes') {
-            // Ask for the number of guests
-            const buttons = [
-              {buttonId: 'guest_1', buttonText: {displayText: '1 (רק אני)'}, type: 1},
-              {buttonId: 'guest_2', buttonText: {displayText: '2 אנשים'}, type: 1},
-              {buttonId: 'guest_more', buttonText: {displayText: '3 או יותר'}, type: 1}
-            ];
-            
-            await waClient.sendMessage(m.chat, {
-              text: "מעולה! כמה אנשים יגיעו בסך הכל (כולל אותך)",
-              footer: 'אנא בחרו באחת האפשרויות',
-              buttons: buttons,
-              headerType: 1,
-              viewOnce: true
-            });
-            
-            return;
-          }
-          else if (response.selectedButtonId === 'no' || response.selectedButtonId === 'test_no') {
-            // This is a decline
-            try {
-              // Update their status in the sheet using the customer-specific manager
-              await customerAppScriptManager.updateGuestStatus(senderPhone, 'Declined', '0');
-              
-              // Send acknowledgment
-              await waClient.sendMessage(m.chat, { 
-                text: "תודה שהודעת לנו. חבל שלא תוכל להגיע!" 
-              });
-            } catch (error) {
-              log.error(`Error updating decline status for ${senderPhone} (customer ${customerId}):`, error);
-              
-              // Send generic acknowledgment if update fails
-              await waClient.sendMessage(m.chat, { 
-                text: "תודה על תשובתך!" 
-              });
+          log.info(`[BUTTON] Created manager for customer: ${customerId}, processing button: ${buttonId}`);
+
+          // Handle each button action
+          switch (buttonId) {
+            case 'yes':
+            case 'test_yes': {
+              // Ask how many guests
+              const opts = [
+                { buttonId: 'guest_1', buttonText: { displayText: '1 (רק אני)' }, type: 1 },
+                { buttonId: 'guest_2', buttonText: { displayText: '2 אנשים' }, type: 1 },
+                { buttonId: 'guest_more', buttonText: { displayText: '3 או יותר' }, type: 1 }
+              ];
+              await waClient.sendMessage(m.chat, { text: "כמה אנשים יגיעו?", buttons: opts, footer: 'בחר אפשרות', headerType: 1 });
+              break;
             }
-            return;
-          }
-          else if (response.selectedButtonId === 'maybe') {
-            try {
-              // Update their status in the sheet as "Maybe" using customer-specific manager
-              await customerAppScriptManager.updateGuestStatus(senderPhone, 'Maybe', '0', 'Will follow up tomorrow');
-              
-              // Schedule a follow-up for tomorrow
-              const tomorrowDate = new Date();
-              tomorrowDate.setDate(tomorrowDate.getDate() + 1);
-              tomorrowDate.setHours(12, 0, 0, 0); // Set to noon tomorrow
-              
-              const followUpTime = tomorrowDate.getTime();
-              const currentTime = Date.now();
-              const delayMs = followUpTime - currentTime;
-              
-              // Store this in a scheduled follow-ups list
-              if (!global.scheduledFollowUps) {
-                global.scheduledFollowUps = [];
+            case 'no':
+            case 'test_no': {
+              try {
+                log.info(`[BUTTON] Calling updateGuestStatus for phone: ${senderPhone}, status: Declined`);
+                // Format phone for API call - remove + prefix if present
+                const apiPhone = senderPhone.startsWith('+') ? senderPhone.substring(1) : senderPhone;
+                const result = await mgr.updateGuestStatus(apiPhone, 'Declined', 0);
+                log.info(`[BUTTON] updateGuestStatus result:`, result);
+                await waClient.sendMessage(m.chat, { text: "תודה שהודעת לנו. חבל שלא תוכל להגיע!" });
+              } catch (error) {
+                log.error(`[BUTTON] Error updating guest status:`, error);
+                await waClient.sendMessage(m.chat, { text: "תודה על תשובתך!" });
               }
-              
-              global.scheduledFollowUps.push({
-                phone: senderPhone,
-                name: (await appScriptManager.fetchGuestList()).find(g => g.phone === appScriptManager.formatPhoneNumber(senderPhone))?.name || '',
-                scheduledTime: followUpTime
-              });
-              
-              // Send acknowledgment
-              await waClient.sendMessage(m.chat, { 
-                text: "אין בעיה, נשלח לך תזכורת מחר לגבי האירוע." 
-              });
-              
-              log.info(`Scheduled follow-up for ${senderPhone} at ${tomorrowDate.toISOString()}`);
-            } catch (error) {
-              log.error(`Error handling 'maybe' response for ${senderPhone}:`, error);
-              
-              // Send generic acknowledgment if update fails
-              await waClient.sendMessage(m.chat, { 
-                text: "קיבלנו את תשובתך, ננסה ליצור איתך קשר מחר." 
-              });
+              break;
             }
-            return;
+            case 'maybe': {
+              try {
+                log.info(`[BUTTON] Calling updateGuestStatus for phone: ${senderPhone}, status: Maybe`);
+                // Format phone for API call - remove + prefix if present
+                const apiPhone = senderPhone.startsWith('+') ? senderPhone.substring(1) : senderPhone;
+                const result = await mgr.updateGuestStatus(apiPhone, 'Maybe', 0, 'Follow up');
+                log.info(`[BUTTON] updateGuestStatus result:`, result);
+                // schedule follow-up (omitted for brevity)
+                await waClient.sendMessage(m.chat, { text: "נשלח תזכורת מחר" });
+              } catch (error) {
+                log.error(`[BUTTON] Error updating guest status:`, error);
+                await waClient.sendMessage(m.chat, { text: "תודה על תשובתך!" });
+              }
+              break;
+            }
+            default: {
+              if (buttonId.startsWith('guest_')) {
+                const count = buttonId === 'guest_2' ? 2 : buttonId === 'guest_more' ? 3 : 1;
+                try {
+                  log.info(`[BUTTON] Calling updateGuestStatus for phone: ${senderPhone}, status: Confirmed, count: ${count}`);
+                  // Format phone for API call - remove + prefix if present (consistent with no/maybe handling)
+                  const apiPhone = senderPhone.startsWith('+') ? senderPhone.substring(1) : senderPhone;
+                  const result = await mgr.updateGuestStatus(apiPhone, 'Confirmed', count);
+                  log.info(`[BUTTON] updateGuestStatus result:`, result);
+                  await waClient.sendMessage(m.chat, { text: `תודה! רשמנו ${count} ${count === 1 ? 'אדם' : 'אנשים'}` });
+                } catch (error) {
+                  log.error(`[BUTTON] Error updating guest status:`, error);
+                  await waClient.sendMessage(m.chat, { text: "תודה על תשובתך!" });
+                }
+              } else if (!buttonId || buttonId.trim() === '') {
+                log.warn(`[BUTTON] Empty button ID received, raw data:`, JSON.stringify(raw, null, 2));
+                // Try to provide helpful response without pestering the user
+                await waClient.sendMessage(m.chat, { text: "קיבלנו את תשובתך, תודה!" });
+              } else {
+                log.warn(`[BUTTON] Unknown button ID: ${buttonId}`);
+                await waClient.sendMessage(m.chat, { text: "לא הבנו את הבחירה שלך, נסה שוב בבקשה." });
+              }
+            }
           }
-          // Handle guest count responses
-          else if (response.selectedButtonId.startsWith('guest_')) {
-            let guestCount = 1;
-            
-            if (response.selectedButtonId === 'guest_1') {
-              guestCount = 1;
-            } else if (response.selectedButtonId === 'guest_2') {
-              guestCount = 2;
-            } else if (response.selectedButtonId === 'guest_more') {
-              // Ask for specific number
-              await waClient.sendMessage(m.chat, { 
-                text: "אנא ציינו את מספר האנשים שיגיעו (כולל אותך):" 
-              });
-              return;
-            }
-            
-            try {
-              // Update their status in the sheet using customer-specific manager
-              await customerAppScriptManager.updateGuestStatus(senderPhone, 'Confirmed', guestCount.toString());
-              
-              // Send confirmation
-              await waClient.sendMessage(m.chat, { 
-                text: `תודה על האישור! רשמנו שיגיעו ${guestCount} ${guestCount === 1 ? 'איש' : 'אנשים'}` 
-              });
-            } catch (error) {
-              log.error(`Error updating confirm status for ${senderPhone} (customer ${customerId}):`, error);
-              
-              // Send generic acknowledgment if update fails
-              await waClient.sendMessage(m.chat, { 
-                text: "תודה על תשובתך! רשמנו את נוכחותך." 
-              });
-            }
-            return;
-          }
+          return;
         }
         
         // Handle text responses

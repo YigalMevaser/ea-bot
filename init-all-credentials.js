@@ -78,18 +78,23 @@ try {
 // Initialize credentials for each customer if they don't exist
 let modified = false;
 for (const customer of customers) {
-  if (!customer.id || !customer.appScriptUrl || !customer.secretKey) {
-    console.warn(`Skipping customer with incomplete data: ${customer.name || 'unnamed'}`);
+  // Must have an ID
+  if (!customer.id) {
+    console.warn(`Skipping customer without ID: ${customer.name || 'unnamed'}`);
     continue;
   }
+  // If credentials already present, skip
+  if (credentials[customer.id]) continue;
   
-  if (!credentials[customer.id]) {
-    console.log(`Initializing credentials for customer: ${customer.name}`);
-    credentials[customer.id] = {
-      appScriptUrl: customer.appScriptUrl,
-      secretKey: customer.secretKey
-    };
+  // Try to load from environment variables: CUSTOMER_URL_<id> and CUSTOMER_SECRET_<id>
+  const envUrl = process.env[`CUSTOMER_URL_${customer.id}`];
+  const envKey = process.env[`CUSTOMER_SECRET_${customer.id}`];
+  if (envUrl && envKey) {
+    console.log(`Auto-initializing credentials for ${customer.name} from environment variables`);
+    credentials[customer.id] = { appScriptUrl: envUrl, secretKey: envKey };
     modified = true;
+  } else {
+    console.warn(`Skipping customer without env credentials: ${customer.name} (${customer.id})`);
   }
 }
 

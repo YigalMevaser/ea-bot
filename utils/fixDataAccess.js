@@ -102,9 +102,11 @@ export function validateJsonFile(filePath, defaultValue = {}) {
         return isArray ? [] : {};
       }
       
+      // Remove semicolons at end of lines to sanitize malformed JSON
+      const sanitized = contents.replace(/;[ \t]*(?=(\r?\n|$))/g, '');
       // Try to parse JSON
       try {
-        return JSON.parse(contents);
+        return JSON.parse(sanitized);
       } catch (parseError) {
         console.error(`Error parsing JSON in ${filePath}: ${parseError.message}`);
         
