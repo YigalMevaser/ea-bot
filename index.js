@@ -2472,8 +2472,32 @@ const SESSION_PATH = process.env.SESSION_PATH ||
           
           // This is a decline
           try {
-            // Update their status in the sheet
-            await appScriptManager.updateGuestStatus(senderPhone, 'Declined', '0');
+            // Import utilities for multi-tenant handling in text responses
+            const { findCustomerIdByPhone } = await import('./utils/phoneUtils.js');
+            const { createAppScriptManager } = await import('./utils/multiTenantSheets.js');
+            
+            // Find the correct customer based on the sender's phone number
+            const customerId = findCustomerIdByPhone(senderPhone);
+            if (!customerId) {
+              log.error(`Could not find customer for phone number: ${senderPhone}`);
+              await waClient.sendMessage(m.chat, { 
+                text: "מצטערים, אך לא הצלחנו לאתר את האירוע המתאים. אנא צרו קשר עם מארגני האירוע." 
+              });
+              return;
+            }
+            
+            const customerAppScriptManager = createAppScriptManager(customerId);
+            if (!customerAppScriptManager) {
+              log.error(`Could not create App Script Manager for customer: ${customerId}`);
+              await waClient.sendMessage(m.chat, { 
+                text: "מצטערים, אך אירעה שגיאה בעדכון התשובה שלך. אנא צרו קשר עם מארגני האירוע." 
+              });
+              return;
+            }
+            
+            // Format phone for API call - remove + prefix if present (consistent with button handling)
+            const apiPhone = senderPhone.startsWith('+') ? senderPhone.substring(1) : senderPhone;
+            await customerAppScriptManager.updateGuestStatus(apiPhone, 'Declined', 0);
             
             // Send acknowledgment in Hebrew
             await waClient.sendMessage(m.chat, { 
@@ -2519,8 +2543,9 @@ const SESSION_PATH = process.env.SESSION_PATH ||
               return;
             }
             
-            // Update their status in the sheet using customer-specific manager
-            await customerAppScriptManager.updateGuestStatus(senderPhone, 'Confirmed', guestCount.toString());
+            // Format phone for API call - remove + prefix if present (consistent with button handling)
+            const apiPhone = senderPhone.startsWith('+') ? senderPhone.substring(1) : senderPhone;
+            await customerAppScriptManager.updateGuestStatus(apiPhone, 'Confirmed', guestCount);
             
             // Send confirmation
             await waClient.sendMessage(m.chat, { 
@@ -2998,6 +3023,17 @@ async function executeRsvpForceCommand(waClient, targetCustomer, replyToChat) {
           
           log.info(`✓ Successfully sent RSVP message to ${guest.name} (${guest.phone})`);
           successCount++;
+          
+          // CRITICAL FIX: Map the phone number to customer for button responses
+          // This is what was missing compared to automatic sendRSVPMessages!
+          const phoneForMapping = guest.phone.startsWith('+') ? guest.phone.substring(1) : guest.phone;
+          const phoneWithPlus = phoneForMapping.startsWith('+') ? phoneForMapping : '+' + phoneForMapping;
+          
+          log.info(`[MAPPING] Manual RSVP - Guest: ${guest.name}, Original: ${guest.phone}, ForMapping: ${phoneForMapping}, WithPlus: ${phoneWithPlus}`);
+          
+          // Map both formats to ensure we can find the guest regardless of format
+          mapGuestToCustomer(phoneForMapping, targetCustomer.id, guest.name);
+          mapGuestToCustomer(phoneWithPlus, targetCustomer.id, guest.name);
           
           // Wait between messages to avoid rate limiting
           await new Promise(resolve => setTimeout(resolve, 2000));
